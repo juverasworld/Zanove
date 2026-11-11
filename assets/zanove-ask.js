@@ -12,8 +12,23 @@
     if (/\b(audit|website check|site check|review my website)\b/.test(q)) {
       return 'You can run the free first-pass website audit at /audit.html. It checks public pages for website structure, search signals, enquiry paths and visible workflow signals. The on-page report points out opportunities, and you can ask Zanove to help you plan the fixes.';
     }
-    if (/\b(project|portfolio|work|case stud|hirelyze|stakecut|kudiplan|datawise|no wahala)\b/.test(q)) {
-      return 'You can browse Zanove’s work by area on the Projects page, including websites, digital products, AI creative and automation. Some entries are works in progress or need more public details. Open Projects from the menu to explore.';
+    if (/\b(zanvera|guest hub|guest assistant)\b/.test(q)) {
+      return 'Zanvera Guest Hub is a founder-built hospitality concept: guests scan a QR code to get answers about Wi-Fi, check-in and amenities, while hosts manage useful guest information in one place. Open it from the Projects page to explore.';
+    }
+    if (/\b(no wahala|nowahala)\b/.test(q)) {
+      return 'No Wahala is a founder-built personal finance dashboard designed to make statement activity easier to understand, with a clearer view of money in, money out and repeat payments. Open it from the Projects page to explore.';
+    }
+    if (/\b(legacymag|legacy mag|birthday booklet|booklet)\b/.test(q)) {
+      return 'LegacyMag is a founder-built keepsake booklet service for milestone birthdays, memorials and anniversaries. Its landing page presents the idea of turning personal stories and photographs into a lasting magazine-style booklet.';
+    }
+    if (/\b(datawise|data wise)\b/.test(q)) {
+      return 'DataWise is a founder-built Nigerian data bundle comparison and personal tracking experience. It helps people compare plans and keep an eye on usage, top-ups and expiry dates.';
+    }
+    if (/\b(globalperks|dark rosy|visual portfolio)\b/.test(q)) {
+      return 'GlobalPerks is a founder-built visual storytelling portfolio focused on expressive imagery, curated moments and a gallery-led presentation.';
+    }
+    if (/\b(project|portfolio|work|case stud|hirelyze|kudiplan|my family companion|nlbcs|nledc)\b/.test(q)) {
+      return 'The Projects page leads with five founder-built experiences: Zanvera Guest Hub, No Wahala, LegacyMag, DataWise and GlobalPerks. It also includes selected additional work. Open Projects from the menu to explore.';
     }
     if (/\b(book|ebook|written|author)\b/.test(q)) {
       return 'Zanove’s Books page is where the books and written resources will be featured. Open Books from the main menu to see what is available.';

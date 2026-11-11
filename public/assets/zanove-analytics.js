@@ -1,13 +1,16 @@
 (() => {
   const consentKey = 'zanove-analytics-choice';
+  const scriptElement = document.currentScript;
+  const gaId = scriptElement?.dataset.gaMeasurementId || '';
   let analyticsLoaded = false;
   const sentDepths = new Set();
   const sentTime = new Set();
   const pagePath = () => location.pathname.slice(0, 160);
 
   const send = (name, properties = {}) => {
-    if (!analyticsLoaded || typeof window.va !== 'function') return;
-    window.va('event', name, { page: pagePath(), ...properties });
+    if (!analyticsLoaded) return;
+    if (typeof window.va === 'function') window.va('event', name, { page: pagePath(), ...properties });
+    if (gaId && typeof window.gtag === 'function') window.gtag('event', name, { page_path: pagePath(), ...properties });
   };
   window.zanoveTrack = (name, properties) => {
     if (!/^[a-z][a-z0-9_]{1,39}$/.test(name)) return;
@@ -25,6 +28,17 @@
     speedInsights.defer = true;
     speedInsights.src = '/_vercel/speed-insights/script.js';
     document.head.append(speedInsights);
+    if (/^G-[A-Z0-9]+$/i.test(gaId)) {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
+      window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+      window.gtag('js', new Date());
+      window.gtag('config', gaId, { send_page_view: true, allow_google_signals: false, allow_ad_personalization_signals: false });
+      const googleAnalytics = document.createElement('script');
+      googleAnalytics.async = true;
+      googleAnalytics.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+      document.head.append(googleAnalytics);
+    }
     analyticsLoaded = true;
   }
 
@@ -37,7 +51,7 @@
   banner.setAttribute('aria-label', 'Analytics choices');
   banner.hidden = Boolean(choice);
   const privacyHref = location.pathname.startsWith('/blog/') ? '../privacy.html' : 'privacy.html';
-  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
+  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance${gaId ? ', with Google Analytics enabled too' : ''}. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
   document.body.append(banner);
   const setChoice = (nextChoice) => {
     const wasLoaded = analyticsLoaded;
@@ -48,6 +62,12 @@
     // Vercel injects page and performance listeners independently. Reloading
     // after revocation removes those listeners for the rest of this visit.
     else if (wasLoaded) window.location.reload();
+    if (nextChoice === 'rejected' && gaId) {
+      document.cookie.split(';').forEach((part) => {
+        const name = part.split('=')[0].trim();
+        if (/^_ga($|_)/.test(name)) document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+      });
+    }
   };
   banner.querySelector('[data-analytics-accept]').addEventListener('click', () => setChoice('accepted'));
   banner.querySelector('[data-analytics-reject]').addEventListener('click', () => setChoice('rejected'));

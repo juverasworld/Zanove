@@ -1,6 +1,6 @@
 # Zanove analytics setup
 
-The site now includes consent-gated Vercel Web Analytics and Speed Insights. No third-party analytics scripts load until a visitor chooses **Accept analytics**. The visitor can reject or reopen preferences from the footer. Event payloads intentionally exclude form values, email addresses, audit URLs and AI chat text.
+The marketing website is served mainly as static HTML files from `public`, while Next.js handles the APIs and a small number of routes. The site therefore uses Vercel’s documented HTML script integration rather than placing `<Analytics />` in `app/layout.js`: that layout does not wrap the standalone `.html` pages most visitors use. Vercel Web Analytics and Speed Insights load only after a visitor chooses **Accept analytics**. The visitor can reject or reopen preferences from the footer. Event payloads intentionally exclude form values, email addresses, audit URLs and AI chat text.
 
 ## Turn on collection in Vercel
 
@@ -10,7 +10,13 @@ The site now includes consent-gated Vercel Web Analytics and Speed Insights. No 
 4. Redeploy the latest commit. Vercel provides the `/_vercel/insights/script.js` and `/_vercel/speed-insights/script.js` endpoints after these products are enabled.
 5. In a clean browser, confirm the consent choice appears. Reject and verify the scripts are absent in DevTools Network. Then accept and verify page views and performance data appear in the Vercel dashboard.
 
-Vercel Web Analytics and Speed Insights availability depends on the project and plan. The base Web Analytics dashboard provides page-level traffic; custom event reporting is available on Pro and Enterprise plans. If the project stays on Hobby, the site still emits the defined event calls after consent, but the dashboard may not expose those event reports.
+## Add Google Analytics 4
+
+GA4 support is implemented but cannot collect data until a property and Web data stream exist. Create a Google Analytics property, copy its Measurement ID (`G-...`), and set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the Vercel project’s Production environment variables, then redeploy. The GA tag loads only after **Accept analytics** and receives the same privacy-safe custom event calls. Ad storage and ad personalization signals are explicitly denied. The Measurement ID is public configuration, not a secret.
+
+The Next.js `<Analytics />` component shown in Vercel’s Next quickstart is not used here because the actual marketing pages are standalone `.html` documents, not App Router pages. The official Vercel guide also provides a script-tag integration for standalone HTML.
+
+Vercel Web Analytics and Speed Insights availability depends on the project and plan. The base Web Analytics dashboard provides page-level traffic; custom event reporting is available on Pro and Enterprise plans. If the project stays on Hobby, the site still emits the defined event calls after consent, but the dashboard may not expose those event reports. GA4 event reporting requires a configured Measurement ID and property.
 
 ## Events in the code
 

@@ -7,6 +7,9 @@ import posts from '../content/blog-posts.json' with { type: 'json' };
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pages = ['index.html', 'service.html', 'about.html', 'projects.html', 'audit.html', 'blog.html', 'ebook.html', 'ask-ai.html', 'project.html', 'privacy.html'];
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanove-technologies.vercel.app').replace(/\/$/, '');
+const gaId = /^G-[A-Z0-9]+$/i.test((process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '').trim())
+  ? process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID.trim()
+  : '';
 for (const page of pages) {
   const source = path.join(root, page);
   const $ = load(fs.readFileSync(source, 'utf8'));
@@ -14,7 +17,7 @@ for (const page of pages) {
   $('script[src*="zanove-ui.js"]').attr('src', 'assets/zanove-ui.js?v=20261111-home-audit');
   $('script[src*="zanove-audit.js"]').attr('src', 'assets/zanove-audit.js?v=20261111-home-audit');
   $('head script[src*="zanove-analytics.js"]').remove();
-  $('head').append('<script src="assets/zanove-analytics.js?v=20261111-analytics" defer></script>');
+  $('head').append(`<script src="assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" defer></script>`);
   if (['index.html', 'audit.html'].includes(page)) {
     $('head script[src*="zanove-project.js"]').remove();
     $('head').append('<script src="assets/zanove-project.js?v=20261111-modal2" defer></script>');
@@ -59,7 +62,7 @@ if (fs.existsSync(articleDir)) {
     $('script[src*="zanove-ui.js"]').attr('src', `${site}/assets/zanove-ui.js?v=20261111-home-audit`);
     $('script[src*="zanove-audit.js"]').attr('src', `${site}/assets/zanove-audit.js?v=20261111-home-audit`);
     $('head script[src*="zanove-analytics.js"]').remove();
-    $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-analytics" defer></script>`);
+    $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" defer></script>`);
     if (!$('a[href="../privacy.html"]').length) $('footer .footer-links').last().append('<a href="../privacy.html">Privacy &amp; analytics</a>');
     if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
     const canonical = `${site}/blog/${name}`;
@@ -87,6 +90,16 @@ const articles = ['## Journal articles', ...posts.map(({ title, slug }) => `- [$
   llms = llms.replace(/- \[Project consultation\][^\n]*\n*/g, '');
   llms = llms.replace('## Journal articles', `- [Project consultation](${site}/project.html): Request a consultation about a website, product, software or workflow.\n\n## Journal articles`);
   llms = llms.replace('## Journal articles', `- [Privacy and analytics](${site}/privacy.html): Analytics choices and information submitted to Zanove.\n\n## Journal articles`);
+  const projects = [
+    '## Founder-built projects',
+    '- [Zanvera Guest Hub](https://zanvera.vercel.app/): QR-led AI guest assistant for independent hotels and rental hosts.',
+    '- [No Wahala](https://no-wahala.vercel.app/): Statement-based personal finance dashboard for understanding income, spending and repeat payments.',
+    '- [LegacyMag](https://v0-birthday-booklet-landing-page.vercel.app/): Premium milestone and memorial booklet service.',
+    '- [DataWise](https://datawise-three.vercel.app/): Nigerian data bundle comparison and personal tracking experience.',
+    '- [GlobalPerks](https://dark-rosy.vercel.app/): Visual storytelling portfolio and gallery experience.',
+  ].join('\n');
+  llms = llms.replace(/## Founder-built projects[\s\S]*?(?=\n## |$)/, projects);
+  if (!llms.includes('## Founder-built projects')) llms = llms.replace('## Contact', `${projects}\n\n## Contact`);
   llms = llms.replace(/- WhatsApp:[^\n]*\n/g, '');
   llms = llms.replace('- Email: zanovetechnologies@gmail.com', `- Email: zanovetechnologies@gmail.com\n- WhatsApp: https://wa.me/2349138638126`);
   fs.writeFileSync(llmsPath, llms);

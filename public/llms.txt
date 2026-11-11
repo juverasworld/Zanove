@@ -12,6 +12,10 @@
 - [Journal](https://zanove-technologies.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
 - [Ask Zanove AI](https://zanove-technologies.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
 
+- [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
+
+- [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
+
 - [Project consultation](https://zanove-technologies.vercel.app/project.html): Request a consultation about a website, product, software or workflow.
 
 - [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
@@ -20,6 +24,13 @@
 - [Before you redesign your website, make the next step obvious.](https://zanove-technologies.vercel.app/blog/website-next-step.html)
 - [Good automation gives people time back without hiding the work.](https://zanove-technologies.vercel.app/blog/useful-automation.html)
 - [Give an AI video a clear job before choosing a style.](https://zanove-technologies.vercel.app/blog/ai-video-brief.html)
+## Founder-built projects
+- [Zanvera Guest Hub](https://zanvera.vercel.app/): QR-led AI guest assistant for independent hotels and rental hosts.
+- [No Wahala](https://no-wahala.vercel.app/): Statement-based personal finance dashboard for understanding income, spending and repeat payments.
+- [LegacyMag](https://v0-birthday-booklet-landing-page.vercel.app/): Premium milestone and memorial booklet service.
+- [DataWise](https://datawise-three.vercel.app/): Nigerian data bundle comparison and personal tracking experience.
+- [GlobalPerks](https://dark-rosy.vercel.app/): Visual storytelling portfolio and gallery experience.
+
 ## Contact
 - Email: zanovetechnologies@gmail.com
 - WhatsApp: https://wa.me/2349138638126
