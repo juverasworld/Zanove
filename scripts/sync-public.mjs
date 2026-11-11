@@ -5,6 +5,7 @@ import { load } from 'cheerio';
 import posts from '../content/blog-posts.json' with { type: 'json' };
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const pages = ['index.html', 'service.html', 'about.html', 'projects.html', 'audit.html', 'blog.html', 'ebook.html', 'ask-ai.html', 'project.html', 'privacy.html'];
 const sitePageLinks = [
   ['Home', '/'],
@@ -13,7 +14,7 @@ const sitePageLinks = [
   ['Projects', '/projects.html'],
   ['Website audit', '/audit.html'],
   ['Request a consultation', '/project.html'],
-  ['Blog', '/blog.html'],
+  ['Blog', '/blog'],
   ['Books', '/ebook.html'],
   ['Ask Zanove AI', '/ask-ai.html'],
   ['Privacy & analytics', '/privacy.html'],
@@ -30,6 +31,12 @@ for (const page of pages) {
   const $ = load(fs.readFileSync(source, 'utf8'));
   // Use the canonical homepage URL instead of the redirecting /index.html alias.
   $('a[href="index.html"], a[href="./index.html"], a[href="../index.html"]').attr('href', '/');
+  $('a[href="blog.html"], a[href="/blog.html"], a[href="../blog.html"]').attr('href', '/blog');
+  $('a[href]').each((_, element) => {
+    const href = $(element).attr('href') || '';
+    const article = href.match(/^(?:\.\.\/|\.\/|\/)?blog\/([a-z0-9-]+)(?:\.html)?$/i);
+    if (article) $(element).attr('href', `/blog/${article[1]}`);
+  });
   $('link[rel="stylesheet"][href*="zanove-site.css"]').attr('href', 'assets/zanove-site.css?v=20261111-consultation');
   $('script[src*="zanove-ui.js"]').attr('src', 'assets/zanove-ui.js?v=20261111-home-audit');
   $('script[src*="zanove-audit.js"]').attr('src', 'assets/zanove-audit.js?v=20261111-home-audit');
@@ -44,6 +51,21 @@ for (const page of pages) {
       $('body').append(fs.readFileSync(path.join(root, 'assets/project-inquiry-modal.html'), 'utf8'));
     }
   }
+  if (page === 'index.html') {
+    $('[data-journal-preview]').remove();
+    const articleCards = posts.slice(0, 3).map(({ slug, title, category, description }) => `<article class="blog-card"><p class="project-kicker">${escapeHtml(category || 'Zanove Journal')}</p><h3><a href="/blog/${escapeHtml(slug)}">${escapeHtml(title)}</a></h3><p>${escapeHtml(description)}</p><a class="card-link" href="/blog/${escapeHtml(slug)}">Read the article <span aria-hidden="true">↗</span></a></article>`).join('');
+    const journal = `<section class="section" data-journal-preview aria-labelledby="journal-preview-title"><div class="container"><div class="section-heading"><p class="eyebrow">From the Zanove Journal</p><h2 id="journal-preview-title">Useful ideas for your next digital decision.</h2><p>Practical perspectives on websites, software, AI and business workflows, written to help you choose a clearer next step.</p></div><div class="blog-card-grid">${articleCards}</div><p class="journal-more"><a class="card-link" href="/blog">Explore all journal articles ↗</a></p></div></section>`;
+    if ($('#services').length) $('#services').after(journal);
+    else $('main').append(journal);
+  }
+  if (page === 'service.html') {
+    $('[data-service-journal]').remove();
+    const articleCards = posts.slice(0, 3).map(({ slug, title, category, description }) => `<article class="blog-card"><p class="project-kicker">${escapeHtml(category || 'Zanove Journal')}</p><h3><a href="/blog/${escapeHtml(slug)}">${escapeHtml(title)}</a></h3><p>${escapeHtml(description)}</p><a class="card-link" href="/blog/${escapeHtml(slug)}">Read the article <span aria-hidden="true">↗</span></a></article>`).join('');
+    const journal = `<section class="section related-journal" data-service-journal aria-labelledby="service-journal-title"><div class="container"><div class="section-heading"><p class="eyebrow">From the Zanove Journal</p><h2 id="service-journal-title">Explore the thinking behind the work.</h2><p>Practical reading on website design, automation and AI creative for Nigerian businesses.</p></div><div class="blog-card-grid">${articleCards}</div><p class="journal-more"><a class="card-link" href="/blog">Browse all articles ↗</a></p></div></section>`;
+    const callToAction = $('main > section').filter((_, element) => $(element).find('.cta-band').length).first();
+    if (callToAction.length) callToAction.before(journal);
+    else $('main').append(journal);
+  }
   $('[data-ask-launcher]').each((_, el) => {
     $(el).empty().append('<span class="ask-widget-launcher-mark" aria-hidden="true">Z</span><span>Ask Zanove AI</span>');
     $(el).attr('aria-label', 'Open Ask Zanove AI');
@@ -56,7 +78,7 @@ for (const page of pages) {
   if (!$('a[href="privacy.html"]').length) $('footer .footer-links').last().append('<a href="privacy.html">Privacy &amp; analytics</a>');
   if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
   $('a[href="mailto:zanovetechnologies@gmail.com"]').filter((_, el) => /book a call/i.test($(el).text())).text('Email Zanove to arrange a call');
-  const canonical = page === 'index.html' ? `${site}/` : `${site}/${page}`;
+  const canonical = page === 'index.html' ? `${site}/` : page === 'blog.html' ? `${site}/blog` : `${site}/${page}`;
   $('head link[rel="canonical"]').attr('href', canonical);
   $('head meta[property="og:url"]').attr('content', canonical);
   const title = $('head title').text().trim();
@@ -67,6 +89,7 @@ for (const page of pages) {
     try {
       const schema = JSON.parse(orgScript.text());
       if (schema['@type'] === 'Organization') {
+        schema['@id'] = `${site}/#organization`;
         schema.url = `${site}/`;
         schema.logo = `${site}/assets/zanove-logo.png`;
         orgScript.text(JSON.stringify(schema));
@@ -95,7 +118,12 @@ if (fs.existsSync(articleDir)) {
     $('footer .footer-title').first().text('All pages');
     if (!$('a[href="../privacy.html"]').length) $('footer .footer-links').last().append('<a href="../privacy.html">Privacy &amp; analytics</a>');
     if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
-    const canonical = `${site}/blog/${name}`;
+    const slug = name.replace(/\.html$/, '');
+    const canonical = `${site}/blog/${slug}`;
+    $('a[href="../blog.html"], a[href="/blog.html"], a[href="blog.html"]').attr('href', '/blog');
+    $('a[href="../service.html"], a[href="service.html"]').attr('href', '/service.html');
+    $('a[href="../project.html"], a[href="project.html"]').attr('href', '/project.html');
+    $('a[href="../audit.html"], a[href="audit.html"]').attr('href', '/audit.html');
     $('head link[rel="canonical"]').attr('href', canonical);
     $('head meta[property="og:url"]').attr('content', canonical);
     $('head meta[property="og:image"], head meta[name="twitter:image"]').attr('content', `${site}/assets/zanove-social.jpg`);
@@ -131,7 +159,7 @@ if (fs.existsSync(llmsPath)) {
     '## Core pages',
     ...sitePageLinks.map(([label, route]) => `- [${label}](${site}${route}): ${corePageDescriptions[label]}`),
   ].join('\n');
-  const articles = ['## Journal articles', ...posts.map(({ title, slug }) => `- [${title}](${site}/blog/${slug}.html)`)].join('\n');
+  const articles = ['## Journal articles', ...posts.map(({ title, slug }) => `- [${title}](${site}/blog/${slug})`)].join('\n');
   llms = llms.replace(/## Core pages[\s\S]*?(?=\n## |$)/, corePages);
   llms = llms.replace(/## Journal articles[\s\S]*?(?=\n## |$)/, articles);
   const projects = [

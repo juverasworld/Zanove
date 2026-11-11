@@ -438,6 +438,28 @@ body.audit-open { overflow: hidden; }
   .audit-email-form button { width: 100%; }
   .audit-result-heading h3 { min-width: 160px; }
 }
+
+/* Zanove Journal routes */
+.article-byline { display: flex; flex-wrap: wrap; gap: 5px 12px; margin-top: 22px; color: rgba(255,255,255,.72); font-size: 12px; }
+.article-content section > p + p { margin-top: 12px; }
+.article-content a:not(.button):not(.card-link) { color: #087f87; font-weight: 600; text-underline-offset: 3px; }
+.article-service-links { margin-top: 48px; padding: clamp(24px,4vw,38px); border: 1px solid #d8e7e1; border-radius: 18px; background: #e9e3d7; }
+.article-service-links .eyebrow { margin-bottom: 8px; }
+.article-service-links h2 { margin: 0 0 10px; color: #182522; }
+.article-service-links > p:not(.eyebrow) { max-width: 640px; color: #4f5b55; }
+.article-service-links .hero-actions { margin-top: 20px; }
+.article-service-links .button-secondary { border-color: #182522; background: transparent; color: #182522; }
+.article-service-links .button-secondary:hover { background: #182522; color: #fff; }
+.related-journal { background: #f8f7f3; }
+.related-journal .blog-card h3 { margin: 8px 0; color: #182522; font: 600 clamp(22px,2.4vw,29px)/1.15 'Bricolage Grotesque','Inter',sans-serif; letter-spacing: -.04em; }
+.blog-card h3 { margin: 8px 0; color: var(--forest); font: 600 clamp(22px,2.4vw,29px)/1.15 'Bricolage Grotesque','Inter',sans-serif; letter-spacing: -.04em; }
+.blog-card h3 a { text-decoration: none; text-underline-offset: 4px; }
+.blog-card h3 a:hover { color: #087f87; text-decoration: underline; }
+.related-journal .blog-card h3 a { text-decoration: none; text-underline-offset: 4px; }
+.related-journal .blog-card h3 a:hover { color: #087f87; text-decoration: underline; }
+.journal-more { margin-top: 22px; text-align: right; }
+.journal-more .card-link { color: #087f87; font-size: 13px; font-weight: 700; text-decoration: none; }
+@media(max-width:620px) { .article-byline { margin-top: 16px; } .article-service-links .hero-actions { align-items: stretch; flex-direction: column; } .article-service-links .hero-actions .button { width: 100%; } .journal-more { text-align: left; } }
 @media (max-width: 360px) {
   .nav-cta { display: none; }
   .container { width: calc(100% - 28px); }

@@ -1,6 +1,6 @@
 # Publishing blog posts
 
-The editor lives at `/admin`. It sends article content to the site's server, which commits it to `content/blog-posts.json` through GitHub's Contents API. A new Vercel build then creates the journal card, an individual article page, canonical/Open Graph metadata, structured article data, and sitemap entries.
+The admin lives at `/admin`. Enter the private blog admin key to open the publishing dashboard. From there, you can write an article, see the published article list, edit an existing post, preview its public page, search the list, and remove a post. The server commits changes to `content/blog-posts.json` through GitHub's Contents API. A new Vercel build updates the homepage journal preview, `/blog`, `/blog/[article-slug]`, canonical/Open Graph metadata, structured article data, and sitemap entries.
 
 ## One-time setup
 
@@ -12,6 +12,14 @@ The editor lives at `/admin`. It sends article content to the site's server, whi
    - `GITHUB_TOKEN`: the fine-grained token created in step 2. It stays server-side.
    - `GITHUB_REPOSITORY`: `juverasworld/Zanove` (the route defaults to this value if omitted).
    - `GITHUB_BRANCH`: `main` (the route defaults to `main` if omitted).
-4. Redeploy after adding the variables. Open `https://zanovetech.vercel.app/admin`, enter the `BLOG_ADMIN_TOKEN`, and publish an article. The route commits to GitHub; Vercel rebuilds when it sees that commit on the Production branch.
+4. Redeploy after adding the variables. Open `https://zanovetech.vercel.app/admin`, enter the `BLOG_ADMIN_TOKEN`, and use the publishing dashboard. The route commits to GitHub; Vercel rebuilds when it sees that commit on the Production branch.
 
-The editor does not store the publishing key in browser storage. The GitHub token is read only by the server route and never sent to the browser. Keep `/admin` private and rotate its publishing key if it is exposed.
+## Writing an article
+
+- Give it a specific, useful headline, a short search excerpt, and a category such as `Websites · Conversion` or `AI · Automation`.
+- Use lowercase words and hyphens in the article slug. The editor suggests one from the title.
+- Write section headings with `## Heading`, leave a blank line between paragraphs, and add an internal link using `[descriptive text](/service.html)` when it helps the reader.
+- Publish saves the article to GitHub. Vercel builds clean routes under `/blog`; old `.html` journal URLs redirect to the clean URLs.
+- Editing keeps the original publication date and records an updated date. Removing a post removes it from the next sitemap and site build.
+
+The dashboard does not store the publishing key in browser storage. The GitHub token is read only by the server route and never sent to the browser. Keep `/admin` private and rotate its publishing key if it is exposed.
