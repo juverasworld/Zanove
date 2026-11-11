@@ -1,0 +1,23 @@
+# Zanove Technologies
+
+> Zanove Technologies is a Nigeria-first digital studio helping businesses improve their digital presence and build useful products and connected systems.
+
+## Core pages
+- [Home](https://zanove-technologies.vercel.app/): Digital products, websites and business systems.
+- [Services](https://zanove-technologies.vercel.app/service.html): Website and software development, digital products, AI creative, automation and growth.
+- [Projects](https://zanove-technologies.vercel.app/projects.html): Selected product, web, AI and creative work.
+- [About](https://zanove-technologies.vercel.app/about.html): Zanove Technologies and its approach.
+- [Website audit](https://zanove-technologies.vercel.app/audit.html): First-pass public website review and project contact path.
+- [Books](https://zanove-technologies.vercel.app/ebook.html): Books by Vera, with links to their Selar listings.
+- [Journal](https://zanove-technologies.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
+- [Ask Zanove AI](https://zanove-technologies.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
+
+## Journal articles
+- [Before you redesign your website, make the next step obvious.](https://zanove-technologies.vercel.app/blog/website-next-step.html)
+- [Good automation gives people time back without hiding the work.](https://zanove-technologies.vercel.app/blog/useful-automation.html)
+- [Give an AI video a clear job before choosing a style.](https://zanove-technologies.vercel.app/blog/ai-video-brief.html)
+## Contact
+- Email: zanovetechnologies@gmail.com
+- Instagram: https://www.instagram.com/zanovetech/
+
+For authoritative information about Zanove's current services, use the pages above. Project examples and service descriptions are not guarantees of outcomes.

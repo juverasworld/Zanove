@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "website-next-step",
+    "title": "Before you redesign your website, make the next step obvious.",
+    "category": "Websites · Conversion",
+    "description": "A fresh look can help, but visitors still need to understand what you do and what to do next.",
+    "sections": [
+      { "heading": "Start with the visitor’s question", "paragraphs": ["Ask someone unfamiliar with your business to open the homepage for a few seconds. Can they tell who the service is for, what problem it solves and how to get help? If those answers are hidden in long paragraphs or scattered across the page, the redesign brief should start with clarity."] },
+      { "heading": "Trace one useful journey", "paragraphs": ["Pick a high-value visitor, such as a potential client looking for a specific service. Follow their path from the first page to an enquiry. Note where they need more proof, where the language feels vague and where a button or contact detail is hard to find.", "That small journey map helps a team spend design and development effort on the parts that make a decision easier. A website should look like your business and guide people through it."] }
+    ],
+    "link": { "href": "../audit.html", "label": "Run a free website audit" }
+  },
+  {
+    "slug": "useful-automation",
+    "title": "Good automation gives people time back without hiding the work.",
+    "category": "AI · Automation",
+    "description": "The strongest first automation is usually one repeated handoff that is easy to describe and easy to check.",
+    "sections": [
+      { "heading": "Look for a dependable repeat", "paragraphs": ["Start with a process that happens often: capturing a new enquiry, sorting a request, sending a confirmation or reminding a team member to follow up. Write down the trigger, the information needed, the action and the person who checks exceptions."] },
+      { "heading": "Keep a human checkpoint", "paragraphs": ["Automation can prepare a response, route an item or update a record. A person should still review cases where context, money or customer trust is at stake. That checkpoint helps teams catch bad inputs and refine the workflow before relying on it more widely.", "Measure the practical result: fewer missed handoffs, less duplicate entry or a clearer view of what needs attention. Start small, learn from real use, and expand only when the first step is dependable."] }
+    ],
+    "link": { "href": "../service.html", "label": "Explore AI and automation services" }
+  },
+  {
+    "slug": "ai-video-brief",
+    "title": "Give an AI video a clear job before choosing a style.",
+    "category": "AI video · Creative",
+    "description": "A video is more useful when it answers one audience question and points to one next step.",
+    "sections": [
+      { "heading": "Write the message in one sentence", "paragraphs": ["Decide who the video is for, what they should understand and what action makes sense afterwards. That brief keeps the visuals, narration, captions and call to action working together."] },
+      { "heading": "Build the human review into the process", "paragraphs": ["Review names, claims, brand details, image rights and pronunciation before publishing. AI tools can speed up drafts and production, but a person should check that the final result is accurate, recognisable and appropriate for the audience.", "Then adapt the piece to where it will appear. A short vertical edit, a website explainer and a product walkthrough each need different pacing and context. Reuse the core idea while shaping each version for its job."] }
+    ],
+    "link": { "href": "../projects.html", "label": "Explore AI video work" }
+  }
+]
