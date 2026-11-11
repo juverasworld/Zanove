@@ -3,6 +3,7 @@
   const scriptElement = document.currentScript;
   const gaId = scriptElement?.dataset.gaMeasurementId || '';
   const gtmId = scriptElement?.dataset.gtmContainerId || '';
+  const ahrefsKey = scriptElement?.dataset.ahrefsKey || '';
   let analyticsLoaded = false;
   const sentDepths = new Set();
   const sentTime = new Set();
@@ -49,6 +50,13 @@
         document.head.append(tagManager);
       }
     }
+    if (/^[A-Za-z0-9_-]{12,80}$/.test(ahrefsKey)) {
+      const ahrefs = document.createElement('script');
+      ahrefs.async = true;
+      ahrefs.src = 'https://analytics.ahrefs.com/analytics.js';
+      ahrefs.dataset.key = ahrefsKey;
+      document.head.append(ahrefs);
+    }
     analyticsLoaded = true;
   }
 
@@ -61,8 +69,9 @@
   banner.setAttribute('aria-label', 'Analytics choices');
   banner.hidden = Boolean(choice);
   const privacyHref = location.pathname.startsWith('/blog/') ? '../privacy.html' : 'privacy.html';
-  const googleCopy = gaId && gtmId ? 'Google Analytics and Tag Manager also load' : gaId ? 'Google Analytics also loads' : gtmId ? 'Google Tag Manager also loads' : '';
-  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance${googleCopy ? `; ${googleCopy}` : ''}. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
+  const providers = [gaId && 'Google Analytics', gtmId && 'Google Tag Manager', ahrefsKey && 'Ahrefs Web Analytics'].filter(Boolean);
+  const providerCopy = providers.length ? `; ${providers.join(', ')} also load` : '';
+  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance${providerCopy}. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
   document.body.append(banner);
   const setChoice = (nextChoice) => {
     const wasLoaded = analyticsLoaded;

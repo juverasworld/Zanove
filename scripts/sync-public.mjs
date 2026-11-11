@@ -23,6 +23,7 @@ const configuredGaId = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-WYXN8GWN
 const gaId = /^G-[A-Z0-9]+$/i.test(configuredGaId) ? configuredGaId : '';
 const configuredGtmId = (process.env.NEXT_PUBLIC_GTM_CONTAINER_ID || 'GTM-55VQNQWP').trim();
 const gtmId = /^GTM-[A-Z0-9]+$/i.test(configuredGtmId) ? configuredGtmId : '';
+const ahrefsKey = 'CVA7infvQMvCW2YUPGw1CA';
 const googleVerification = 'Z1rbCX8T_WfYfE_uLcgIFZVqsTPcdF8znA0PuYP5aeY';
 for (const page of pages) {
   const source = path.join(root, page);
@@ -35,7 +36,7 @@ for (const page of pages) {
   $('head script[src*="zanove-analytics.js"]').remove();
   $('head meta[name="google-site-verification"]').remove();
   $('head').append(`<meta name="google-site-verification" content="${googleVerification}">`);
-  $('head').append(`<script src="assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" data-gtm-container-id="${gtmId}" defer></script>`);
+  $('head').append(`<script src="assets/zanove-analytics.js?v=20261111-ahrefs" data-ga-measurement-id="${gaId}" data-gtm-container-id="${gtmId}" data-ahrefs-key="${ahrefsKey}" defer></script>`);
   if (['index.html', 'audit.html'].includes(page)) {
     $('head script[src*="zanove-project.js"]').remove();
     $('head').append('<script src="assets/zanove-project.js?v=20261111-modal2" defer></script>');
@@ -87,7 +88,7 @@ if (fs.existsSync(articleDir)) {
     $('head script[src*="zanove-analytics.js"]').remove();
     $('head meta[name="google-site-verification"]').remove();
     $('head').append(`<meta name="google-site-verification" content="${googleVerification}">`);
-    $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" data-gtm-container-id="${gtmId}" defer></script>`);
+    $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-ahrefs" data-ga-measurement-id="${gaId}" data-gtm-container-id="${gtmId}" data-ahrefs-key="${ahrefsKey}" defer></script>`);
     const allPagesNav = $('footer nav.footer-links').first();
     allPagesNav.attr('aria-label', 'All pages');
     allPagesNav.empty().append(sitePageLinks.map(([label, href]) => `<a href="${href}">${label}</a>`).join(''));
