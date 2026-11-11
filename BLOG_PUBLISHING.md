@@ -4,13 +4,14 @@ The editor lives at `/admin`. It sends article content to the site's server, whi
 
 ## One-time setup
 
-1. Push this project to a GitHub repository and connect that repository to the Vercel project.
-2. Add these environment variables in Vercel (and to `.env.local` only for local use):
+1. This site is connected to `juverasworld/Zanove`; its publishing route commits new posts to the `main` branch, which should match the Vercel Production branch.
+2. Create a GitHub fine-grained personal access token for the `juverasworld` owner, restricted to the `Zanove` repository, with **Contents: Read and write** permission. Set an expiry and rotate it when needed.
+3. In Vercel → Project Settings → Environment Variables, add the following for **Production** (and add them to `.env.local` only for local use):
    - `NEXT_PUBLIC_SITE_URL`: `https://zanovetech.vercel.app` (the canonical public site origin).
-   - `BLOG_ADMIN_TOKEN`: a long random key used to protect publishing actions. Generate a new value; do not reuse an email, Groq, or other service password.
-   - `GITHUB_TOKEN`: a GitHub fine-grained personal access token restricted to this repository, with Contents read/write access.
-   - `GITHUB_REPOSITORY`: `OWNER/REPOSITORY`.
-   - `GITHUB_BRANCH`: the branch Vercel deploys, usually `main`.
-3. Redeploy after adding the variables. Open `/admin`, enter the `BLOG_ADMIN_TOKEN`, and publish an article.
+   - `BLOG_ADMIN_TOKEN`: a random key of at least 32 bytes used to protect publishing. Generate one with `openssl rand -hex 32`; keep it in a password manager and never commit it.
+   - `GITHUB_TOKEN`: the fine-grained token created in step 2. It stays server-side.
+   - `GITHUB_REPOSITORY`: `juverasworld/Zanove` (the route defaults to this value if omitted).
+   - `GITHUB_BRANCH`: `main` (the route defaults to `main` if omitted).
+4. Redeploy after adding the variables. Open `https://zanovetech.vercel.app/admin`, enter the `BLOG_ADMIN_TOKEN`, and publish an article. The route commits to GitHub; Vercel rebuilds when it sees that commit on the Production branch.
 
 The editor does not store the publishing key in browser storage. The GitHub token is read only by the server route and never sent to the browser. Keep `/admin` private and rotate its publishing key if it is exposed.
