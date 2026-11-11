@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { load } from 'cheerio';
+import { sanitizeBlogHtml } from '../lib/sanitize-blog-html.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
@@ -42,6 +43,7 @@ for (const post of posts) {
     if (block.type === 'subheading') return `<h3>${escape(block.text)}</h3>`;
     if (block.type === 'quote') return `<blockquote>${escape(block.text)}</blockquote>`;
     if (block.type === 'image') return `<figure class="article-image"><img src="${escape(block.src)}" alt="${escape(block.alt)}" loading="lazy">${block.caption ? `<figcaption>${escape(block.caption)}</figcaption>` : ''}</figure>`;
+    if (block.type === 'richtext') return `<div class="article-richtext">${sanitizeBlogHtml(block.html || '')}</div>`;
     return `<p>${escape(block.text)}</p>`;
   };
   const sections = post.sections.map((section) => {

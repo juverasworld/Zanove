@@ -1,6 +1,6 @@
 # Publishing blog posts
 
-The admin lives at `/admin`. Enter the private blog admin key to open the publishing dashboard. From there, you can write an article, see the published article list, edit an existing post, preview its public page, search the list, and remove a post. The editor includes structured H1, H2 and H3 headings, paragraphs, pull quotes, featured images and in-article images. The Author profiles tab lets you create a byline with a name, role, photo and short bio. Article and author data are committed through GitHub's Contents API; uploaded images are saved in `public/assets/blog/`. A new Vercel build updates the homepage journal preview, `/blog`, `/blog/[article-slug]`, canonical/Open Graph metadata, article and author data, and sitemap entries.
+The admin lives at `/admin`. Enter the private blog admin key to open the publishing dashboard. From there, you can write an article, see the published article list, edit an existing post, preview its public page, search the list, and remove a post. The editor includes a rich text toolbar for bold, italic, underline, H3 headings, lists and links. The article title is the H1; each section is an H2. Add section starters, pull quotes, a featured image and in-article images. The Author profiles tab lets you create a byline with a name, role, photo and short bio. Article and author data are committed through GitHub's Contents API; uploaded images are saved in `public/assets/blog/`. A new Vercel build updates the homepage journal preview, `/blog`, `/blog/[article-slug]`, canonical/Open Graph metadata, article and author data, and sitemap entries.
 
 ## One-time setup
 
@@ -18,7 +18,7 @@ The admin lives at `/admin`. Enter the private blog admin key to open the publis
 
 - Give it a specific, useful headline, a short search excerpt, and a category such as `Websites · Conversion` or `AI · Automation`.
 - Use lowercase words and hyphens in the article slug. The editor suggests one from the title.
-- Add section headings (H2), subsections (H3), paragraphs, pull quotes and images from the article builder. Add an internal link using `[descriptive text](/service.html)` in a paragraph when it helps the reader.
+- Add a section heading (H2), then use the rich text toolbar for paragraphs, H3 subheadings, bold/italic/underline, bullets, numbered steps and links. Use the image block for in-article photos with alt text and optional captions.
 - Create an author profile before publishing under a personal byline. Use an accurate name, role and bio; the profile appears with articles and in their structured data.
 - Add a featured image or in-article images with descriptive alt text. Uploads accept JPEG, PNG, WebP or GIF files under 2.5 MB.
 - Publish saves the article to GitHub. Vercel builds clean routes under `/blog`; old `.html` journal URLs redirect to the clean URLs.

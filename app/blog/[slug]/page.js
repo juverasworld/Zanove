@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import posts from '../../../content/blog-posts.json';
 import authors from '../../../content/blog-authors.json';
+import { sanitizeBlogHtml } from '../../../lib/sanitize-blog-html.mjs';
 
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 export const dynamicParams = false;
@@ -53,6 +54,7 @@ function ArticleDate({ value, label }) {
 }
 
 function ArticleBlock({ block }) {
+  if (block.type === 'richtext') return <div className="article-richtext" dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(block.html || '') }} />;
   if (block.type === 'subheading') return <h3>{block.text}</h3>;
   if (block.type === 'quote') return <blockquote>{block.text}</blockquote>;
   if (block.type === 'image') return <figure className="article-image"><img src={block.src} alt={block.alt} loading="lazy" />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;

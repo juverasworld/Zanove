@@ -1,4 +1,5 @@
 import { timingSafeEqual } from 'node:crypto';
+import { sanitizeBlogHtml } from '../../../../lib/sanitize-blog-html.mjs';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -93,7 +94,12 @@ function normalizeSections(input) {
     const normalized = [];
     for (const block of blocks) {
       const type = String(block?.type || 'paragraph');
-      if (type === 'paragraph' || type === 'subheading' || type === 'quote') {
+      if (type === 'richtext') {
+        const html = sanitizeBlogHtml(String(block.html || ''));
+        const text = html.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim();
+        if (!text || html.length > 18000) return null;
+        normalized.push({ type, html });
+      } else if (type === 'paragraph' || type === 'subheading' || type === 'quote') {
         const text = String(block.text || '').trim();
         const max = type === 'quote' ? 2000 : type === 'subheading' ? 180 : 12000;
         if (!text || text.length > max) return null;
