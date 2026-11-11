@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { load } from 'cheerio';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanove-technologies.vercel.app').replace(/\/$/, '');
+const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 const file = path.join(root, 'project.html');
 const $ = load(fs.readFileSync(path.join(root, 'service.html'), 'utf8'));
 $('head title').text('Request a Project Consultation | Zanove Technologies');

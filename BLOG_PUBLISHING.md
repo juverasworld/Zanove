@@ -6,7 +6,7 @@ The editor lives at `/admin`. It sends article content to the site's server, whi
 
 1. Push this project to a GitHub repository and connect that repository to the Vercel project.
 2. Add these environment variables in Vercel (and to `.env.local` only for local use):
-   - `NEXT_PUBLIC_SITE_URL`: the canonical public site origin, such as `https://zanove.xyz` once that domain is configured.
+   - `NEXT_PUBLIC_SITE_URL`: `https://zanovetech.vercel.app` (the canonical public site origin).
    - `BLOG_ADMIN_TOKEN`: a long random key used to protect publishing actions. Generate a new value; do not reuse an email, Groq, or other service password.
    - `GITHUB_TOKEN`: a GitHub fine-grained personal access token restricted to this repository, with Contents read/write access.
    - `GITHUB_REPOSITORY`: `OWNER/REPOSITORY`.

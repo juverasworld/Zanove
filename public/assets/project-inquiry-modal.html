@@ -1,0 +1,19 @@
+  <div class="project-inquiry-modal" data-project-inquiry-modal hidden>
+    <button class="project-inquiry-backdrop" type="button" data-project-modal-close aria-label="Close consultation form"></button>
+    <section class="project-inquiry-dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title" tabindex="-1">
+      <button class="project-inquiry-close" type="button" data-project-modal-close aria-label="Close consultation form">×</button>
+      <p class="eyebrow">Talk through your audit</p>
+      <h2 id="project-modal-title">Let’s make a plan for the next step.</h2>
+      <p class="project-inquiry-lead">Tell us a little about your business and what you’d like to improve. Zanove will follow up using the details you provide.</p>
+      <form class="project-enquiry-form" data-project-form novalidate>
+        <div class="project-form-grid"><label>Your name<input name="name" autocomplete="name" maxlength="100" required></label><label>Business name <span>(optional)</span><input name="business" autocomplete="organization" maxlength="120"></label></div>
+        <div class="project-form-grid"><label>Work email<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label>WhatsApp number <span>(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="32" placeholder="+234…"></label></div>
+        <label>What do you need help with?<select name="service" required><option value="">Choose one</option><option>Website or web design</option><option>Software or digital product</option><option>AI or workflow automation</option><option>AI video, image or creative</option><option>Search, content or digital growth</option><option>Not sure yet</option></select></label>
+        <label>What would you like to improve?<textarea name="message" rows="4" maxlength="3000" placeholder="A short description is enough to start." required></textarea></label>
+        <label class="project-consent"><input type="checkbox" name="consent" required><span>I agree that Zanove can contact me about this enquiry.</span></label>
+        <label class="project-honeypot" aria-hidden="true">Leave this field empty<input name="website" tabindex="-1" autocomplete="off"></label>
+        <button class="button" type="submit" data-project-submit>Request a consultation <span aria-hidden="true">↗</span></button>
+        <p class="project-form-status" data-project-status role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
