@@ -106,6 +106,7 @@
       }
       if (errorNode) errorNode.hidden = true;
       latestQuestion = clean;
+      window.zanoveTrack?.('ask_ai_question_sent');
       input.value = '';
       addMessage('user', clean);
       messageCount += 1;
@@ -194,6 +195,7 @@
         });
         const payload = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(payload.error || 'We could not send your message.');
+        window.zanoveTrack?.('ask_ai_handoff_sent');
         handoffForm.hidden = true;
         addMessage('assistant', 'Your question has been sent to the Zanove team. We’ll reply to the email address you provided. If you need us sooner, email zanovetechnologies@gmail.com.');
       } catch (error) {

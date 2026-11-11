@@ -14,6 +14,8 @@
 
 - [Project consultation](https://zanove-technologies.vercel.app/project.html): Request a consultation about a website, product, software or workflow.
 
+- [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
+
 ## Journal articles
 - [Before you redesign your website, make the next step obvious.](https://zanove-technologies.vercel.app/blog/website-next-step.html)
 - [Good automation gives people time back without hiding the work.](https://zanove-technologies.vercel.app/blog/useful-automation.html)

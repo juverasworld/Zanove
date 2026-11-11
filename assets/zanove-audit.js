@@ -162,11 +162,18 @@
       make('h3', '', 'Let’s solve the problem this audit found.'),
       make('p', '', bookingMessage)
     );
-    const bookingLink = make('a', 'button', 'Request a consultation ↗');
-    bookingLink.href = 'project.html';
+    const bookingLink = make('button', 'button', 'Request a consultation ↗');
+    bookingLink.type = 'button';
+    bookingLink.setAttribute('data-open-project-inquiry', '');
+    bookingLink.dataset.auditHost = payload.host;
+    bookingLink.dataset.auditMessage = bookingMessage;
     bookingLink.setAttribute('aria-label', 'Request a project consultation');
     booking.append(bookingCopy, bookingLink);
     details.append(booking);
+    modal.querySelectorAll('[data-open-project-inquiry]').forEach((button) => {
+      button.dataset.auditHost = payload.host;
+      button.dataset.auditMessage = bookingMessage;
+    });
     loading.hidden = true;
     errorBox.hidden = true;
     const canEmail = payload.emailDeliveryConfigured !== false;
@@ -200,6 +207,7 @@
       emailForm.elements.consent.focus();
       return;
     }
+    window.zanoveTrack?.('full_audit_report_requested');
     submit.disabled = true;
     submit.textContent = 'Sending your report…';
     try {
@@ -210,6 +218,7 @@
       });
       const outcome = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(outcome.error || 'We could not send the report right now.');
+      window.zanoveTrack?.('full_audit_report_sent');
       if (emailSent) {
         emailSent.textContent = 'Your full report is on its way, and Zanove has received your request. If it is not in your inbox in a few minutes, check your Spam or Promotions folder.';
         emailSent.hidden = false;
@@ -248,6 +257,7 @@
       }
       button.disabled = true;
       button.textContent = 'Reviewing your website…';
+      window.zanoveTrack?.('website_audit_started');
       loading.hidden = false;
       results.hidden = true;
       emailForm.hidden = false;
@@ -280,7 +290,9 @@
           throw new Error('The audit service returned an incomplete report. Please try again shortly.');
         }
         renderReport(payload);
+        window.zanoveTrack?.('website_audit_completed');
       } catch (requestError) {
+        window.zanoveTrack?.('website_audit_failed');
         loading.hidden = true;
         errorBox.textContent = requestError.message || 'We could not complete the audit right now.';
         errorBox.hidden = false;

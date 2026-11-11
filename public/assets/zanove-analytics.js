@@ -1,0 +1,108 @@
+(() => {
+  const consentKey = 'zanove-analytics-choice';
+  let analyticsLoaded = false;
+  const sentDepths = new Set();
+  const sentTime = new Set();
+  const pagePath = () => location.pathname.slice(0, 160);
+
+  const send = (name, properties = {}) => {
+    if (!analyticsLoaded || typeof window.va !== 'function') return;
+    window.va('event', name, { page: pagePath(), ...properties });
+  };
+  window.zanoveTrack = (name, properties) => {
+    if (!/^[a-z][a-z0-9_]{1,39}$/.test(name)) return;
+    send(name, properties || {});
+  };
+
+  function loadAnalytics() {
+    if (analyticsLoaded) return;
+    window.va = window.va || function vercelAnalytics() { (window.vaq = window.vaq || []).push(arguments); };
+    const webAnalytics = document.createElement('script');
+    webAnalytics.defer = true;
+    webAnalytics.src = '/_vercel/insights/script.js';
+    document.head.append(webAnalytics);
+    const speedInsights = document.createElement('script');
+    speedInsights.defer = true;
+    speedInsights.src = '/_vercel/speed-insights/script.js';
+    document.head.append(speedInsights);
+    analyticsLoaded = true;
+  }
+
+  let choice = '';
+  try { choice = localStorage.getItem(consentKey) || ''; } catch { /* Keep analytics disabled if storage is unavailable. */ }
+  if (choice === 'accepted') loadAnalytics();
+
+  const banner = document.createElement('aside');
+  banner.className = 'analytics-consent-banner';
+  banner.setAttribute('aria-label', 'Analytics choices');
+  banner.hidden = Boolean(choice);
+  const privacyHref = location.pathname.startsWith('/blog/') ? '../privacy.html' : 'privacy.html';
+  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
+  document.body.append(banner);
+  const setChoice = (nextChoice) => {
+    const wasLoaded = analyticsLoaded;
+    try { localStorage.setItem(consentKey, nextChoice); } catch { /* Current-page choice still applies. */ }
+    choice = nextChoice;
+    banner.hidden = true;
+    if (nextChoice === 'accepted') loadAnalytics();
+    // Vercel injects page and performance listeners independently. Reloading
+    // after revocation removes those listeners for the rest of this visit.
+    else if (wasLoaded) window.location.reload();
+  };
+  banner.querySelector('[data-analytics-accept]').addEventListener('click', () => setChoice('accepted'));
+  banner.querySelector('[data-analytics-reject]').addEventListener('click', () => setChoice('rejected'));
+  document.querySelectorAll('[data-analytics-settings]').forEach((button) => {
+    button.addEventListener('click', (event) => { event.preventDefault(); banner.hidden = false; });
+  });
+
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target.closest('a,button') : null;
+    if (!target) return;
+    if (target.matches('[data-analytics-accept], [data-analytics-reject], [data-analytics-settings]')) return;
+    if (target.closest('[data-project-form], [data-audit-email-form], [data-ask-form], [data-ask-handoff-form]')) return;
+    if (target.matches('[data-zanove-event]')) {
+      send(target.dataset.zanoveEvent, { placement: target.dataset.analyticsPlacement || 'page' });
+      return;
+    }
+    if (target.matches('[data-ask-launcher]')) { send('ask_ai_opened'); return; }
+    if (target.matches('[data-ask-prompt]')) { send('ask_ai_prompt_selected'); return; }
+    if (target.matches('[data-open-project-inquiry]')) { send('consultation_form_opened', { source: 'audit' }); return; }
+    if (target.matches('[data-menu-toggle]')) { send('navigation_menu_opened'); return; }
+    if (target.matches('.work-filter')) { send('project_filter_selected', { filter: target.dataset.workFilter || 'unknown' }); return; }
+    if (target.matches('a')) {
+      const href = target.getAttribute('href') || '';
+      const label = (target.getAttribute('aria-label') || target.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+      if (href.startsWith('mailto:')) send('email_link_clicked', { link_label: label });
+      else if (/wa\.me|api\.whatsapp\.com/i.test(href)) send('whatsapp_link_clicked', { link_label: label });
+      else if (target.hostname && target.hostname !== location.hostname) send('outbound_link_clicked', { destination: target.hostname, link_label: label });
+      else if (href && !href.startsWith('#')) send('internal_link_clicked', { link_label: label });
+    }
+  });
+
+  let activeSeconds = 0;
+  let previousTick = Date.now();
+  const milestones = [30, 60, 180, 300, 600];
+  window.setInterval(() => {
+    const now = Date.now();
+    if (!document.hidden) activeSeconds += Math.min(2, Math.max(0, (now - previousTick) / 1000));
+    previousTick = now;
+    milestones.forEach((seconds) => {
+      if (activeSeconds >= seconds && !sentTime.has(seconds)) {
+        sentTime.add(seconds);
+        send('engaged_time_milestone', { seconds });
+      }
+    });
+  }, 1000);
+
+  window.addEventListener('scroll', () => {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (maxScroll <= 0) return;
+    const progress = Math.floor((window.scrollY / maxScroll) * 100);
+    [25, 50, 75, 90].forEach((depth) => {
+      if (progress >= depth && !sentDepths.has(depth)) {
+        sentDepths.add(depth);
+        send('scroll_depth', { percent: depth });
+      }
+    });
+  }, { passive: true });
+})();
