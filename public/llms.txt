@@ -12,12 +12,15 @@
 - [Journal](https://zanove-technologies.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
 - [Ask Zanove AI](https://zanove-technologies.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
 
+- [Project consultation](https://zanove-technologies.vercel.app/project.html): Request a consultation about a website, product, software or workflow.
+
 ## Journal articles
 - [Before you redesign your website, make the next step obvious.](https://zanove-technologies.vercel.app/blog/website-next-step.html)
 - [Good automation gives people time back without hiding the work.](https://zanove-technologies.vercel.app/blog/useful-automation.html)
 - [Give an AI video a clear job before choosing a style.](https://zanove-technologies.vercel.app/blog/ai-video-brief.html)
 ## Contact
 - Email: zanovetechnologies@gmail.com
+- WhatsApp: https://wa.me/2349138638126
 - Instagram: https://www.instagram.com/zanovetech/
 
 For authoritative information about Zanove's current services, use the pages above. Project examples and service descriptions are not guarantees of outcomes.

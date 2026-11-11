@@ -155,16 +155,16 @@
     const focusCategory = report.categories.find((category) => category.status === 'Priority to improve')
       || report.categories.find((category) => category.status === 'Needs some work');
     const bookingMessage = focusCategory
-      ? `This review found an opportunity in ${focusCategory.title.toLowerCase()}. Book a call and we’ll help you plan a practical fix.`
-      : 'Your website has a solid starting point. Book a call and we’ll help you decide what to improve next.';
+      ? `This review found an opportunity in ${focusCategory.title.toLowerCase()}. Request a consultation and we’ll help you plan a practical fix.`
+      : 'Your website has a solid starting point. Request a consultation and we’ll help you decide what to improve next.';
     bookingCopy.append(
       make('p', 'eyebrow', 'Your next step'),
       make('h3', '', 'Let’s solve the problem this audit found.'),
       make('p', '', bookingMessage)
     );
-    const bookingLink = make('a', 'button', 'Book a call ↗');
-    bookingLink.href = 'mailto:zanovetechnologies@gmail.com?subject=Book%20a%20website%20strategy%20call';
-    bookingLink.setAttribute('aria-label', 'Email Zanove to book a website strategy call');
+    const bookingLink = make('a', 'button', 'Request a consultation ↗');
+    bookingLink.href = 'project.html';
+    bookingLink.setAttribute('aria-label', 'Request a project consultation');
     booking.append(bookingCopy, bookingLink);
     details.append(booking);
     loading.hidden = true;
