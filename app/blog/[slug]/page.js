@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import posts from '../../../content/blog-posts.json';
+import authors from '../../../content/blog-authors.json';
 
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 export const dynamicParams = false;
@@ -22,8 +23,8 @@ export async function generateMetadata({ params }) {
     title,
     description: post.description,
     alternates: { canonical },
-    openGraph: { title, description: post.description, url: canonical, type: 'article', siteName: 'Zanove Technologies', images: [`${site}/assets/zanove-social.jpg`] },
-    twitter: { card: 'summary_large_image', title, description: post.description, images: [`${site}/assets/zanove-social.jpg`] },
+    openGraph: { title, description: post.description, url: canonical, type: 'article', siteName: 'Zanove Technologies', images: [post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${site}${post.coverImage}`) : `${site}/assets/zanove-social.jpg`] },
+    twitter: { card: 'summary_large_image', title, description: post.description, images: [post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${site}${post.coverImage}`) : `${site}/assets/zanove-social.jpg`] },
   };
 }
 
@@ -51,12 +52,22 @@ function ArticleDate({ value, label }) {
   return <span>{label} <time dateTime={date.toISOString()}>{date.toLocaleDateString('en-NG', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</time></span>;
 }
 
+function ArticleBlock({ block }) {
+  if (block.type === 'subheading') return <h3>{block.text}</h3>;
+  if (block.type === 'quote') return <blockquote>{block.text}</blockquote>;
+  if (block.type === 'image') return <figure className="article-image"><img src={block.src} alt={block.alt} loading="lazy" />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;
+  return <p><InlineText text={block.text || ''} /></p>;
+}
+
 export default async function JournalArticlePage({ params }) {
   const { slug } = await params;
   const post = articleBySlug(slug);
   if (!post) notFound();
   const canonical = `${site}/blog/${post.slug}`;
   const related = posts.filter((item) => item.slug !== post.slug).slice(0, 2);
+  const author = authors.find((item) => item.id === post.authorId) || authors[0];
+  const isCompanyAuthor = !author || author.id === 'zanove-technologies';
+  const authorImage = author?.image ? (author.image.startsWith('http') ? author.image : `${site}${author.image}`) : undefined;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -68,7 +79,7 @@ export default async function JournalArticlePage({ params }) {
     articleSection: post.category,
     ...(post.datePublished ? { datePublished: post.datePublished } : {}),
     ...(post.dateModified ? { dateModified: post.dateModified } : {}),
-    author: { '@id': `${site}/#organization` },
+    author: isCompanyAuthor ? { '@id': `${site}/#organization` } : { '@type': 'Person', '@id': `${site}/#author-${author.id}`, name: author.name, ...(author.role ? { jobTitle: author.role } : {}), ...(author.bio ? { description: author.bio } : {}), ...(authorImage ? { image: authorImage } : {}) },
     publisher: { '@id': `${site}/#organization` },
     isPartOf: { '@type': 'Blog', '@id': `${site}/blog#journal`, name: 'Zanove Journal', url: `${site}/blog` },
   };
@@ -79,9 +90,11 @@ export default async function JournalArticlePage({ params }) {
   ] };
   return <main>
     <div className="container article-back"><a href="/blog">← All Zanove Journal articles</a></div>
-    <section className="page-hero"><div className="container" data-reveal><p className="eyebrow">{post.category || 'Zanove Journal'}</p><h1>{post.title}</h1><p className="lead">{post.description}</p><div className="article-byline"><span>By Zanove Technologies</span><ArticleDate value={post.datePublished} label="· Published" /><ArticleDate value={post.dateModified && post.dateModified !== post.datePublished ? post.dateModified : null} label="· Updated" /></div></div></section>
+    <section className="page-hero"><div className="container" data-reveal><p className="eyebrow">{post.category || 'Zanove Journal'}</p><h1>{post.title}</h1><p className="lead">{post.description}</p><div className="article-byline"><span>By {author?.name || 'Zanove Technologies'}{author?.role ? ` · ${author.role}` : ''}</span><ArticleDate value={post.datePublished} label="· Published" /><ArticleDate value={post.dateModified && post.dateModified !== post.datePublished ? post.dateModified : null} label="· Updated" /></div></div></section>
+    {post.coverImage && <div className="container journal-cover"><img src={post.coverImage} alt={post.coverAlt || ''} fetchPriority="high" /></div>}
     <section className="section"><article className="container article-content"><p className="blog-lead">{post.description}</p>
-      {(post.sections || []).map((section, sectionIndex) => <section key={`${section.heading}-${sectionIndex}`}><h2>{section.heading}</h2>{(section.paragraphs || []).map((paragraph, paragraphIndex) => <p key={`${sectionIndex}-${paragraphIndex}`}><InlineText text={paragraph} /></p>)}</section>)}
+      {(post.sections || []).map((section, sectionIndex) => <section key={`${section.heading}-${sectionIndex}`}><h2>{section.heading}</h2>{(section.blocks || (section.paragraphs || []).map((text) => ({ type: 'paragraph', text }))).map((block, blockIndex) => <ArticleBlock block={block} key={`${sectionIndex}-${blockIndex}`} />)}</section>)}
+      {author && <aside className="article-author-card"><div className="article-author-avatar">{author.image ? <img src={author.image} alt="" loading="lazy" /> : <span>{author.name.slice(0, 1)}</span>}</div><div><p className="eyebrow">About the author</p><h3>{author.name}</h3>{author.role && <p className="author-role">{author.role}</p>}<p>{author.bio}</p></div></aside>}
       <div className="article-service-links"><p className="eyebrow">A practical next step</p><h2>Need help applying this to your business?</h2><p>Explore the relevant Zanove service or tell us what you are trying to improve. We can help you choose a clear next step.</p><div className="hero-actions"><a className="button" href="/service.html">Explore our services <span aria-hidden="true">↗</span></a><a className="button button-secondary" href="/project.html">Request a consultation <span aria-hidden="true">↗</span></a></div></div>
     </article></section>
     {related.length > 0 && <section className="section related-journal"><div className="container"><div className="section-heading"><p className="eyebrow">Keep learning</p><h2>More from the Zanove Journal.</h2></div><div className="blog-card-grid">{related.map((item) => <article className="blog-card" key={item.slug}><p className="project-kicker">{item.category || 'Zanove Journal'}</p><h3><a href={`/blog/${item.slug}`}>{item.title}</a></h3><p>{item.description}</p><a className="card-link" href={`/blog/${item.slug}`}>Read the article <span aria-hidden="true">↗</span></a></article>)}</div></div></section>}

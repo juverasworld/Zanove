@@ -441,7 +441,24 @@ body.audit-open { overflow: hidden; }
 
 /* Zanove Journal routes */
 .article-byline { display: flex; flex-wrap: wrap; gap: 5px 12px; margin-top: 22px; color: rgba(255,255,255,.72); font-size: 12px; }
+.journal-cover { max-height: 520px; overflow: hidden; margin-top: -34px; border-radius: 22px; background: #182522; box-shadow: 0 24px 55px rgba(0,0,0,.16); }
+.journal-cover img { width: 100%; max-height: 520px; object-fit: cover; }
+.blog-card-cover { display: block; width: 100%; height: 168px; overflow: hidden; margin: calc(-1 * clamp(20px,3vw,30px)) calc(-1 * clamp(20px,3vw,30px)) 16px; border-radius: var(--radius) var(--radius) 0 0; background: #e9e3d7; }
+.blog-card-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.blog-card-cover:hover img { transform: scale(1.035); }
 .article-content section > p + p { margin-top: 12px; }
+.article-content h3 { margin: 22px 0 8px; color: #182522; font: 600 clamp(19px,2.5vw,24px)/1.2 'Bricolage Grotesque','Inter',sans-serif; letter-spacing: -.025em; }
+.article-image { margin: 24px 0; }
+.article-image img { width: 100%; max-height: 620px; object-fit: cover; border-radius: 14px; background: #e9e3d7; }
+.article-image figcaption { margin-top: 7px; color: #68746f; font-size: 11px; text-align: center; }
+.article-content blockquote { margin: 24px 0; padding: 18px 22px; border-left: 4px solid #b66d48; border-radius: 0 10px 10px 0; background: #f3eee5; color: #182522; font: 500 clamp(18px,2.5vw,23px)/1.55 'Bricolage Grotesque','Inter',sans-serif; }
+.article-author-card { display: flex; align-items: flex-start; gap: 16px; margin-top: 46px; padding: 22px; border: 1px solid #dce2df; border-radius: 15px; background: #fff; }
+.article-author-avatar { display: grid; width: 66px; height: 66px; flex: 0 0 auto; overflow: hidden; place-items: center; border-radius: 50%; background: #e9e3d7; color: #182522; font: 600 26px 'Bricolage Grotesque',sans-serif; }
+.article-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.article-author-card h3 { margin: 0; color: #182522; font: 600 21px 'Bricolage Grotesque','Inter',sans-serif; }
+.article-author-card .eyebrow { margin-bottom: 4px; }
+.article-author-card p:not(.eyebrow) { color: #596660; font-size: 12px; }
+.article-author-card .author-role { margin: 2px 0 5px; color: #087f87!important; font-weight: 600; }
 .article-content a:not(.button):not(.card-link) { color: #087f87; font-weight: 600; text-underline-offset: 3px; }
 .article-service-links { margin-top: 48px; padding: clamp(24px,4vw,38px); border: 1px solid #d8e7e1; border-radius: 18px; background: #e9e3d7; }
 .article-service-links .eyebrow { margin-bottom: 8px; }
@@ -459,7 +476,7 @@ body.audit-open { overflow: hidden; }
 .related-journal .blog-card h3 a:hover { color: #087f87; text-decoration: underline; }
 .journal-more { margin-top: 22px; text-align: right; }
 .journal-more .card-link { color: #087f87; font-size: 13px; font-weight: 700; text-decoration: none; }
-@media(max-width:620px) { .article-byline { margin-top: 16px; } .article-service-links .hero-actions { align-items: stretch; flex-direction: column; } .article-service-links .hero-actions .button { width: 100%; } .journal-more { text-align: left; } }
+@media(max-width:620px) { .article-byline { margin-top: 16px; } .journal-cover { width: calc(100% - 28px); margin-top: -18px; border-radius: 14px; } .journal-cover img { max-height: 290px; } .blog-card-cover { height: 190px; } .article-author-card { align-items: flex-start; gap: 12px; padding: 17px; } .article-author-avatar { width: 50px; height: 50px; } .article-service-links .hero-actions { align-items: stretch; flex-direction: column; } .article-service-links .hero-actions .button { width: 100%; } .journal-more { text-align: left; } }
 @media (max-width: 360px) {
   .nav-cta { display: none; }
   .container { width: calc(100% - 28px); }
