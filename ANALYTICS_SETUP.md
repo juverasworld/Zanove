@@ -10,9 +10,13 @@ The marketing website is served mainly as static HTML files from `public`, while
 4. Redeploy the latest commit. Vercel provides the `/_vercel/insights/script.js` and `/_vercel/speed-insights/script.js` endpoints after these products are enabled.
 5. In a clean browser, confirm the consent choice appears. Reject and verify the scripts are absent in DevTools Network. Then accept and verify page views and performance data appear in the Vercel dashboard.
 
+The canonical site origin is `https://zanovetech.vercel.app`. Set `NEXT_PUBLIC_SITE_URL` to this value in the Vercel Production environment before deploying so canonical URLs, the sitemap and robots file use the same host.
+
 ## Add Google Analytics 4
 
-GA4 support is implemented but cannot collect data until a property and Web data stream exist. Create a Google Analytics property, copy its Measurement ID (`G-...`), and set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in the Vercel project’s Production environment variables, then redeploy. The GA tag loads only after **Accept analytics** and receives the same privacy-safe custom event calls. Ad storage and ad personalization signals are explicitly denied. The Measurement ID is public configuration, not a secret.
+The site is configured with Measurement ID `G-WYXN8GWNEY` and Tag Manager container `GTM-55VQNQWP`. Both load only after **Accept analytics**. The direct GA4 tag sends page views and the privacy-safe custom events described below. Tag Manager is available for other consented tags. Do not add another GA4 Google tag for the same Measurement ID in GTM while the direct GA4 tag is active, or page views and events may be counted twice. IDs are public configuration, not secrets.
+
+The Search Console verification token is also in the page metadata. Add `https://zanovetech.vercel.app/` as a URL-prefix property in Search Console and complete **Verify**. After the domain is live, submit `https://zanovetech.vercel.app/sitemap.xml`. Verification and submission must still be completed in the Google account; code alone cannot do that.
 
 The Next.js `<Analytics />` component shown in Vercel’s Next quickstart is not used here because the actual marketing pages are standalone `.html` documents, not App Router pages. The official Vercel guide also provides a script-tag integration for standalone HTML.
 

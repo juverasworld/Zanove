@@ -18,10 +18,12 @@ const sitePageLinks = [
   ['Ask Zanove AI', '/ask-ai.html'],
   ['Privacy & analytics', '/privacy.html'],
 ];
-const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanove-technologies.vercel.app').replace(/\/$/, '');
-const gaId = /^G-[A-Z0-9]+$/i.test((process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '').trim())
-  ? process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID.trim()
-  : '';
+const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
+const configuredGaId = (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-WYXN8GWNEY').trim();
+const gaId = /^G-[A-Z0-9]+$/i.test(configuredGaId) ? configuredGaId : '';
+const configuredGtmId = (process.env.NEXT_PUBLIC_GTM_CONTAINER_ID || 'GTM-55VQNQWP').trim();
+const gtmId = /^GTM-[A-Z0-9]+$/i.test(configuredGtmId) ? configuredGtmId : '';
+const googleVerification = 'Z1rbCX8T_WfYfE_uLcgIFZVqsTPcdF8znA0PuYP5aeY';
 for (const page of pages) {
   const source = path.join(root, page);
   const $ = load(fs.readFileSync(source, 'utf8'));
@@ -31,7 +33,9 @@ for (const page of pages) {
   $('script[src*="zanove-ui.js"]').attr('src', 'assets/zanove-ui.js?v=20261111-home-audit');
   $('script[src*="zanove-audit.js"]').attr('src', 'assets/zanove-audit.js?v=20261111-home-audit');
   $('head script[src*="zanove-analytics.js"]').remove();
-  $('head').append(`<script src="assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" defer></script>`);
+  $('head meta[name="google-site-verification"]').remove();
+  $('head').append(`<meta name="google-site-verification" content="${googleVerification}">`);
+  $('head').append(`<script src="assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" data-gtm-container-id="${gtmId}" defer></script>`);
   if (['index.html', 'audit.html'].includes(page)) {
     $('head script[src*="zanove-project.js"]').remove();
     $('head').append('<script src="assets/zanove-project.js?v=20261111-modal2" defer></script>');
@@ -81,7 +85,9 @@ if (fs.existsSync(articleDir)) {
     $('script[src*="zanove-ui.js"]').attr('src', `${site}/assets/zanove-ui.js?v=20261111-home-audit`);
     $('script[src*="zanove-audit.js"]').attr('src', `${site}/assets/zanove-audit.js?v=20261111-home-audit`);
     $('head script[src*="zanove-analytics.js"]').remove();
-    $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" defer></script>`);
+    $('head meta[name="google-site-verification"]').remove();
+    $('head').append(`<meta name="google-site-verification" content="${googleVerification}">`);
+    $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" data-gtm-container-id="${gtmId}" defer></script>`);
     const allPagesNav = $('footer nav.footer-links').first();
     allPagesNav.attr('aria-label', 'All pages');
     allPagesNav.empty().append(sitePageLinks.map(([label, href]) => `<a href="${href}">${label}</a>`).join(''));
@@ -107,7 +113,7 @@ if (fs.existsSync(articleDir)) {
 fs.cpSync(path.join(root, 'assets'), path.join(root, 'public', 'assets'), { recursive: true, force: true });
 const llmsPath = path.join(root, 'public', 'llms.txt');
 if (fs.existsSync(llmsPath)) {
-  let llms = fs.readFileSync(llmsPath, 'utf8').replaceAll('https://zanove-technologies.vercel.app', site);
+  let llms = fs.readFileSync(llmsPath, 'utf8').replaceAll('https://zanovetech.vercel.app', site);
   const corePageDescriptions = {
     Home: 'Digital products, websites and business systems.',
     Services: 'Website design, software, digital products, AI creative, automation and growth.',

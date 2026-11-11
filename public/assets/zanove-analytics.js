@@ -2,6 +2,7 @@
   const consentKey = 'zanove-analytics-choice';
   const scriptElement = document.currentScript;
   const gaId = scriptElement?.dataset.gaMeasurementId || '';
+  const gtmId = scriptElement?.dataset.gtmContainerId || '';
   let analyticsLoaded = false;
   const sentDepths = new Set();
   const sentTime = new Set();
@@ -28,16 +29,25 @@
     speedInsights.defer = true;
     speedInsights.src = '/_vercel/speed-insights/script.js';
     document.head.append(speedInsights);
-    if (/^G-[A-Z0-9]+$/i.test(gaId)) {
+    if (/^G-[A-Z0-9]+$/i.test(gaId) || /^GTM-[A-Z0-9]+$/i.test(gtmId)) {
       window.dataLayer = window.dataLayer || [];
       window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
       window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
       window.gtag('js', new Date());
-      window.gtag('config', gaId, { send_page_view: true, allow_google_signals: false, allow_ad_personalization_signals: false });
-      const googleAnalytics = document.createElement('script');
-      googleAnalytics.async = true;
-      googleAnalytics.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
-      document.head.append(googleAnalytics);
+      if (/^G-[A-Z0-9]+$/i.test(gaId)) {
+        window.gtag('config', gaId, { send_page_view: true, allow_google_signals: false, allow_ad_personalization_signals: false });
+        const googleAnalytics = document.createElement('script');
+        googleAnalytics.async = true;
+        googleAnalytics.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+        document.head.append(googleAnalytics);
+      }
+      if (/^GTM-[A-Z0-9]+$/i.test(gtmId)) {
+        window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+        const tagManager = document.createElement('script');
+        tagManager.async = true;
+        tagManager.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+        document.head.append(tagManager);
+      }
     }
     analyticsLoaded = true;
   }
@@ -51,7 +61,8 @@
   banner.setAttribute('aria-label', 'Analytics choices');
   banner.hidden = Boolean(choice);
   const privacyHref = location.pathname.startsWith('/blog/') ? '../privacy.html' : 'privacy.html';
-  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance${gaId ? ', with Google Analytics enabled too' : ''}. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
+  const googleCopy = gaId && gtmId ? 'Google Analytics and Tag Manager also load' : gaId ? 'Google Analytics also loads' : gtmId ? 'Google Tag Manager also loads' : '';
+  banner.innerHTML = `<div><strong>Help us improve Zanove</strong><p>If you accept, Vercel Analytics and Speed Insights measure visits, site interactions and real-world performance${googleCopy ? `; ${googleCopy}` : ''}. We do not send form entries, audit addresses or AI chat text. <a href="${privacyHref}">Privacy &amp; analytics details</a>.</p></div><div class="analytics-consent-actions"><button type="button" data-analytics-reject>Reject analytics</button><button type="button" data-analytics-accept>Accept analytics</button></div>`;
   document.body.append(banner);
   const setChoice = (nextChoice) => {
     const wasLoaded = analyticsLoaded;

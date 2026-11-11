@@ -1,6 +1,6 @@
 import posts from '../content/blog-posts.json';
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanove-technologies.vercel.app').replace(/\/$/, '');
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 const corePages = [
   '/', '/service.html', '/about.html', '/projects.html', '/audit.html', '/project.html', '/privacy.html',
   '/blog.html', '/ebook.html', '/ask-ai.html',

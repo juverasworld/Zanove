@@ -3,20 +3,20 @@
 > Zanove Technologies is a Nigeria-first digital studio helping businesses improve their digital presence and build useful products and connected systems.
 
 ## Core pages
-- [Home](https://zanove-technologies.vercel.app/): Digital products, websites and business systems.
-- [Services](https://zanove-technologies.vercel.app/service.html): Website design, software, digital products, AI creative, automation and growth.
-- [About Zanove](https://zanove-technologies.vercel.app/about.html): Zanove Technologies and its approach.
-- [Projects](https://zanove-technologies.vercel.app/projects.html): Founder-built product, web, AI and creative work.
-- [Website audit](https://zanove-technologies.vercel.app/audit.html): First-pass public website review and project contact path.
-- [Request a consultation](https://zanove-technologies.vercel.app/project.html): Discuss a website, product, software or workflow.
-- [Blog](https://zanove-technologies.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
-- [Books](https://zanove-technologies.vercel.app/ebook.html): Books by Vera, with links to their Selar listings.
-- [Ask Zanove AI](https://zanove-technologies.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
-- [Privacy & analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
+- [Home](https://zanovetech.vercel.app/): Digital products, websites and business systems.
+- [Services](https://zanovetech.vercel.app/service.html): Website design, software, digital products, AI creative, automation and growth.
+- [About Zanove](https://zanovetech.vercel.app/about.html): Zanove Technologies and its approach.
+- [Projects](https://zanovetech.vercel.app/projects.html): Founder-built product, web, AI and creative work.
+- [Website audit](https://zanovetech.vercel.app/audit.html): First-pass public website review and project contact path.
+- [Request a consultation](https://zanovetech.vercel.app/project.html): Discuss a website, product, software or workflow.
+- [Blog](https://zanovetech.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
+- [Books](https://zanovetech.vercel.app/ebook.html): Books by Vera, with links to their Selar listings.
+- [Ask Zanove AI](https://zanovetech.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
+- [Privacy & analytics](https://zanovetech.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
 ## Journal articles
-- [Before you redesign your website, make the next step obvious.](https://zanove-technologies.vercel.app/blog/website-next-step.html)
-- [Good automation gives people time back without hiding the work.](https://zanove-technologies.vercel.app/blog/useful-automation.html)
-- [Give an AI video a clear job before choosing a style.](https://zanove-technologies.vercel.app/blog/ai-video-brief.html)
+- [Before you redesign your website, make the next step obvious.](https://zanovetech.vercel.app/blog/website-next-step.html)
+- [Good automation gives people time back without hiding the work.](https://zanovetech.vercel.app/blog/useful-automation.html)
+- [Give an AI video a clear job before choosing a style.](https://zanovetech.vercel.app/blog/ai-video-brief.html)
 ## Founder-built projects
 - [Zanvera Guest Hub](https://zanvera.vercel.app/): QR-led AI guest assistant for independent hotels and rental hosts.
 - [No Wahala](https://no-wahala.vercel.app/): Statement-based personal finance dashboard for understanding income, spending and repeat payments.

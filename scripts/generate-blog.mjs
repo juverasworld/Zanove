@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { load } from 'cheerio';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanove-technologies.vercel.app').replace(/\/$/, '');
+const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 const posts = JSON.parse(fs.readFileSync(path.join(root, 'content/blog-posts.json'), 'utf8'));
 const escape = (s) => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const blogPath = path.join(root, 'blog.html');
