@@ -14,7 +14,7 @@ The canonical site origin is `https://zanovetech.vercel.app`. Set `NEXT_PUBLIC_S
 
 ## Add Google Analytics 4
 
-The site is configured with Measurement ID `G-WYXN8GWNEY` and Tag Manager container `GTM-55VQNQWP`. Both load only after **Accept analytics**. The direct GA4 tag sends page views and the privacy-safe custom events described below. Tag Manager is available for other consented tags. Do not add another GA4 Google tag for the same Measurement ID in GTM while the direct GA4 tag is active, or page views and events may be counted twice. IDs are public configuration, not secrets.
+The site is configured with Measurement ID `G-WYXN8GWNEY`, Tag Manager container `GTM-55VQNQWP`, and Ahrefs Web Analytics key `CVA7infvQMvCW2YUPGw1CA`. They load only after **Accept analytics**. The direct GA4 tag sends page views and privacy-safe custom events. Tag Manager is available for other consented tags. Do not add another GA4 Google tag for the same Measurement ID in GTM while the direct GA4 tag is active, or page views and events may be counted twice. These identifiers are public configuration, not secrets. Ahrefs Web Analytics measures traffic; keyword rank tracking is a separate Ahrefs tool.
 
 The Search Console verification token is also in the page metadata. Add `https://zanovetech.vercel.app/` as a URL-prefix property in Search Console and complete **Verify**. After the domain is live, submit `https://zanovetech.vercel.app/sitemap.xml`. Verification and submission must still be completed in the Google account; code alone cannot do that.
 

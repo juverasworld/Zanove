@@ -34,10 +34,10 @@ export async function POST(request) {
   const origin = request.headers.get('origin');
   if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'Invalid request origin.' }, 403);
 
-  const repository = process.env.GITHUB_REPOSITORY;
+  const repository = process.env.GITHUB_REPOSITORY || 'juverasworld/Zanove';
   const token = process.env.GITHUB_TOKEN;
   const branch = process.env.GITHUB_BRANCH || 'main';
-  if (!repository || !token || !/^[^/]+\/[^/]+$/.test(repository)) return json({ error: 'Blog publishing needs a GitHub repository and server-side token configured.' }, 503);
+  if (!token || !/^[^/]+\/[^/]+$/.test(repository)) return json({ error: 'Blog publishing needs a server-side GitHub token configured.' }, 503);
 
   let input;
   try {
