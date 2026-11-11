@@ -4,22 +4,15 @@
 
 ## Core pages
 - [Home](https://zanove-technologies.vercel.app/): Digital products, websites and business systems.
-- [Services](https://zanove-technologies.vercel.app/service.html): Website and software development, digital products, AI creative, automation and growth.
-- [Projects](https://zanove-technologies.vercel.app/projects.html): Selected product, web, AI and creative work.
-- [About](https://zanove-technologies.vercel.app/about.html): Zanove Technologies and its approach.
+- [Services](https://zanove-technologies.vercel.app/service.html): Website design, software, digital products, AI creative, automation and growth.
+- [About Zanove](https://zanove-technologies.vercel.app/about.html): Zanove Technologies and its approach.
+- [Projects](https://zanove-technologies.vercel.app/projects.html): Founder-built product, web, AI and creative work.
 - [Website audit](https://zanove-technologies.vercel.app/audit.html): First-pass public website review and project contact path.
+- [Request a consultation](https://zanove-technologies.vercel.app/project.html): Discuss a website, product, software or workflow.
+- [Blog](https://zanove-technologies.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
 - [Books](https://zanove-technologies.vercel.app/ebook.html): Books by Vera, with links to their Selar listings.
-- [Journal](https://zanove-technologies.vercel.app/blog.html): Practical writing on websites, AI and digital growth.
 - [Ask Zanove AI](https://zanove-technologies.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
-
-- [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
-
-- [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
-
-- [Project consultation](https://zanove-technologies.vercel.app/project.html): Request a consultation about a website, product, software or workflow.
-
-- [Privacy and analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
-
+- [Privacy & analytics](https://zanove-technologies.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
 ## Journal articles
 - [Before you redesign your website, make the next step obvious.](https://zanove-technologies.vercel.app/blog/website-next-step.html)
 - [Good automation gives people time back without hiding the work.](https://zanove-technologies.vercel.app/blog/useful-automation.html)
@@ -30,7 +23,6 @@
 - [LegacyMag](https://v0-birthday-booklet-landing-page.vercel.app/): Premium milestone and memorial booklet service.
 - [DataWise](https://datawise-three.vercel.app/): Nigerian data bundle comparison and personal tracking experience.
 - [GlobalPerks](https://dark-rosy.vercel.app/): Visual storytelling portfolio and gallery experience.
-
 ## Contact
 - Email: zanovetechnologies@gmail.com
 - WhatsApp: https://wa.me/2349138638126

@@ -6,6 +6,18 @@ import posts from '../content/blog-posts.json' with { type: 'json' };
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pages = ['index.html', 'service.html', 'about.html', 'projects.html', 'audit.html', 'blog.html', 'ebook.html', 'ask-ai.html', 'project.html', 'privacy.html'];
+const sitePageLinks = [
+  ['Home', '/'],
+  ['Services', '/service.html'],
+  ['About Zanove', '/about.html'],
+  ['Projects', '/projects.html'],
+  ['Website audit', '/audit.html'],
+  ['Request a consultation', '/project.html'],
+  ['Blog', '/blog.html'],
+  ['Books', '/ebook.html'],
+  ['Ask Zanove AI', '/ask-ai.html'],
+  ['Privacy & analytics', '/privacy.html'],
+];
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanove-technologies.vercel.app').replace(/\/$/, '');
 const gaId = /^G-[A-Z0-9]+$/i.test((process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '').trim())
   ? process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID.trim()
@@ -13,6 +25,8 @@ const gaId = /^G-[A-Z0-9]+$/i.test((process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ||
 for (const page of pages) {
   const source = path.join(root, page);
   const $ = load(fs.readFileSync(source, 'utf8'));
+  // Use the canonical homepage URL instead of the redirecting /index.html alias.
+  $('a[href="index.html"], a[href="./index.html"], a[href="../index.html"]').attr('href', '/');
   $('link[rel="stylesheet"][href*="zanove-site.css"]').attr('href', 'assets/zanove-site.css?v=20261111-consultation');
   $('script[src*="zanove-ui.js"]').attr('src', 'assets/zanove-ui.js?v=20261111-home-audit');
   $('script[src*="zanove-audit.js"]').attr('src', 'assets/zanove-audit.js?v=20261111-home-audit');
@@ -30,6 +44,10 @@ for (const page of pages) {
     $(el).attr('aria-label', 'Open Ask Zanove AI');
   });
   $('a.nav-cta').attr('href', 'project.html').html('Discuss a project <span aria-hidden="true">↗</span>');
+  const allPagesNav = $('footer nav.footer-links').first();
+  allPagesNav.attr('aria-label', 'All pages');
+  allPagesNav.empty().append(sitePageLinks.map(([label, href]) => `<a href="${href}">${label}</a>`).join(''));
+  $('footer .footer-title').first().text('All pages');
   if (!$('a[href="privacy.html"]').length) $('footer .footer-links').last().append('<a href="privacy.html">Privacy &amp; analytics</a>');
   if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
   $('a[href="mailto:zanovetechnologies@gmail.com"]').filter((_, el) => /book a call/i.test($(el).text())).text('Email Zanove to arrange a call');
@@ -58,11 +76,16 @@ if (fs.existsSync(articleDir)) {
   for (const name of fs.readdirSync(articleDir).filter((file) => file.endsWith('.html'))) {
     const filename = path.join(articleDir, name);
     const $ = load(fs.readFileSync(filename, 'utf8'));
+    $('a[href="../index.html"], a[href="index.html"]').attr('href', '/');
     $('link[rel="stylesheet"][href*="zanove-site.css"]').attr('href', `${site}/assets/zanove-site.css?v=20261111-consultation`);
     $('script[src*="zanove-ui.js"]').attr('src', `${site}/assets/zanove-ui.js?v=20261111-home-audit`);
     $('script[src*="zanove-audit.js"]').attr('src', `${site}/assets/zanove-audit.js?v=20261111-home-audit`);
     $('head script[src*="zanove-analytics.js"]').remove();
     $('head').append(`<script src="${site}/assets/zanove-analytics.js?v=20261111-analytics" data-ga-measurement-id="${gaId}" defer></script>`);
+    const allPagesNav = $('footer nav.footer-links').first();
+    allPagesNav.attr('aria-label', 'All pages');
+    allPagesNav.empty().append(sitePageLinks.map(([label, href]) => `<a href="${href}">${label}</a>`).join(''));
+    $('footer .footer-title').first().text('All pages');
     if (!$('a[href="../privacy.html"]').length) $('footer .footer-links').last().append('<a href="../privacy.html">Privacy &amp; analytics</a>');
     if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
     const canonical = `${site}/blog/${name}`;
@@ -85,11 +108,25 @@ fs.cpSync(path.join(root, 'assets'), path.join(root, 'public', 'assets'), { recu
 const llmsPath = path.join(root, 'public', 'llms.txt');
 if (fs.existsSync(llmsPath)) {
   let llms = fs.readFileSync(llmsPath, 'utf8').replaceAll('https://zanove-technologies.vercel.app', site);
-const articles = ['## Journal articles', ...posts.map(({ title, slug }) => `- [${title}](${site}/blog/${slug}.html)`)].join('\n');
+  const corePageDescriptions = {
+    Home: 'Digital products, websites and business systems.',
+    Services: 'Website design, software, digital products, AI creative, automation and growth.',
+    'About Zanove': 'Zanove Technologies and its approach.',
+    Projects: 'Founder-built product, web, AI and creative work.',
+    'Website audit': 'First-pass public website review and project contact path.',
+    'Request a consultation': 'Discuss a website, product, software or workflow.',
+    Blog: 'Practical writing on websites, AI and digital growth.',
+    Books: 'Books by Vera, with links to their Selar listings.',
+    'Ask Zanove AI': "AI assistant for questions about Zanove's services and work.",
+    'Privacy & analytics': 'Analytics choices and information submitted to Zanove.',
+  };
+  const corePages = [
+    '## Core pages',
+    ...sitePageLinks.map(([label, route]) => `- [${label}](${site}${route}): ${corePageDescriptions[label]}`),
+  ].join('\n');
+  const articles = ['## Journal articles', ...posts.map(({ title, slug }) => `- [${title}](${site}/blog/${slug}.html)`)].join('\n');
+  llms = llms.replace(/## Core pages[\s\S]*?(?=\n## |$)/, corePages);
   llms = llms.replace(/## Journal articles[\s\S]*?(?=\n## |$)/, articles);
-  llms = llms.replace(/- \[Project consultation\][^\n]*\n*/g, '');
-  llms = llms.replace('## Journal articles', `- [Project consultation](${site}/project.html): Request a consultation about a website, product, software or workflow.\n\n## Journal articles`);
-  llms = llms.replace('## Journal articles', `- [Privacy and analytics](${site}/privacy.html): Analytics choices and information submitted to Zanove.\n\n## Journal articles`);
   const projects = [
     '## Founder-built projects',
     '- [Zanvera Guest Hub](https://zanvera.vercel.app/): QR-led AI guest assistant for independent hotels and rental hosts.',
