@@ -1,4 +1,5 @@
-import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
+import { checkBlogRequestAuthorization } from '../../../../lib/blog-request-auth.mjs';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,21 +12,9 @@ const formats = {
   'image/gif': { extension: 'gif', signature: (bytes) => ['GIF87a', 'GIF89a'].includes(bytes.toString('ascii', 0, 6)) },
 };
 
-function authorize(request) {
-  const expected = process.env.BLOG_ADMIN_TOKEN || '';
-  const received = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') || '';
-  if (!expected || !received) return false;
-  const a = Buffer.from(expected);
-  const b = Buffer.from(received);
-  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
-  const origin = request.headers.get('origin');
-  if (!origin) return true;
-  try { return new URL(origin).host === new URL(request.url).host; }
-  catch { return false; }
-}
-
 export async function POST(request) {
-  if (!authorize(request)) return json({ error: 'Image upload is not authorised.' }, 401);
+  const authorizationError = checkBlogRequestAuthorization(request);
+  if (authorizationError) return json({ error: authorizationError.error }, authorizationError.status);
   const repository = process.env.GITHUB_REPOSITORY || 'juverasworld/Zanove';
   const token = process.env.GITHUB_TOKEN;
   const branch = process.env.GITHUB_BRANCH || 'main';

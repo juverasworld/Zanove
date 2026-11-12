@@ -1,5 +1,5 @@
-import { timingSafeEqual } from 'node:crypto';
 import { sanitizeBlogHtml } from '../../../../lib/sanitize-blog-html.mjs';
+import { checkBlogRequestAuthorization } from '../../../../lib/blog-request-auth.mjs';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -15,19 +15,6 @@ const DEFAULT_AUTHOR = {
   image: '',
 };
 const json = (body, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store, private' } });
-
-function authorized(request) {
-  const expected = process.env.BLOG_ADMIN_TOKEN || '';
-  const received = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') || '';
-  if (!expected || !received) return false;
-  const a = Buffer.from(expected);
-  const b = Buffer.from(received);
-  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
-  const origin = request.headers.get('origin');
-  if (!origin) return true;
-  try { return new URL(origin).host === new URL(request.url).host; }
-  catch { return false; }
-}
 
 function githubConfig() {
   const repository = process.env.GITHUB_REPOSITORY || 'juverasworld/Zanove';
@@ -156,7 +143,8 @@ function validateAuthor(input) {
 }
 
 async function guard(request) {
-  if (!authorized(request)) return json({ error: 'Publishing is not authorised. Check the blog admin key.' }, 401);
+  const authorizationError = checkBlogRequestAuthorization(request);
+  if (authorizationError) return json({ error: authorizationError.error }, authorizationError.status);
   const config = githubConfig();
   if (!config) return json({ error: 'Blog publishing needs a server-side GitHub token configured.' }, 503);
   return config;
