@@ -77,6 +77,8 @@ for (const page of pages) {
   $('footer .footer-title').first().text('All pages');
   if (!$('a[href="privacy.html"]').length) $('footer .footer-links').last().append('<a href="privacy.html">Privacy &amp; analytics</a>');
   if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
+  $('footer [data-social-links]').remove();
+  $('footer .footer-main').append('<div data-social-links><h2 class="footer-title">Follow Zanove</h2><nav class="footer-links" aria-label="Zanove social links"><a href="https://x.com/ZanoveTech" target="_blank" rel="noopener noreferrer">X <span aria-hidden="true">↗</span></a><a href="https://www.instagram.com/zanovetech/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a><a href="https://www.linkedin.com/in/obasivera/" target="_blank" rel="noopener noreferrer">Obasi Vera · Founder on LinkedIn <span aria-hidden="true">↗</span></a></nav></div>');
   $('a[href="mailto:zanovetechnologies@gmail.com"]').filter((_, el) => /book a call/i.test($(el).text())).text('Email Zanove to arrange a call');
   const canonical = page === 'index.html' ? `${site}/` : page === 'blog.html' ? `${site}/blog` : `${site}/${page}`;
   $('head link[rel="canonical"]').attr('href', canonical);
@@ -92,6 +94,7 @@ for (const page of pages) {
         schema['@id'] = `${site}/#organization`;
         schema.url = `${site}/`;
         schema.logo = `${site}/assets/zanove-logo.png`;
+        schema.sameAs = ['https://x.com/ZanoveTech', 'https://www.instagram.com/zanovetech/'];
         orgScript.text(JSON.stringify(schema));
       }
     } catch { /* Leave invalid schema unchanged for easier source debugging. */ }
@@ -118,6 +121,8 @@ if (fs.existsSync(articleDir)) {
     $('footer .footer-title').first().text('All pages');
     if (!$('a[href="../privacy.html"]').length) $('footer .footer-links').last().append('<a href="../privacy.html">Privacy &amp; analytics</a>');
     if (!$('a[data-analytics-settings]').length) $('footer .footer-links').last().append('<a href="#analytics-settings" data-analytics-settings>Analytics preferences</a>');
+    $('footer [data-social-links]').remove();
+    $('footer .footer-main').append('<div data-social-links><h2 class="footer-title">Follow Zanove</h2><nav class="footer-links" aria-label="Zanove social links"><a href="https://x.com/ZanoveTech" target="_blank" rel="noopener noreferrer">X <span aria-hidden="true">↗</span></a><a href="https://www.instagram.com/zanovetech/" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a><a href="https://www.linkedin.com/in/obasivera/" target="_blank" rel="noopener noreferrer">Obasi Vera · Founder on LinkedIn <span aria-hidden="true">↗</span></a></nav></div>');
     const slug = name.replace(/\.html$/, '');
     const canonical = `${site}/blog/${slug}`;
     $('a[href="../blog.html"], a[href="/blog.html"], a[href="blog.html"]').attr('href', '/blog');

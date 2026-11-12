@@ -276,7 +276,7 @@ body.project-inquiry-open { overflow: hidden; }
 .audit-fact span { color: var(--muted); font-size: 12px; }
 
 .site-footer { padding: 56px 0 24px; background: #050d1c; color: rgba(255,255,255,.66); }
-.footer-main { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 36px; padding-bottom: 34px; }
+.footer-main { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; padding-bottom: 34px; }
 .footer-brand img { width: 190px; height: 38px; object-fit: contain; object-position: left; }
 .footer-brand p { max-width: 360px; margin-top: 15px; font-size: 13px; }
 .footer-title { margin: 4px 0 12px; color: #fff; font: 600 16px 'Bricolage Grotesque','Inter',sans-serif; }

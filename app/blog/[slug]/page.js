@@ -69,6 +69,7 @@ export default async function JournalArticlePage({ params }) {
   const related = posts.filter((item) => item.slug !== post.slug).slice(0, 2);
   const author = authors.find((item) => item.id === post.authorId) || authors[0];
   const isCompanyAuthor = !author || author.id === 'zanove-technologies';
+  const isFounderAuthor = author && (author.id === 'obasi-vera' || author.name.trim().toLowerCase() === 'obasi vera');
   const authorImage = author?.image ? (author.image.startsWith('http') ? author.image : `${site}${author.image}`) : undefined;
   const schema = {
     '@context': 'https://schema.org',
@@ -81,7 +82,7 @@ export default async function JournalArticlePage({ params }) {
     articleSection: post.category,
     ...(post.datePublished ? { datePublished: post.datePublished } : {}),
     ...(post.dateModified ? { dateModified: post.dateModified } : {}),
-    author: isCompanyAuthor ? { '@id': `${site}/#organization` } : { '@type': 'Person', '@id': `${site}/#author-${author.id}`, name: author.name, ...(author.role ? { jobTitle: author.role } : {}), ...(author.bio ? { description: author.bio } : {}), ...(authorImage ? { image: authorImage } : {}) },
+    author: isCompanyAuthor ? { '@id': `${site}/#organization` } : { '@type': 'Person', '@id': `${site}/#author-${author.id}`, name: author.name, ...(author.role ? { jobTitle: author.role } : {}), ...(author.bio ? { description: author.bio } : {}), ...(authorImage ? { image: authorImage } : {}), ...(isFounderAuthor ? { sameAs: ['https://www.linkedin.com/in/obasivera/'] } : {}) },
     publisher: { '@id': `${site}/#organization` },
     isPartOf: { '@type': 'Blog', '@id': `${site}/blog#journal`, name: 'Zanove Journal', url: `${site}/blog` },
   };
@@ -96,7 +97,7 @@ export default async function JournalArticlePage({ params }) {
     {post.coverImage && <div className="container journal-cover"><img src={post.coverImage} alt={post.coverAlt || ''} fetchPriority="high" /></div>}
     <section className="section"><article className="container article-content">
       {(post.sections || []).map((section, sectionIndex) => <section key={`${section.heading}-${sectionIndex}`}><h2>{section.heading}</h2>{(section.blocks || (section.paragraphs || []).map((text) => ({ type: 'paragraph', text }))).map((block, blockIndex) => <ArticleBlock block={block} key={`${sectionIndex}-${blockIndex}`} />)}</section>)}
-      {author && <aside className="article-author-card"><div className="article-author-avatar">{author.image ? <img src={author.image} alt="" loading="lazy" /> : <span>{author.name.slice(0, 1)}</span>}</div><div><p className="eyebrow">About the author</p><h3>{author.name}</h3>{author.role && <p className="author-role">{author.role}</p>}<p>{author.bio}</p></div></aside>}
+      {author && <aside className="article-author-card"><div className="article-author-avatar">{author.image ? <img src={author.image} alt="" loading="lazy" /> : <span>{author.name.slice(0, 1)}</span>}</div><div><p className="eyebrow">About the author</p><h3>{author.name}</h3>{author.role && <p className="author-role">{author.role}</p>}<p>{author.bio}</p>{isFounderAuthor && <a className="card-link" href="https://www.linkedin.com/in/obasivera/" target="_blank" rel="noopener noreferrer">Connect with Obasi on LinkedIn <span aria-hidden="true">↗</span></a>}</div></aside>}
       <div className="article-service-links"><p className="eyebrow">A practical next step</p><h2>Need help applying this to your business?</h2><p>Explore the relevant Zanove service or tell us what you are trying to improve. We can help you choose a clear next step.</p><div className="hero-actions"><a className="button" href="/service.html">Explore our services <span aria-hidden="true">↗</span></a><a className="button button-secondary" href="/project.html">Request a consultation <span aria-hidden="true">↗</span></a></div></div>
     </article></section>
     {related.length > 0 && <section className="section related-journal"><div className="container"><div className="section-heading"><p className="eyebrow">Keep learning</p><h2>More from the Zanove Journal.</h2></div><div className="blog-card-grid">{related.map((item) => <article className="blog-card" key={item.slug}><p className="project-kicker">{item.category || 'Zanove Journal'}</p><h3><a href={`/blog/${item.slug}`}>{item.title}</a></h3><p>{item.description}</p><a className="card-link" href={`/blog/${item.slug}`}>Read the article <span aria-hidden="true">↗</span></a></article>)}</div></div></section>}
