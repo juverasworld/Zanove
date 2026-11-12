@@ -62,7 +62,7 @@ for (const post of posts) {
     if (href && !/^(https?:|mailto:|#|\/)/.test(href)) $(el).attr('href', `/${href}`);
   });
   $('head link[rel="icon"]').attr('href', '/assets/zanove-favicon.svg');
-  $('head link[href*="zanove-site.css"]').attr('href', '/assets/zanove-site.css?v=20261111-consultation');
+  $('head link[href*="zanove-site.css"]').attr('href', '/assets/zanove-site.css?v=20261112-blog-editor');
   $('head script[src*="zanove-ui.js"]').attr('src', '/assets/zanove-ui.js?v=20261111-blog');
   $('body script[src*="zanove-ask.js"], body .ask-widget').remove();
   fs.writeFileSync(path.join(out, `${post.slug}.html`), $.html());

@@ -34,7 +34,7 @@ function OrganizationSchema() {
 
 export default function BlogLayout({ children }) {
   return <>
-    <link rel="stylesheet" href="/assets/zanove-site.css?v=20261111-consultation" />
+    <link rel="stylesheet" href="/assets/zanove-site.css?v=20261112-blog-editor" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />

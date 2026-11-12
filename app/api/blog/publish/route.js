@@ -7,6 +7,13 @@ export const dynamic = 'force-dynamic';
 const postsPath = 'content/blog-posts.json';
 const authorsPath = 'content/blog-authors.json';
 const DEFAULT_AUTHOR_ID = 'zanove-technologies';
+const DEFAULT_AUTHOR = {
+  id: DEFAULT_AUTHOR_ID,
+  name: 'Zanove Technologies',
+  role: 'Editorial team',
+  bio: 'Practical perspectives on websites, software, AI and digital growth for Nigerian businesses.',
+  image: '',
+};
 const json = (body, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store, private' } });
 
 function authorized(request) {
@@ -160,7 +167,7 @@ export async function GET(request) {
   if (config instanceof Response) return config;
   try {
     const [{ entries: posts }, { entries: authors }] = await Promise.all([readFile(config, postsPath), readFile(config, authorsPath)]);
-    return json({ ok: true, posts, authors });
+    return json({ ok: true, posts, authors: authors.length ? authors : [DEFAULT_AUTHOR] });
   } catch (error) {
     console.error('Blog dashboard read failed:', error.message);
     return json({ error: 'The journal could not be loaded. Check GitHub access and try again.' }, 502);
@@ -171,7 +178,8 @@ async function saveAuthor(config, input) {
   const author = validateAuthor(input);
   if (author.error) return json({ error: author.error }, 400);
   try {
-    const { entries: authors, sha } = await readFile(config, authorsPath);
+    const { entries: currentAuthors, sha } = await readFile(config, authorsPath);
+    const authors = currentAuthors.length ? currentAuthors : [DEFAULT_AUTHOR];
     const index = authors.findIndex((entry) => entry.id === author.id);
     if (index >= 0) authors[index] = author;
     else authors.unshift(author);
@@ -193,7 +201,8 @@ export async function POST(request) {
   if (postInput.error) return json({ error: postInput.error }, 400);
 
   try {
-    const [{ entries: posts, sha }, { entries: authors }] = await Promise.all([readFile(config, postsPath), readFile(config, authorsPath)]);
+    const [{ entries: posts, sha }, { entries: storedAuthors }] = await Promise.all([readFile(config, postsPath), readFile(config, authorsPath)]);
+    const authors = storedAuthors.length ? storedAuthors : [DEFAULT_AUTHOR];
     if (!authors.some((author) => author.id === postInput.authorId)) return json({ error: 'Choose an author profile that exists in the dashboard.' }, 400);
     const index = posts.findIndex((entry) => entry.slug === postInput.slug);
     const existing = index >= 0 ? posts[index] : null;
@@ -219,7 +228,8 @@ export async function DELETE(request) {
     if (input.kind === 'author') {
       const id = String(input.id || '').trim();
       if (id === DEFAULT_AUTHOR_ID) return json({ error: 'The Zanove editorial profile is kept as the fallback author.' }, 400);
-      const [{ entries: authors, sha }, { entries: posts }] = await Promise.all([readFile(config, authorsPath), readFile(config, postsPath)]);
+      const [{ entries: storedAuthors, sha }, { entries: posts }] = await Promise.all([readFile(config, authorsPath), readFile(config, postsPath)]);
+      const authors = storedAuthors.length ? storedAuthors : [DEFAULT_AUTHOR];
       if (posts.some((post) => post.authorId === id)) return json({ error: 'This profile is assigned to an article. Reassign that article before removing the profile.' }, 409);
       const remaining = authors.filter((author) => author.id !== id);
       if (remaining.length === authors.length) return json({ error: 'That author profile was not found.' }, 404);

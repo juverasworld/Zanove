@@ -240,6 +240,17 @@ body.project-inquiry-open { overflow: hidden; }
 .article-content h2 { margin-bottom: 10px; font-size: clamp(25px,3.6vw,36px); }
 .article-content p { color: #3f4b53; line-height: 1.85; }
 .article-content .card-link { margin-top: 26px; }
+.article-content > section:not(.article-service-links) { margin-top: 46px; }
+.article-content > section > h2 { max-width: 720px; margin: 0 0 16px; color: #182522; font: 600 clamp(29px,4vw,39px)/1.12 'Bricolage Grotesque','Inter',sans-serif; letter-spacing: -.035em; }
+.article-richtext { color: #3f4b53; font-size: clamp(15px,1.5vw,17px); line-height: 1.9; }
+.article-richtext p { max-width: 72ch; margin: 0 0 18px; }
+.article-richtext ul,.article-richtext ol { margin: 18px 0 22px; padding-left: 26px; }
+.article-richtext li { padding-left: 4px; }
+.article-richtext li+li { margin-top: 8px; }
+.article-richtext h3 { margin: 28px 0 10px; color: #182522; font: 600 clamp(21px,2.8vw,27px)/1.2 'Bricolage Grotesque','Inter',sans-serif; letter-spacing: -.025em; }
+.article-image { margin: 30px 0; }
+.article-image img { display: block; width: 100%; max-height: 620px; object-fit: cover; border-radius: 16px; }
+.article-image figcaption { margin: 9px auto 0; max-width: 68ch; color: #68746f; font-size: 12px; line-height: 1.6; text-align: center; }
 
 @media (max-width: 820px) {
   .blog-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -441,6 +452,7 @@ body.audit-open { overflow: hidden; }
 
 /* Zanove Journal routes */
 .article-byline { display: flex; flex-wrap: wrap; gap: 5px 12px; margin-top: 22px; color: rgba(255,255,255,.72); font-size: 12px; }
+.article-byline-avatar { width: 30px; height: 30px; flex: 0 0 auto; margin: -6px 0; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; object-fit: cover; }
 .journal-cover { max-height: 520px; overflow: hidden; margin-top: -34px; border-radius: 22px; background: #182522; box-shadow: 0 24px 55px rgba(0,0,0,.16); }
 .journal-cover img { width: 100%; max-height: 520px; object-fit: cover; }
 .blog-card-cover { display: block; width: 100%; height: 168px; overflow: hidden; margin: calc(-1 * clamp(20px,3vw,30px)) calc(-1 * clamp(20px,3vw,30px)) 16px; border-radius: var(--radius) var(--radius) 0 0; background: #e9e3d7; }
