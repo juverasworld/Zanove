@@ -3,5 +3,6 @@
 .next/
 node_modules/
 .vercel
+/public/tinymce/
 .env*
 !.env.example

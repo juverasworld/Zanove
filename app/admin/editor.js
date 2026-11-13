@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 const defaultAuthorId = 'zanove-technologies';
 const key = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -10,6 +11,7 @@ const freshPost = (authorId = defaultAuthorId) => ({
   sections: [{ key: key(), heading: '', blocks: [{ key: key(), type: 'richtext', html: '<p><br></p>' }] }],
 });
 const blankAuthor = { id: '', name: '', role: '', bio: '', image: '' };
+const TinyEditor = dynamic(() => import('@tinymce/tinymce-react').then((module) => module.Editor), { ssr: false, loading: () => <div className="classic-editor-loading">Loading editor…</div> });
 
 function slugify(value) {
   return value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -35,74 +37,91 @@ function escapeHtml(value) {
   return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll('\n', '<br>');
 }
 
-function RichTextEditor({ html, onChange, onAddMedia }) {
-  const editor = useRef(null);
-  const mediaInput = useRef(null);
-  const [isEmpty, setIsEmpty] = useState(true);
+function RichTextEditor({ html, onChange, onUploadImage }) {
   const [sourceMode, setSourceMode] = useState(false);
-  const [source, setSource] = useState(html || '<p><br></p>');
+  const initialHtml = useRef(html || '<p><br></p>');
+  const editorRef = useRef(null);
+  const mediaInput = useRef(null);
+  const [source, setSource] = useState(initialHtml.current);
   const [wordCount, setWordCount] = useState(0);
-  useEffect(() => {
-    if (!editor.current) return;
-    editor.current.innerHTML = html || '<p><br></p>';
-    setIsEmpty(!editor.current.innerText.trim());
-    setWordCount(editor.current.innerText.trim().split(/\s+/).filter(Boolean).length);
-  }, []);
-  function updateFromVisual(element) {
-    const value = element.innerHTML;
-    const words = element.innerText.trim().split(/\s+/).filter(Boolean).length;
-    setSource(value);
-    setIsEmpty(words === 0);
-    setWordCount(words);
-    onChange(value);
+
+  function setCountFromText(value) {
+    const plain = String(value || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;|&#160;/g, ' ').trim();
+    setWordCount(plain ? plain.split(/\s+/).filter(Boolean).length : 0);
   }
-  function command(action, value) {
-    if (sourceMode) return;
-    editor.current?.focus();
-    document.execCommand(action, false, value);
-    if (editor.current) {
-      updateFromVisual(editor.current);
-    }
-  }
+
   function switchMode(nextSourceMode) {
     if (nextSourceMode === sourceMode) return;
     if (nextSourceMode) {
-      const current = editor.current?.innerHTML || html || '<p><br></p>';
+      const current = editorRef.current?.getContent() || initialHtml.current;
+      const plain = editorRef.current?.getContent({ format: 'text' }) || '';
       setSource(current);
-      setWordCount((editor.current?.innerText || '').trim().split(/\s+/).filter(Boolean).length);
+      setCountFromText(plain);
       setSourceMode(true);
       return;
     }
     const nextHtml = source || '<p><br></p>';
-    if (editor.current) editor.current.innerHTML = nextHtml;
-    setSourceMode(false);
-    setIsEmpty(!nextHtml.replace(/<[^>]*>/g, '').trim());
+    editorRef.current?.setContent(nextHtml);
     onChange(nextHtml);
+    setCountFromText(nextHtml);
+    setSourceMode(false);
   }
-  function addLink() {
-    if (sourceMode) return;
-    const href = window.prompt('Paste a secure https:// link or a site path such as /service.html');
-    if (href) command('createLink', href.trim());
+  async function addMediaFile(file) {
+    if (!file || !onUploadImage) return;
+    try {
+      const url = await onUploadImage(file);
+      if (!url) return;
+      const imageMarkup = `<img src="${String(url).replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" alt="" />`;
+      if (sourceMode) {
+        const next = `${source}${source.trim() ? '\\n' : ''}<p>${imageMarkup}</p>`;
+        setSource(next);
+        onChange(next);
+      } else {
+        editorRef.current?.insertContent(imageMarkup);
+        editorRef.current?.focus();
+      }
+    } catch { /* The upload helper displays its error in the publishing desk. */ }
   }
-  return <div className="rich-editor">
-    <div className="classic-editor-top"><button type="button" className="classic-add-media" onClick={() => mediaInput.current?.click()}>▧ Add Media</button><input ref={mediaInput} className="classic-media-input" type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(event) => { onAddMedia?.(event.target.files?.[0]); event.target.value = ''; }} /><div className="classic-mode-tabs" role="tablist" aria-label="Editor mode"><button type="button" role="tab" aria-selected={!sourceMode} className={!sourceMode ? 'is-active' : ''} onClick={() => switchMode(false)}>Visual</button><button type="button" role="tab" aria-selected={sourceMode} className={sourceMode ? 'is-active' : ''} onClick={() => switchMode(true)}>Text</button></div></div>
-    <div className="rich-toolbar" role="toolbar" aria-label="Text formatting">
-      <select aria-label="Paragraph style" defaultValue="p" disabled={sourceMode} onChange={(event) => command('formatBlock', event.target.value)}><option value="p">Paragraph</option><option value="h3">Heading</option><option value="blockquote">Quote</option></select>
-      <button type="button" title="Bold" aria-label="Bold" onMouseDown={(event) => event.preventDefault()} onClick={() => command('bold')}><strong>B</strong></button>
-      <button type="button" title="Italic" aria-label="Italic" onMouseDown={(event) => event.preventDefault()} onClick={() => command('italic')}><em>I</em></button>
-      <button type="button" title="Underline" aria-label="Underline" onMouseDown={(event) => event.preventDefault()} onClick={() => command('underline')}><u>U</u></button>
-      <button type="button" title="Bulleted list" aria-label="Bulleted list" onMouseDown={(event) => event.preventDefault()} onClick={() => command('insertUnorderedList')}>☷</button>
-      <button type="button" title="Numbered list" aria-label="Numbered list" onMouseDown={(event) => event.preventDefault()} onClick={() => command('insertOrderedList')}>≡</button>
-      <button type="button" title="Block quote" aria-label="Block quote" onMouseDown={(event) => event.preventDefault()} onClick={() => command('formatBlock', 'blockquote')}>❝</button>
-      <button type="button" title="Add link to selected text" aria-label="Add link" onMouseDown={(event) => event.preventDefault()} onClick={addLink}>↗</button>
-      <button type="button" title="Subheading" aria-label="Subheading" onMouseDown={(event) => event.preventDefault()} onClick={() => command('formatBlock', 'h3')}>H3</button>
+
+  return <div className="classic-editor">
+    <div className="classic-editor-top">
+      <button type="button" className="classic-add-media" onClick={() => mediaInput.current?.click()}>▧ Add Media</button>
+      <input ref={mediaInput} className="classic-media-input" type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(event) => { addMediaFile(event.target.files?.[0]); event.target.value = ''; }} />
+      <div className="classic-mode-tabs" role="tablist" aria-label="Editor mode">
+        <button type="button" role="tab" aria-selected={!sourceMode} className={!sourceMode ? 'is-active' : ''} onClick={() => switchMode(false)}>Visual</button>
+        <button type="button" role="tab" aria-selected={sourceMode} className={sourceMode ? 'is-active' : ''} onClick={() => switchMode(true)}>Text</button>
+      </div>
     </div>
-    <div className={`rich-editor-canvas${sourceMode ? ' is-source-mode' : ''}`}>
-      <div ref={editor} className="rich-editable" contentEditable={!sourceMode} suppressContentEditableWarning role="textbox" aria-multiline="true" aria-label="Article text" hidden={sourceMode} onInput={(event) => updateFromVisual(event.currentTarget)} />
-      {isEmpty && !sourceMode && <span className="rich-placeholder" aria-hidden="true">Start writing your article…</span>}
-      {sourceMode && <textarea className="classic-source" aria-label="Article HTML" spellCheck={false} value={source} onChange={(event) => { const value = event.target.value; setSource(value); const text = value.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').trim(); setWordCount(text.split(/\s+/).filter(Boolean).length); setIsEmpty(!text); onChange(value); }} />}
+    <div className="classic-tinymce" hidden={sourceMode}>
+      <TinyEditor
+        tinymceScriptSrc="/tinymce/tinymce.min.js"
+        licenseKey="gpl"
+        onInit={(_event, editor) => { editorRef.current = editor; setCountFromText(editor.getContent({ format: 'text' })); }}
+        initialValue={initialHtml.current}
+        onEditorChange={(content, editor) => { setSource(content); setCountFromText(editor.getContent({ format: 'text' })); onChange(content); }}
+        init={{
+          height: 282,
+          min_height: 240,
+          menubar: false,
+          statusbar: false,
+          branding: false,
+          promotion: false,
+          resize: true,
+          plugins: 'lists link image code wordcount',
+          toolbar: 'blocks | bold italic underline | bullist numlist blockquote | alignleft aligncenter alignright | link image | removeformat',
+          toolbar_mode: 'wrap',
+          block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Quote=blockquote',
+          contextmenu: false,
+          images_upload_handler: async (blobInfo) => {
+            const blob = blobInfo.blob();
+            return onUploadImage(new File([blob], blobInfo.filename(), { type: blob.type || 'image/png' }));
+          },
+          content_style: 'body { margin: 16px; color: #252a2d; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; } p { margin: 0 0 1em; }',
+        }}
+      />
     </div>
-    <div className="classic-editor-status"><span>Word count: {wordCount}</span><span>{sourceMode ? 'HTML source' : 'Visual editor'}</span></div>
+    {sourceMode && <textarea className="classic-source" aria-label="Article HTML" spellCheck={false} value={source} onChange={(event) => { const value = event.target.value; setSource(value); setCountFromText(value); onChange(value); }} />}
+    <div className="classic-editor-status"><span>Word count: {wordCount}</span><span>{sourceMode ? 'Text' : 'Visual'}</span></div>
   </div>;
 }
 
@@ -169,6 +188,23 @@ export default function BlogEditor() {
     finally { setUploading(''); }
   }
 
+  async function uploadEditorImage(file) {
+    if (!file) return null;
+    if (file.size > 2_500_000) {
+      const message = 'Choose an image smaller than 2.5 MB.';
+      setError(true); setStatus(message); throw new Error(message);
+    }
+    setUploading('inline'); setError(false); setStatus('');
+    try {
+      const base64 = await toFileData(file);
+      const result = await request('/api/blog/media', { method: 'POST', body: JSON.stringify({ name: file.name, type: file.type, base64, slug: post.slug || slugify(post.title) || 'zanove', purpose: 'inline' }) });
+      setStatus('Image added to the Zanove site library.');
+      return result.url;
+    } catch (cause) {
+      setError(true); setStatus(cause.message); throw cause;
+    } finally { setUploading(''); }
+  }
+
   async function publish(event) {
     event.preventDefault(); setStatus(''); setError(false);
     const missingHeading = post.sections.some((section) => !section.heading.trim());
@@ -220,13 +256,6 @@ export default function BlogEditor() {
   }
 
   function addSection(heading = '') { setPost((current) => ({ ...current, sections: [...current.sections, { key: key(), heading, blocks: [{ key: key(), type: 'richtext', html: '<p><br></p>' }] }] })); }
-  function addMediaBlock(sectionIndex, file) {
-    if (!file) return;
-    const blockKey = key();
-    const imageBlock = { key: blockKey, type: 'image', src: '', alt: '', caption: '' };
-    setPost((current) => ({ ...current, sections: current.sections.map((section, index) => index === sectionIndex ? { ...section, blocks: [...section.blocks, imageBlock] } : section) }));
-    uploadImage(file, 'inline', (url, preview) => setPost((current) => ({ ...current, sections: current.sections.map((section) => ({ ...section, blocks: section.blocks.map((block) => block.key === blockKey ? { ...block, src: url, preview } : block) })) })));
-  }
   function removeBlock(sectionIndex, blockIndex) {
     setPost((current) => ({ ...current, sections: current.sections.map((section, index) => index === sectionIndex ? { ...section, blocks: section.blocks.filter((_, position) => position !== blockIndex) } : section) }));
   }
@@ -283,7 +312,7 @@ export default function BlogEditor() {
                     <div className="sections-builder">{post.sections.map((section, sectionIndex) => <section className="section-builder" key={section.key}><div className="section-builder-head"><span className="section-number">{String(sectionIndex + 1).padStart(2, '0')}</span><label>Section heading · H2<input value={section.heading} onChange={(event) => updateSection(sectionIndex, 'heading', event.target.value)} maxLength={180} placeholder="Add a section heading" required /></label>{post.sections.length > 1 && <button type="button" className="icon-button danger" aria-label="Remove section" title="Remove section" onClick={() => setPost((current) => ({ ...current, sections: current.sections.filter((_, index) => index !== sectionIndex) }))}>×</button>}</div>
                       <div className="block-stack">{section.blocks.map((block, blockIndex) => <div className={`content-block block-${block.type}`} key={block.key}>
                         <div className="block-top"><span>{block.type === 'richtext' || block.type === 'paragraph' ? 'TEXT' : block.type === 'subheading' ? 'SUBHEADING · H3' : block.type === 'quote' ? 'PULL QUOTE' : 'IMAGE'}</span><button type="button" className="icon-button" aria-label="Remove content block" title="Remove block" onClick={() => removeBlock(sectionIndex, blockIndex)}>×</button></div>
-                        {block.type === 'image' ? <><div className="inline-image-row">{block.src ? <img src={imagePreview(block.src, block.preview)} alt={block.alt || ''} /> : <div className="inline-image-placeholder">Image preview</div>}<label className="upload-button">{uploading === block.key ? 'Uploading…' : block.src ? 'Replace image' : 'Choose image'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'inline', (url, preview) => updateBlock(sectionIndex, blockIndex, { src: url, preview }))} disabled={Boolean(uploading)} /></label></div><label>Image description<input value={block.alt || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { alt: event.target.value })} maxLength={240} placeholder="Describe the image for readers and screen readers" required /></label><label>Caption <span className="field-hint">Optional</span><input value={block.caption || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { caption: event.target.value })} maxLength={300} placeholder="Add a short caption" /></label></> : block.type === 'richtext' ? <RichTextEditor html={block.html} onChange={(html) => updateBlock(sectionIndex, blockIndex, { html })} onAddMedia={(file) => addMediaBlock(sectionIndex, file)} /> : block.type === 'subheading' ? <input className="subheading-input" value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={180} placeholder="A useful subsection heading" required /> : <textarea rows={block.type === 'quote' ? 3 : 5} value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={block.type === 'quote' ? 2000 : 12000} placeholder={block.type === 'quote' ? 'A concise line worth highlighting' : 'Write a useful paragraph. Explain the idea, give a concrete example, or point to a next step.'} required />}
+                        {block.type === 'image' ? <><div className="inline-image-row">{block.src ? <img src={imagePreview(block.src, block.preview)} alt={block.alt || ''} /> : <div className="inline-image-placeholder">Image preview</div>}<label className="upload-button">{uploading === block.key ? 'Uploading…' : block.src ? 'Replace image' : 'Choose image'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'inline', (url, preview) => updateBlock(sectionIndex, blockIndex, { src: url, preview }))} disabled={Boolean(uploading)} /></label></div><label>Image description<input value={block.alt || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { alt: event.target.value })} maxLength={240} placeholder="Describe the image for readers and screen readers" required /></label><label>Caption <span className="field-hint">Optional</span><input value={block.caption || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { caption: event.target.value })} maxLength={300} placeholder="Add a short caption" /></label></> : block.type === 'richtext' ? <RichTextEditor html={block.html} onChange={(html) => updateBlock(sectionIndex, blockIndex, { html })} onUploadImage={uploadEditorImage} /> : block.type === 'subheading' ? <input className="subheading-input" value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={180} placeholder="A useful subsection heading" required /> : <textarea rows={block.type === 'quote' ? 3 : 5} value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={block.type === 'quote' ? 2000 : 12000} placeholder={block.type === 'quote' ? 'A concise line worth highlighting' : 'Write a useful paragraph. Explain the idea, give a concrete example, or point to a next step.'} required />}
                       </div>)}</div>
                     </section>)}</div><button type="button" className="add-article-section" onClick={() => addSection()}>＋ Add section</button>
                   </section>
@@ -403,6 +432,13 @@ export default function BlogEditor() {
       .rich-placeholder{top:18px;left:18px;color:#727b80;font:14px/1.55 Arial,sans-serif}
       .writer-form .classic-source{min-height:265px!important;padding:18px!important;border:0!important;resize:vertical;background:#fff;color:#24292d;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
       .classic-editor-status{height:19px;min-height:19px;padding:1px 8px;border-top:1px solid #c6cace;background:#f7f7f7;color:#667078;font-size:9px}
+      .classic-editor{width:100%;overflow:hidden;border:1px solid #aeb6ba;border-radius:0;background:#fff}
+      .classic-editor .tox.tox-tinymce{border:0!important;border-radius:0!important}
+      .classic-editor .tox .tox-editor-header{border:0!important;box-shadow:none!important}
+      .classic-editor .tox .tox-toolbar-overlord,.classic-editor .tox .tox-toolbar__primary{background:#f0f0f1!important}
+      .classic-editor .tox .tox-statusbar{display:none!important}
+      .classic-tinymce[hidden]{display:none!important}
+      .classic-editor-loading{display:grid;min-height:320px;place-items:center;border:1px solid #c9cfcc;background:#fff;color:#68746f;font-size:13px}
       .writer-form .add-article-section{display:inline-flex;width:max-content;margin-top:9px;padding:6px 9px;border:1px solid #d5dadd;border-radius:2px;background:#f7f8f8;color:#43545c;font-size:10px}
       @media(max-width:700px){.writer-form .rich-toolbar{height:auto;min-height:31px;flex-wrap:wrap;overflow:visible}.writer-form .rich-editor-canvas,.writer-form .rich-editable,.writer-form .classic-source{min-height:245px!important}}
     `}</style>
