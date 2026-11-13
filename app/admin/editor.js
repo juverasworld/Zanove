@@ -37,6 +37,7 @@ function escapeHtml(value) {
 
 function RichTextEditor({ html, onChange, onAddMedia }) {
   const editor = useRef(null);
+  const mediaInput = useRef(null);
   const [isEmpty, setIsEmpty] = useState(true);
   const [sourceMode, setSourceMode] = useState(false);
   const [source, setSource] = useState(html || '<p><br></p>');
@@ -84,7 +85,7 @@ function RichTextEditor({ html, onChange, onAddMedia }) {
     if (href) command('createLink', href.trim());
   }
   return <div className="rich-editor">
-    <div className="classic-editor-top"><button type="button" className="classic-add-media" onClick={onAddMedia}>▧ Add Media</button><div className="classic-mode-tabs" role="tablist" aria-label="Editor mode"><button type="button" role="tab" aria-selected={!sourceMode} className={!sourceMode ? 'is-active' : ''} onClick={() => switchMode(false)}>Visual</button><button type="button" role="tab" aria-selected={sourceMode} className={sourceMode ? 'is-active' : ''} onClick={() => switchMode(true)}>Text</button></div></div>
+    <div className="classic-editor-top"><button type="button" className="classic-add-media" onClick={() => mediaInput.current?.click()}>▧ Add Media</button><input ref={mediaInput} className="classic-media-input" type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(event) => { onAddMedia?.(event.target.files?.[0]); event.target.value = ''; }} /><div className="classic-mode-tabs" role="tablist" aria-label="Editor mode"><button type="button" role="tab" aria-selected={!sourceMode} className={!sourceMode ? 'is-active' : ''} onClick={() => switchMode(false)}>Visual</button><button type="button" role="tab" aria-selected={sourceMode} className={sourceMode ? 'is-active' : ''} onClick={() => switchMode(true)}>Text</button></div></div>
     <div className="rich-toolbar" role="toolbar" aria-label="Text formatting">
       <select aria-label="Paragraph style" defaultValue="p" disabled={sourceMode} onChange={(event) => command('formatBlock', event.target.value)}><option value="p">Paragraph</option><option value="h3">Heading</option><option value="blockquote">Quote</option></select>
       <button type="button" title="Bold" aria-label="Bold" onMouseDown={(event) => event.preventDefault()} onClick={() => command('bold')}><strong>B</strong></button>
@@ -129,7 +130,6 @@ export default function BlogEditor() {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState('');
   const [filter, setFilter] = useState('');
-  const [sectionTemplate, setSectionTemplate] = useState('');
 
   const filteredPosts = useMemo(() => {
     const query = filter.trim().toLowerCase();
@@ -220,9 +220,12 @@ export default function BlogEditor() {
   }
 
   function addSection(heading = '') { setPost((current) => ({ ...current, sections: [...current.sections, { key: key(), heading, blocks: [{ key: key(), type: 'richtext', html: '<p><br></p>' }] }] })); }
-  function addBlock(sectionIndex, type) {
-    const block = { key: key(), type, ...(type === 'image' ? { src: '', alt: '', caption: '' } : type === 'richtext' ? { html: '<p><br></p>' } : { text: '' }) };
-    setPost((current) => ({ ...current, sections: current.sections.map((section, index) => index === sectionIndex ? { ...section, blocks: [...section.blocks, block] } : section) }));
+  function addMediaBlock(sectionIndex, file) {
+    if (!file) return;
+    const blockKey = key();
+    const imageBlock = { key: blockKey, type: 'image', src: '', alt: '', caption: '' };
+    setPost((current) => ({ ...current, sections: current.sections.map((section, index) => index === sectionIndex ? { ...section, blocks: [...section.blocks, imageBlock] } : section) }));
+    uploadImage(file, 'inline', (url, preview) => setPost((current) => ({ ...current, sections: current.sections.map((section) => ({ ...section, blocks: section.blocks.map((block) => block.key === blockKey ? { ...block, src: url, preview } : block) })) })));
   }
   function removeBlock(sectionIndex, blockIndex) {
     setPost((current) => ({ ...current, sections: current.sections.map((section, index) => index === sectionIndex ? { ...section, blocks: section.blocks.filter((_, position) => position !== blockIndex) } : section) }));
@@ -276,15 +279,13 @@ export default function BlogEditor() {
               <label className="writer-permalink"><span>Permalink</span><span className="slug-input-wrap"><span>zanovetech.vercel.app/blog/</span><input aria-label="Article URL slug" value={post.slug} onChange={(event) => updatePost('slug', event.target.value)} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" title="Use lowercase letters, numbers and hyphens" maxLength={90} disabled={editing} required placeholder="article-title" /></span><small>{editing ? 'Published article URLs stay fixed.' : 'Created from your title. Keep it short and use hyphens.'}</small></label>
               <div className="writer-columns">
                 <div className="writer-main-column">
-                  <section className="writer-canvas" id="article-content"><div className="writer-canvas-head"><div><p className="admin-kicker">ARTICLE BODY</p><h3>Write your article</h3></div><div className="section-tools"><select aria-label="Section starter" value={sectionTemplate} onChange={(event) => setSectionTemplate(event.target.value)}><option value="">Choose a section starter</option><option>Why this matters</option><option>Common problems to avoid</option><option>A practical step-by-step guide</option><option>Frequently asked questions</option><option>What to do next</option></select><button type="button" className="outline-button" onClick={() => { addSection(sectionTemplate); setSectionTemplate(''); }}>＋ Add section</button></div></div>
-                    <p className="writer-help">Write a section at a time. Use the formatting toolbar for headings, lists, emphasis and links.</p>
+                  <section className="writer-canvas" id="article-content">
                     <div className="sections-builder">{post.sections.map((section, sectionIndex) => <section className="section-builder" key={section.key}><div className="section-builder-head"><span className="section-number">{String(sectionIndex + 1).padStart(2, '0')}</span><label>Section heading · H2<input value={section.heading} onChange={(event) => updateSection(sectionIndex, 'heading', event.target.value)} maxLength={180} placeholder="Add a section heading" required /></label>{post.sections.length > 1 && <button type="button" className="icon-button danger" aria-label="Remove section" title="Remove section" onClick={() => setPost((current) => ({ ...current, sections: current.sections.filter((_, index) => index !== sectionIndex) }))}>×</button>}</div>
                       <div className="block-stack">{section.blocks.map((block, blockIndex) => <div className={`content-block block-${block.type}`} key={block.key}>
                         <div className="block-top"><span>{block.type === 'richtext' || block.type === 'paragraph' ? 'TEXT' : block.type === 'subheading' ? 'SUBHEADING · H3' : block.type === 'quote' ? 'PULL QUOTE' : 'IMAGE'}</span><button type="button" className="icon-button" aria-label="Remove content block" title="Remove block" onClick={() => removeBlock(sectionIndex, blockIndex)}>×</button></div>
-                        {block.type === 'image' ? <><div className="inline-image-row">{block.src ? <img src={imagePreview(block.src, block.preview)} alt={block.alt || ''} /> : <div className="inline-image-placeholder">Image preview</div>}<label className="upload-button">{uploading === block.key ? 'Uploading…' : block.src ? 'Replace image' : 'Choose image'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'inline', (url, preview) => updateBlock(sectionIndex, blockIndex, { src: url, preview }))} disabled={Boolean(uploading)} /></label></div><label>Image description<input value={block.alt || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { alt: event.target.value })} maxLength={240} placeholder="Describe the image for readers and screen readers" required /></label><label>Caption <span className="field-hint">Optional</span><input value={block.caption || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { caption: event.target.value })} maxLength={300} placeholder="Add a short caption" /></label></> : block.type === 'richtext' ? <RichTextEditor html={block.html} onChange={(html) => updateBlock(sectionIndex, blockIndex, { html })} onAddMedia={() => addBlock(sectionIndex, 'image')} /> : block.type === 'subheading' ? <input className="subheading-input" value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={180} placeholder="A useful subsection heading" required /> : <textarea rows={block.type === 'quote' ? 3 : 5} value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={block.type === 'quote' ? 2000 : 12000} placeholder={block.type === 'quote' ? 'A concise line worth highlighting' : 'Write a useful paragraph. Explain the idea, give a concrete example, or point to a next step.'} required />}
+                        {block.type === 'image' ? <><div className="inline-image-row">{block.src ? <img src={imagePreview(block.src, block.preview)} alt={block.alt || ''} /> : <div className="inline-image-placeholder">Image preview</div>}<label className="upload-button">{uploading === block.key ? 'Uploading…' : block.src ? 'Replace image' : 'Choose image'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'inline', (url, preview) => updateBlock(sectionIndex, blockIndex, { src: url, preview }))} disabled={Boolean(uploading)} /></label></div><label>Image description<input value={block.alt || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { alt: event.target.value })} maxLength={240} placeholder="Describe the image for readers and screen readers" required /></label><label>Caption <span className="field-hint">Optional</span><input value={block.caption || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { caption: event.target.value })} maxLength={300} placeholder="Add a short caption" /></label></> : block.type === 'richtext' ? <RichTextEditor html={block.html} onChange={(html) => updateBlock(sectionIndex, blockIndex, { html })} onAddMedia={(file) => addMediaBlock(sectionIndex, file)} /> : block.type === 'subheading' ? <input className="subheading-input" value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={180} placeholder="A useful subsection heading" required /> : <textarea rows={block.type === 'quote' ? 3 : 5} value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={block.type === 'quote' ? 2000 : 12000} placeholder={block.type === 'quote' ? 'A concise line worth highlighting' : 'Write a useful paragraph. Explain the idea, give a concrete example, or point to a next step.'} required />}
                       </div>)}</div>
-                      <div className="add-block-row"><button type="button" onClick={() => addBlock(sectionIndex, 'richtext')}>＋ Text</button><button type="button" onClick={() => addBlock(sectionIndex, 'subheading')}>＋ H3 heading</button><button type="button" onClick={() => addBlock(sectionIndex, 'quote')}>＋ Quote</button></div>
-                    </section>)}</div>
+                    </section>)}</div><button type="button" className="add-article-section" onClick={() => addSection()}>＋ Add section</button>
                   </section>
                 </div>
                 <aside className="writer-sidebar">
@@ -375,6 +376,35 @@ export default function BlogEditor() {
       .writer-form .classic-source{display:block;width:100%;min-height:370px;padding:21px 18px;border:0;resize:vertical;background:#fff;color:#23282d;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;outline:none}
       .classic-editor-status{display:flex;align-items:center;justify-content:space-between;min-height:25px;padding:3px 9px;border-top:1px solid #d3d7da;background:#f7f7f7;color:#68737a;font-size:10px}
       @media(max-width:700px){.writer-form .rich-editor-canvas,.writer-form .rich-editable,.writer-form .classic-source{min-height:300px!important}.writer-form .rich-editable,.writer-form .classic-source{padding:16px!important}.rich-placeholder{top:16px;left:16px}.classic-add-media{font-size:10px}.writer-form .rich-toolbar{gap:1px;padding:4px}.writer-form .rich-toolbar select{width:100px;margin-right:2px}}
+      /* Match the reference editor: two slim control rows, one uninterrupted page, one status strip. */
+      .writer-form .writer-canvas-head{display:none!important}
+      .writer-form .sections-builder{display:grid;gap:18px}
+      .writer-form .section-builder{display:block;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+      .writer-form .section-builder-head{display:block!important;margin:0 0 8px!important;padding:0!important;border:0!important;background:transparent!important}
+      .writer-form .section-builder-head .section-number{display:none!important}
+      .writer-form .section-builder-head label{display:flex;align-items:center;gap:9px;color:#59636a;font-size:11px;font-weight:500}
+      .writer-form .section-builder-head label input{flex:1;min-width:0;height:32px;min-height:32px!important;padding:4px 7px!important;border:1px solid #d6dade!important;border-radius:2px!important;background:#fff;font-size:12px!important}
+      .writer-form .block-stack{display:grid;gap:12px;margin:0!important}
+      .writer-form .content-block.block-richtext{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+      .writer-form .block-richtext>.block-top{display:none!important}
+      .writer-form .rich-editor{width:100%;overflow:hidden;border:1px solid #aeb6ba!important;border-radius:0!important;background:#fff!important;box-shadow:none!important}
+      .classic-editor-top{height:32px;min-height:32px;padding:0 5px;background:#f0f0f1;border-bottom:0}
+      .classic-add-media{height:24px;min-height:24px;padding:2px 7px;border:1px solid #8ea8b6;border-radius:2px;background:#f7fafc;color:#28628a;font-size:10px}
+      .classic-media-input{display:none!important}
+      .classic-mode-tabs{gap:2px}
+      .classic-mode-tabs button{height:27px;min-height:27px;padding:3px 8px;font-size:10px}
+      .writer-form .rich-toolbar{height:31px;min-height:31px;flex-wrap:nowrap;gap:0;overflow-x:auto;padding:2px 5px;background:#f0f0f1;border-top:1px solid #d7dadd;border-bottom:1px solid #c6cace}
+      .writer-form .rich-toolbar select{flex:0 0 84px;width:84px;height:22px;min-height:22px;margin-right:4px;padding:0 3px;font-size:10px}
+      .writer-form .rich-toolbar button{flex:0 0 25px;width:25px;min-width:25px;height:23px;padding:1px 3px;font:12px Arial,sans-serif}
+      .writer-form .rich-editor-canvas{position:relative;min-height:265px;background:#fff}
+      .writer-form .rich-editable{min-height:265px!important;padding:18px!important;border:0!important;border-radius:0!important;background:#fff!important;color:#24292d;font:14px/1.55 Arial,sans-serif!important;outline:0!important;box-shadow:none!important}
+      .writer-form .rich-editable[hidden]{display:none!important}
+      .writer-form .rich-editable:focus{outline:0!important;box-shadow:none!important}
+      .rich-placeholder{top:18px;left:18px;color:#727b80;font:14px/1.55 Arial,sans-serif}
+      .writer-form .classic-source{min-height:265px!important;padding:18px!important;border:0!important;resize:vertical;background:#fff;color:#24292d;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
+      .classic-editor-status{height:19px;min-height:19px;padding:1px 8px;border-top:1px solid #c6cace;background:#f7f7f7;color:#667078;font-size:9px}
+      .writer-form .add-article-section{display:inline-flex;width:max-content;margin-top:9px;padding:6px 9px;border:1px solid #d5dadd;border-radius:2px;background:#f7f8f8;color:#43545c;font-size:10px}
+      @media(max-width:700px){.writer-form .rich-toolbar{height:auto;min-height:31px;flex-wrap:wrap;overflow:visible}.writer-form .rich-editor-canvas,.writer-form .rich-editable,.writer-form .classic-source{min-height:245px!important}}
     `}</style>
   </main>;
 }
