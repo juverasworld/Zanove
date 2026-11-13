@@ -115,18 +115,30 @@ function normalizeSections(input) {
 function validatePost(input) {
   const slug = String(input.slug || '').trim();
   const title = String(input.title || '').trim();
+  const seoTitle = String(input.seoTitle || '').trim();
   const category = String(input.category || '').trim();
   const description = String(input.description || '').trim();
+  const metaDescription = String(input.metaDescription || description).trim();
+  const focusKeyword = String(input.focusKeyword || '').trim();
+  const backlinkNotes = String(input.backlinkNotes || '').trim().slice(0, 3000);
+  const listTerms = (value, limit, maxLength) => Array.isArray(value) ? [...new Set(value.map((term) => String(term || '').trim()).filter(Boolean))].slice(0, limit).filter((term) => term.length <= maxLength) : [];
+  const secondaryKeywords = listTerms(input.secondaryKeywords, 20, 100);
+  const tags = listTerms(input.tags, 20, 50);
+  const resourceLinks = Array.isArray(input.resourceLinks) ? input.resourceLinks.slice(0, 30).map((link) => ({
+    type: link?.type === 'external' ? 'external' : 'internal',
+    label: String(link?.label || '').trim().slice(0, 120),
+    url: String(link?.url || '').trim().slice(0, 500),
+  })).filter((link) => link.label && (link.type === 'internal' ? link.url.startsWith('/') && !link.url.startsWith('//') : /^https:\/\//i.test(link.url))) : [];
   const authorId = String(input.authorId || DEFAULT_AUTHOR_ID).trim();
   const coverImage = String(input.coverImage || '').trim();
   const coverAlt = String(input.coverAlt || '').trim();
   const safeImagePath = (value) => !value || value.startsWith('/assets/blog/') || /^https:\/\//i.test(value);
   const sections = normalizeSections(input);
   const contentSize = JSON.stringify(sections || []).length;
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 90 || !title || title.length > 120 || !category || category.length > 60 || !description || description.length > 180 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(authorId) || !sections || contentSize > 60000 || !safeImagePath(coverImage) || (coverImage && !coverAlt)) {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 90 || !title || title.length > 120 || seoTitle.length > 120 || !category || category.length > 60 || !description || description.length > 180 || !metaDescription || metaDescription.length > 180 || focusKeyword.length > 120 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(authorId) || !sections || contentSize > 60000 || !safeImagePath(coverImage) || (coverImage && !coverAlt)) {
     return { error: 'Check the title, slug, category, excerpt, author, images and article sections.' };
   }
-  return { slug, title, category, description, authorId, coverImage, coverAlt, sections };
+  return { slug, title, seoTitle, category, description, metaDescription, focusKeyword, secondaryKeywords, tags, resourceLinks, backlinkNotes, authorId, coverImage, coverAlt, sections };
 }
 
 function validateAuthor(input) {

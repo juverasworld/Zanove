@@ -19,13 +19,14 @@ export async function generateMetadata({ params }) {
   const post = articleBySlug(slug);
   if (!post) return { title: 'Article not found | Zanove Journal', robots: { index: false, follow: true } };
   const canonical = `${site}/blog/${post.slug}`;
-  const title = `${post.title} | Zanove Journal`;
+  const title = post.seoTitle || `${post.title} | Zanove Journal`;
+  const description = post.metaDescription || post.description;
   return {
     title,
-    description: post.description,
+    description,
     alternates: { canonical },
-    openGraph: { title, description: post.description, url: canonical, type: 'article', siteName: 'Zanove Technologies', images: [post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${site}${post.coverImage}`) : `${site}/assets/zanove-social.jpg`] },
-    twitter: { card: 'summary_large_image', title, description: post.description, images: [post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${site}${post.coverImage}`) : `${site}/assets/zanove-social.jpg`] },
+    openGraph: { title, description, url: canonical, type: 'article', siteName: 'Zanove Technologies', images: [post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${site}${post.coverImage}`) : `${site}/assets/zanove-social.jpg`] },
+    twitter: { card: 'summary_large_image', title, description, images: [post.coverImage ? (post.coverImage.startsWith('http') ? post.coverImage : `${site}${post.coverImage}`) : `${site}/assets/zanove-social.jpg`] },
   };
 }
 
@@ -68,6 +69,7 @@ export default async function JournalArticlePage({ params }) {
   const canonical = `${site}/blog/${post.slug}`;
   const related = posts.filter((item) => item.slug !== post.slug).slice(0, 2);
   const author = authors.find((item) => item.id === post.authorId) || authors[0];
+  const resourceLinks = (post.resourceLinks || []).filter((link) => link?.label && (link.type === 'internal' ? link.url?.startsWith('/') && !link.url.startsWith('//') : /^https:\/\//i.test(link.url || '')));
   const isCompanyAuthor = !author || author.id === 'zanove-technologies';
   const isFounderAuthor = author && (author.id === 'obasi-vera' || author.name.trim().toLowerCase() === 'obasi vera');
   const authorImage = author?.image ? (author.image.startsWith('http') ? author.image : `${site}${author.image}`) : undefined;
@@ -76,10 +78,11 @@ export default async function JournalArticlePage({ params }) {
     '@type': 'BlogPosting',
     '@id': `${canonical}#article`,
     headline: post.title,
-    description: post.description,
+    description: post.metaDescription || post.description,
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     url: canonical,
     articleSection: post.category,
+    ...((post.focusKeyword || post.secondaryKeywords?.length || post.tags?.length) ? { keywords: [...new Set([post.focusKeyword, ...(post.secondaryKeywords || []), ...(post.tags || [])].filter(Boolean))] } : {}),
     ...(post.datePublished ? { datePublished: post.datePublished } : {}),
     ...(post.dateModified ? { dateModified: post.dateModified } : {}),
     author: isCompanyAuthor ? { '@id': `${site}/#organization` } : { '@type': 'Person', '@id': `${site}/#author-${author.id}`, name: author.name, ...(author.role ? { jobTitle: author.role } : {}), ...(author.bio ? { description: author.bio } : {}), ...(authorImage ? { image: authorImage } : {}), ...(isFounderAuthor ? { sameAs: ['https://www.linkedin.com/in/obasivera/'] } : {}) },
@@ -97,6 +100,8 @@ export default async function JournalArticlePage({ params }) {
     {post.coverImage && <div className="container journal-cover"><img src={post.coverImage} alt={post.coverAlt || ''} fetchPriority="high" /></div>}
     <section className="section"><article className="container article-content">
       {(post.sections || []).map((section, sectionIndex) => <section key={`${section.heading}-${sectionIndex}`}><h2>{section.heading}</h2>{(section.blocks || (section.paragraphs || []).map((text) => ({ type: 'paragraph', text }))).map((block, blockIndex) => <ArticleBlock block={block} key={`${sectionIndex}-${blockIndex}`} />)}</section>)}
+      {resourceLinks.length > 0 && <nav className="article-resources" aria-label="Article resources"><h2>Useful links and sources</h2><ul>{resourceLinks.map((link, index) => <li key={`${link.url}-${index}`}><a href={link.url} {...(link.type === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{link.label} <span aria-hidden="true">↗</span></a></li>)}</ul></nav>}
+      {post.tags?.length > 0 && <div className="article-tags" aria-label="Article topics"><span>Topics</span>{post.tags.map((tag) => <span className="article-tag" key={tag}>{tag}</span>)}</div>}
       {author && <aside className="article-author-card"><div className="article-author-avatar">{author.image ? <img src={author.image} alt="" loading="lazy" /> : <span>{author.name.slice(0, 1)}</span>}</div><div><p className="eyebrow">About the author</p><h3>{author.name}</h3>{author.role && <p className="author-role">{author.role}</p>}<p>{author.bio}</p>{isFounderAuthor && <a className="card-link" href="https://www.linkedin.com/in/obasivera/" target="_blank" rel="noopener noreferrer">Connect with Obasi on LinkedIn <span aria-hidden="true">↗</span></a>}</div></aside>}
       <div className="article-service-links"><p className="eyebrow">A practical next step</p><h2>Need help applying this to your business?</h2><p>Explore the relevant Zanove service or tell us what you are trying to improve. We can help you choose a clear next step.</p><div className="hero-actions"><a className="button" href="/service.html">Explore our services <span aria-hidden="true">↗</span></a><a className="button button-secondary" href="/project.html">Request a consultation <span aria-hidden="true">↗</span></a></div></div>
     </article></section>

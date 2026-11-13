@@ -6,7 +6,8 @@ import dynamic from 'next/dynamic';
 const defaultAuthorId = 'zanove-technologies';
 const key = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 const freshPost = (authorId = defaultAuthorId) => ({
-  slug: '', title: '', category: 'Websites · Business growth', description: '', authorId,
+  slug: '', title: '', seoTitle: '', category: 'Websites · Business growth', description: '', metaDescription: '',
+  focusKeyword: '', secondaryKeywordsText: '', tagsText: '', backlinkNotes: '', resourceLinks: [], authorId,
   coverImage: '', coverAlt: '',
   sections: [{ key: key(), heading: '', blocks: [{ key: key(), type: 'richtext', html: '<p><br></p>' }] }],
 });
@@ -19,7 +20,8 @@ function slugify(value) {
 
 function editorPost(item, defaultAuthor) {
   return {
-    slug: item.slug || '', title: item.title || '', category: item.category || '', description: item.description || '',
+    slug: item.slug || '', title: item.title || '', seoTitle: item.seoTitle || '', category: item.category || '', description: item.description || '', metaDescription: item.metaDescription || item.description || '',
+    focusKeyword: item.focusKeyword || '', secondaryKeywordsText: (item.secondaryKeywords || []).join('\n'), tagsText: (item.tags || []).join(', '), backlinkNotes: item.backlinkNotes || '', resourceLinks: item.resourceLinks || [],
     authorId: item.authorId || defaultAuthor || defaultAuthorId,
     coverImage: item.coverImage || '', coverAlt: item.coverAlt || '',
     sections: (item.sections || []).map((section) => ({
@@ -213,8 +215,9 @@ export default function BlogEditor() {
     if (missingHeading || missingContent) { setError(true); setStatus('Add a heading and text to every section. Images need alt text.'); return; }
     setBusy(true);
     try {
-      const { coverPreview, ...postFields } = post;
-      const payload = { ...postFields, sections: post.sections.map(({ heading, blocks }) => ({ heading: heading.trim(), blocks: blocks.map(({ type, text, html, src, alt, caption, level }) => ({ type, ...(text !== undefined ? { text: text.trim() } : {}), ...(html !== undefined ? { html } : {}), ...(src ? { src } : {}), ...(alt ? { alt: alt.trim() } : {}), ...(caption?.trim() ? { caption: caption.trim() } : {}), ...(level ? { level } : {}) })) })) };
+      const { coverPreview, secondaryKeywordsText, tagsText, backlinkNotes, ...postFields } = post;
+      const splitTerms = (value) => [...new Set(String(value || '').split(/[\n,]/).map((term) => term.trim()).filter(Boolean))];
+      const payload = { ...postFields, secondaryKeywords: splitTerms(secondaryKeywordsText), tags: splitTerms(tagsText), backlinkNotes, resourceLinks: post.resourceLinks || [], sections: post.sections.map(({ heading, blocks }) => ({ heading: heading.trim(), blocks: blocks.map(({ type, text, html, src, alt, caption, level }) => ({ type, ...(text !== undefined ? { text: text.trim() } : {}), ...(html !== undefined ? { html } : {}), ...(src ? { src } : {}), ...(alt ? { alt: alt.trim() } : {}), ...(caption?.trim() ? { caption: caption.trim() } : {}), ...(level ? { level } : {}) })) })) };
       const result = await request('/api/blog/publish', { method: 'POST', body: JSON.stringify(payload) });
       setPosts(result.posts || []); setStatus(result.action === 'updated' ? 'Article updated. Vercel will rebuild the site.' : 'Article published. Vercel will rebuild the site.');
       setPost(freshPost(authors[0]?.id)); setEditing(false);
@@ -242,9 +245,22 @@ export default function BlogEditor() {
   function updatePost(field, value) {
     setPost((current) => {
       const next = { ...current, [field]: value };
+      if (field === 'description' && (!current.metaDescription || current.metaDescription === current.description)) next.metaDescription = value;
       if (field === 'title' && (!current.slug || !editing)) next.slug = slugify(value);
       return next;
     });
+  }
+
+  function addResourceLink() {
+    setPost((current) => ({ ...current, resourceLinks: [...(current.resourceLinks || []), { type: 'internal', label: '', url: '' }] }));
+  }
+
+  function updateResourceLink(index, field, value) {
+    setPost((current) => ({ ...current, resourceLinks: current.resourceLinks.map((link, position) => position === index ? { ...link, [field]: value } : link) }));
+  }
+
+  function removeResourceLink(index) {
+    setPost((current) => ({ ...current, resourceLinks: current.resourceLinks.filter((_, position) => position !== index) }));
   }
 
   function updateSection(sectionIndex, field, value) {
@@ -320,6 +336,19 @@ export default function BlogEditor() {
                 <aside className="writer-sidebar">
                   <section className="writer-side-card writer-publish-card"><div className="writer-side-heading"><span className="publish-indicator" aria-hidden="true" /> <h3>Publish</h3></div><p>{editing ? 'Your changes will update the live article.' : 'Review your title and settings, then publish when you’re ready.'}</p>{editing && <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer">Preview article ↗</a>}<button className="admin-primary" disabled={busy || Boolean(uploading)}>{busy ? 'Publishing…' : editing ? 'Update article' : 'Publish article'} <span aria-hidden="true">↗</span></button></section>
                   <section className="writer-side-card writer-settings-card"><div className="writer-side-heading"><span className="settings-icon" aria-hidden="true">⚙</span><h3>Post settings</h3></div><label>Category<input list="blog-categories" value={post.category} onChange={(event) => updatePost('category', event.target.value)} maxLength={60} placeholder="Choose or type a category" required /><datalist id="blog-categories"><option value="Websites · Conversion" /><option value="Websites · Business growth" /><option value="AI · Automation" /><option value="AI · Practical guides" /><option value="Digital strategy" /><option value="Software · Product design" /></datalist></label><label>Author<select value={post.authorId} onChange={(event) => updatePost('authorId', event.target.value)} required>{authors.map((profile) => <option value={profile.id} key={profile.id}>{profile.name}{profile.role ? ` · ${profile.role}` : ''}</option>)}</select></label><button type="button" className="inline-manage-link" onClick={() => setActiveTab('authors')}>＋ Manage author profiles</button><label className="excerpt-label">Search excerpt <span className="field-hint">A short summary for search results and article previews.</span><textarea rows={4} value={post.description} onChange={(event) => updatePost('description', event.target.value)} maxLength={180} placeholder="What will readers learn?" required /><small className="char-count">{post.description.length}/180 characters</small></label></section>
+                  <section className="writer-side-card writer-seo-card"><div className="writer-side-heading"><span className="settings-icon" aria-hidden="true">⌕</span><h3>SEO publishing details</h3></div><p>These fields set the search preview and help organise your article. Use relevant phrases naturally; rankings aren’t guaranteed.</p>
+                    <label>SEO title<input value={post.seoTitle} onChange={(event) => updatePost('seoTitle', event.target.value)} maxLength={120} placeholder={post.title || 'Search result title'} /><small className="char-count">{(post.seoTitle || post.title).length}/120</small></label>
+                    <label>Meta description<textarea rows={3} value={post.metaDescription} onChange={(event) => updatePost('metaDescription', event.target.value)} maxLength={180} placeholder="A concise summary for search results" required /><small className="char-count">{post.metaDescription.length}/180</small></label>
+                    <label>Focus keyword<input value={post.focusKeyword} onChange={(event) => updatePost('focusKeyword', event.target.value)} maxLength={120} placeholder="Main phrase this article answers" /></label>
+                    <label>Secondary keywords<textarea rows={3} value={post.secondaryKeywordsText} onChange={(event) => updatePost('secondaryKeywordsText', event.target.value)} placeholder="One per line, e.g.\nWebsite design mistakes\nMobile-friendly website" /></label>
+                    <label>Tags<input value={post.tagsText} onChange={(event) => updatePost('tagsText', event.target.value)} placeholder="Comma-separated: Website Design, Business Growth" /></label>
+                    <div className="seo-preview"><span>GOOGLE SEARCH PREVIEW</span><strong>{post.seoTitle || post.title || 'Your article title'}</strong><small>zanovetech.vercel.app/blog/{post.slug || 'article-slug'}</small><p>{post.metaDescription || post.description || 'Your search description will appear here.'}</p></div>
+                  </section>
+                  <section className="writer-side-card writer-links-card"><div className="writer-side-heading"><span className="settings-icon" aria-hidden="true">↗</span><h3>Links &amp; backlink plan</h3></div><p>Add links you want readers to use. These will appear in a resources section at the end of the article.</p>
+                    {(post.resourceLinks || []).map((link, index) => <div className="resource-link-editor" key={`resource-${index}`}><select aria-label="Link type" value={link.type} onChange={(event) => updateResourceLink(index, 'type', event.target.value)}><option value="internal">Zanove page</option><option value="external">External source</option></select><input aria-label="Link label" value={link.label} onChange={(event) => updateResourceLink(index, 'label', event.target.value)} placeholder="Descriptive link text" maxLength={120} /><input aria-label="Link URL" value={link.url} onChange={(event) => updateResourceLink(index, 'url', event.target.value)} placeholder={link.type === 'internal' ? '/service.html' : 'https://example.com/source'} maxLength={500} /><button type="button" className="icon-button danger" aria-label="Remove link" onClick={() => removeResourceLink(index)}>×</button></div>)}
+                    <button type="button" className="inline-manage-link" onClick={addResourceLink}>＋ Add a link</button>
+                    <label>Backlink outreach notes<textarea rows={3} value={post.backlinkNotes} onChange={(event) => updatePost('backlinkNotes', event.target.value)} placeholder="Planning notes: sites or partners to contact about referencing this article." /><small className="field-hint">Planning only; these notes won’t appear on the article.</small></label>
+                  </section>
                   <section className="writer-side-card writer-image-card"><div className="writer-side-heading"><span className="image-icon" aria-hidden="true">▧</span><h3>Featured image</h3></div><p>Appears at the top of your article and in journal cards.</p>
                     {post.coverImage ? <div className="cover-preview"><img src={imagePreview(post.coverImage, post.coverPreview)} alt={post.coverAlt || ''} /><button type="button" className="remove-image" onClick={() => setPost((current) => ({ ...current, coverImage: '', coverPreview: '', coverAlt: '' }))}>Remove</button><label className="cover-replace upload-button">Replace image<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'cover', (url, preview) => setPost((current) => ({ ...current, coverImage: url, coverPreview: preview, coverAlt: '' })))} disabled={Boolean(uploading)} /></label></div> : <label className="cover-placeholder cover-dropzone"><span aria-hidden="true">＋</span><strong>{uploading === 'cover' ? 'Uploading image…' : 'Add featured image'}</strong><small>JPG, PNG or WebP · up to 2.5 MB</small><input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'cover', (url, preview) => setPost((current) => ({ ...current, coverImage: url, coverPreview: preview })))} disabled={Boolean(uploading)} /></label>}
                     {post.coverImage && <label>Image description<input value={post.coverAlt} onChange={(event) => updatePost('coverAlt', event.target.value)} maxLength={240} placeholder="Describe what this image shows" required /></label>}
@@ -432,6 +461,22 @@ export default function BlogEditor() {
       .rich-placeholder{top:18px;left:18px;color:#727b80;font:14px/1.55 Arial,sans-serif}
       .writer-form .classic-source{min-height:265px!important;padding:18px!important;border:0!important;resize:vertical;background:#fff;color:#24292d;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
       .classic-editor-status{height:19px;min-height:19px;padding:1px 8px;border-top:1px solid #c6cace;background:#f7f7f7;color:#667078;font-size:9px}
+      .writer-seo-card>label,.writer-links-card>label{display:grid;gap:6px;color:#45514b;font-size:11px;font-weight:700}
+      .writer-seo-card input,.writer-seo-card textarea,.writer-links-card input,.writer-links-card textarea,.writer-links-card select{width:100%;min-width:0;padding:9px 10px;border:1px solid #d7dfda;border-radius:7px;background:#fff;color:#26332d;font:11px/1.5 Poppins,Inter,sans-serif}
+      .writer-seo-card textarea,.writer-links-card textarea{resize:vertical}
+      .writer-seo-card .char-count{color:#7b8780;font-size:9px;font-weight:400;text-align:right}
+      .seo-preview{display:grid;gap:5px;padding:12px;border:1px solid #e1e7e3;border-radius:8px;background:#f8faf8}
+      .seo-preview>span{color:#7a8780;font-size:8px;font-weight:800;letter-spacing:.1em}
+      .seo-preview>strong{color:#1a0dab;font:500 14px/1.35 Arial,sans-serif}
+      .seo-preview>small{overflow-wrap:anywhere;color:#188038;font:11px Arial,sans-serif}
+      .seo-preview>p{margin:0;color:#4e555a;font:11px/1.5 Arial,sans-serif}
+      .resource-link-editor{display:grid;grid-template-columns:1fr 30px;gap:6px}
+      .resource-link-editor select,.resource-link-editor input[aria-label="Link label"],.resource-link-editor input[aria-label="Link URL"]{grid-column:1/-1}
+      .resource-link-editor button{grid-column:2;grid-row:1;align-self:center}
+      .article-resources{margin:38px 0;padding:22px;border:1px solid #e1e7e3;border-radius:12px;background:#f8faf8}
+      .article-resources h2{margin:0 0 12px;color:#182522;font:600 22px/1.2 'Bricolage Grotesque','Inter',sans-serif}
+      .article-resources ul{display:grid;gap:8px;margin:0;padding-left:20px}
+      .article-resources a{color:#087f87;font-weight:600}
       .classic-editor{width:100%;overflow:hidden;border:1px solid #aeb6ba;border-radius:0;background:#fff}
       .classic-editor .tox.tox-tinymce{border:0!important;border-radius:0!important}
       .classic-editor .tox .tox-editor-header{border:0!important;box-shadow:none!important}
