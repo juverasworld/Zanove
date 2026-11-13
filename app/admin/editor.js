@@ -37,11 +37,19 @@ function escapeHtml(value) {
 
 function RichTextEditor({ html, onChange }) {
   const editor = useRef(null);
-  useEffect(() => { if (editor.current) editor.current.innerHTML = html || '<p><br></p>'; }, []);
+  const [isEmpty, setIsEmpty] = useState(true);
+  useEffect(() => {
+    if (!editor.current) return;
+    editor.current.innerHTML = html || '<p><br></p>';
+    setIsEmpty(!editor.current.innerText.trim());
+  }, []);
   function command(action, value) {
     editor.current?.focus();
     document.execCommand(action, false, value);
-    if (editor.current) onChange(editor.current.innerHTML);
+    if (editor.current) {
+      setIsEmpty(!editor.current.innerText.trim());
+      onChange(editor.current.innerHTML);
+    }
   }
   function addLink() {
     const href = window.prompt('Paste a secure https:// link or a site path such as /service.html');
@@ -60,7 +68,10 @@ function RichTextEditor({ html, onChange }) {
       <button type="button" title="Numbered list" aria-label="Numbered list" onMouseDown={(event) => event.preventDefault()} onClick={() => command('insertOrderedList')}>1. List</button>
       <button type="button" title="Add link to selected text" aria-label="Add link" onMouseDown={(event) => event.preventDefault()} onClick={addLink}>↗ Link</button>
     </div>
-    <div ref={editor} className="rich-editable" contentEditable suppressContentEditableWarning role="textbox" aria-multiline="true" aria-label="Article text" data-placeholder="Write your article. Select text to format it, add a subheading, or create a list." onInput={(event) => onChange(event.currentTarget.innerHTML)} />
+    <div className="rich-editor-canvas">
+      <div ref={editor} className="rich-editable" contentEditable suppressContentEditableWarning role="textbox" aria-multiline="true" aria-label="Article text" onInput={(event) => { setIsEmpty(!event.currentTarget.innerText.trim()); onChange(event.currentTarget.innerHTML); }} />
+      {isEmpty && <span className="rich-placeholder" aria-hidden="true">Start writing your article…</span>}
+    </div>
   </div>;
 }
 
@@ -220,7 +231,7 @@ export default function BlogEditor() {
     {!authenticated ? <section className="login-card">
       <div className="login-welcome"><span className="login-mark" aria-hidden="true">Z</span><p className="login-overline">ZANOVE JOURNAL · ADMIN</p><h1>A clear space for your ideas.</h1><p>Write and publish useful articles for the people building businesses in Nigeria.</p><div className="login-benefits"><span>Write and format articles</span><span>Add images and author profiles</span><span>Publish to the Zanove Journal</span></div></div>
       <div className="login-form-panel"><p className="admin-kicker">WELCOME BACK</p><h2>Sign in to your blog.</h2><p className="login-form-intro">Enter your private publishing key to continue.</p>
-        <form onSubmit={signIn} className="admin-form"><label>Publishing key<input type="password" autoComplete="current-password" value={token} onChange={(event) => setToken(event.target.value)} placeholder="Paste your publishing key" required /></label><button className="admin-primary" disabled={!token || busy}>{busy ? 'Checking key…' : 'Continue to blog editor'} <span aria-hidden="true">↗</span></button><p className={`admin-status ${error ? 'is-error' : ''}`} role="status">{status}</p></form>
+        <form onSubmit={signIn} className="admin-form"><label>Publishing key<input type="password" autoComplete="current-password" value={token} onChange={(event) => setToken(event.target.value)} placeholder="Paste your publishing key" required /></label><button className="admin-primary" disabled={!token || busy}>{busy ? 'Signing in…' : 'Sign in'}</button><p className={`admin-status ${error ? 'is-error' : ''}`} role="status">{status}</p></form>
         <p className="admin-footnote">Your key stays in this browser tab. Server credentials are never shown here.</p>
       </div>
     </section> : <>
@@ -242,7 +253,7 @@ export default function BlogEditor() {
                         <div className="block-top"><span>{block.type === 'richtext' || block.type === 'paragraph' ? 'TEXT' : block.type === 'subheading' ? 'SUBHEADING · H3' : block.type === 'quote' ? 'PULL QUOTE' : 'IMAGE'}</span><button type="button" className="icon-button" aria-label="Remove content block" title="Remove block" onClick={() => removeBlock(sectionIndex, blockIndex)}>×</button></div>
                         {block.type === 'image' ? <><div className="inline-image-row">{block.src ? <img src={imagePreview(block.src, block.preview)} alt={block.alt || ''} /> : <div className="inline-image-placeholder">Image preview</div>}<label className="upload-button">{uploading === block.key ? 'Uploading…' : block.src ? 'Replace image' : 'Choose image'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => uploadImage(event.target.files?.[0], 'inline', (url, preview) => updateBlock(sectionIndex, blockIndex, { src: url, preview }))} disabled={Boolean(uploading)} /></label></div><label>Image description<input value={block.alt || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { alt: event.target.value })} maxLength={240} placeholder="Describe the image for readers and screen readers" required /></label><label>Caption <span className="field-hint">Optional</span><input value={block.caption || ''} onChange={(event) => updateBlock(sectionIndex, blockIndex, { caption: event.target.value })} maxLength={300} placeholder="Add a short caption" /></label></> : block.type === 'richtext' ? <RichTextEditor html={block.html} onChange={(html) => updateBlock(sectionIndex, blockIndex, { html })} /> : block.type === 'subheading' ? <input className="subheading-input" value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={180} placeholder="A useful subsection heading" required /> : <textarea rows={block.type === 'quote' ? 3 : 5} value={block.text} onChange={(event) => updateBlock(sectionIndex, blockIndex, { text: event.target.value })} maxLength={block.type === 'quote' ? 2000 : 12000} placeholder={block.type === 'quote' ? 'A concise line worth highlighting' : 'Write a useful paragraph. Explain the idea, give a concrete example, or point to a next step.'} required />}
                       </div>)}</div>
-                      <div className="add-block-row"><button type="button" onClick={() => addBlock(sectionIndex, 'richtext')}>＋ Text</button><button type="button" onClick={() => addBlock(sectionIndex, 'subheading')}>＋ H3 heading</button><button type="button" onClick={() => addBlock(sectionIndex, 'image')}>＋ Image</button><button type="button" onClick={() => addBlock(sectionIndex, 'quote')}>＋ Quote</button></div>
+                      <div className="add-block-row"><button type="button" onClick={() => addBlock(sectionIndex, 'richtext')}>＋ Text</button><button type="button" onClick={() => addBlock(sectionIndex, 'subheading')}>＋ H3 heading</button><button type="button" onClick={() => addBlock(sectionIndex, 'image')}>＋ Add media</button><button type="button" onClick={() => addBlock(sectionIndex, 'quote')}>＋ Quote</button></div>
                     </section>)}</div>
                   </section>
                 </div>
@@ -298,6 +309,23 @@ export default function BlogEditor() {
       @media(max-width:900px){.writer-columns{grid-template-columns:minmax(0,1fr) 290px}.writer-main-column{padding:22px}.writer-sidebar{padding:13px}.writer-canvas-head{align-items:flex-start;flex-direction:column}.writer-canvas-head .section-tools{width:100%}.writer-canvas-head .section-tools select{flex:1}.writer-permalink{padding-left:26px;padding-right:26px}.writer-title-label{padding-left:26px;padding-right:26px}}
       @media(max-width:700px){.login-card{grid-template-columns:1fr;max-width:520px;min-height:0;margin:4vh auto 8vh}.login-welcome{padding:26px}.login-mark{width:44px;height:44px;margin-bottom:24px}.login-welcome h1{font-size:34px}.login-welcome>p:not(.login-overline){margin:10px 0 16px}.login-benefits{grid-template-columns:1fr;gap:8px;font-size:11px}.login-form-panel{padding:27px}.writer-columns{grid-template-columns:1fr}.writer-main-column{padding:20px 16px}.writer-sidebar{position:static;max-height:none;overflow:visible;padding:16px;border-top:1px solid #e5eae7;border-left:0}.writer-topbar{align-items:flex-start;padding:14px 16px}.writer-topbar h2{font-size:20px}.writer-top-actions{flex-wrap:wrap;justify-content:flex-end;gap:6px}.writer-top-actions .admin-primary,.writer-top-actions .outline-button{min-height:38px;padding:0 10px;font-size:10px}.writer-title-label{padding:17px 18px 0}.writer-title-input{min-height:56px!important;font-size:30px!important}.writer-permalink{padding:10px 18px 17px}.writer-permalink small{padding-left:0}.writer-canvas-head .section-tools{align-items:stretch;flex-direction:column}.writer-canvas-head .section-tools select,.writer-canvas-head .section-tools .outline-button{width:100%}.writer-form .rich-editable{min-height:260px;padding:16px;font-size:15px}.writer-form .block-stack,.writer-form .add-block-row{margin-left:0}.writer-form .section-builder{padding:13px}.writer-form .section-builder-head{grid-template-columns:34px minmax(0,1fr) 30px}.writer-form .section-number{width:32px;height:32px}.writer-form .add-block-row button{flex:1 1 40%}.writer-form>.admin-status{margin:0 16px 16px}}
       @media(max-width:400px){.admin-top{align-items:flex-start}.admin-brand img{width:135px}.writer-topbar{flex-direction:column}.writer-top-actions{width:100%;justify-content:space-between}.writer-top-actions .admin-primary{flex:1}.login-form-panel{padding:22px}}
+      /* Keep the login controls in a dependable single-column flow. */
+      .login-form-panel .admin-form{display:flex!important;flex-direction:column!important;align-items:stretch!important;width:100%;min-width:0;gap:14px}
+      .login-form-panel .admin-form>label,.login-form-panel .admin-form>.admin-primary,.login-form-panel .admin-form>.admin-status{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+      .login-form-panel .admin-form input{display:block;width:100%;min-width:0;box-sizing:border-box}
+      .login-form-panel .admin-form>.admin-primary{justify-content:center;white-space:normal;overflow-wrap:anywhere}
+      .login-form-panel .admin-form>.admin-status:empty{display:none}
+      /* A clear, generous writing surface like a familiar long-form editor. */
+      .writer-form .rich-editor{overflow:hidden;border:1px solid #dce3df;border-radius:5px;background:#fff}
+      .writer-form .rich-editor-canvas{position:relative;min-height:470px;background:#fff}
+      .writer-form .rich-editable{position:relative;z-index:1;min-height:470px!important;padding:22px 24px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#28332e;font-size:16px!important;line-height:1.85!important;outline:none!important;box-shadow:none!important}
+      .writer-form .rich-editable:focus{outline:none!important;box-shadow:none!important}
+      .rich-placeholder{position:absolute;top:22px;left:24px;z-index:0;color:#8b9690;font-size:15px;line-height:1.7;pointer-events:none}
+      .writer-form .section-builder{padding:0!important;border:0!important;background:transparent!important}
+      .writer-form .section-builder-head{margin:0 0 12px!important;padding:0!important;border:0!important;background:transparent!important}
+      .writer-form .section-builder-head label input{min-height:42px!important;border-color:#dce3df!important;border-radius:5px!important}
+      .writer-form .add-block-row button{border-radius:5px}
+      @media(max-width:700px){.writer-form .rich-editor-canvas,.writer-form .rich-editable{min-height:320px!important}.writer-form .rich-editable{padding:18px!important}.rich-placeholder{top:18px;left:18px}.login-form-panel .admin-form>.admin-primary{min-height:50px}}
     `}</style>
   </main>;
 }
