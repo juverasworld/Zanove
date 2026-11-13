@@ -14,6 +14,10 @@ The admin lives at `/admin`. Enter the private blog admin key to open the publis
    - `GITHUB_BRANCH`: `main` (the route defaults to `main` if omitted).
 4. Redeploy after adding the variables. Open `https://zanovetech.vercel.app/admin`, enter the `BLOG_ADMIN_TOKEN`, and use the publishing dashboard. The route commits to GitHub; Vercel rebuilds when it sees that commit on the Production branch.
 
+### If GitHub says “Resource not accessible by personal access token”
+
+The token used by the deployed server can read the journal but cannot write its commit. Update the fine-grained token so it includes the `Zanove` repository and has **Repository permissions → Contents: Read and write**. Then update the `GITHUB_TOKEN` value in the Vercel project for the deployment environment and redeploy. The admin now shows this setup guidance for GitHub's permission error.
+
 ## Writing an article
 
 - Give it a specific, useful headline, a short search excerpt, and a category such as `Websites · Conversion` or `AI · Automation`.

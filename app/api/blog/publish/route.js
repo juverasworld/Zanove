@@ -49,6 +49,12 @@ async function writeFile(config, filePath, entries, sha, message) {
   if (response.ok) return;
   const details = await response.json().catch(() => ({}));
   if (response.status === 409 || response.status === 422) throw new Error('The journal changed while you were editing. Refresh the dashboard and try again.');
+  if (response.status === 403 && /resource not accessible by personal access token/i.test(details.message || '')) {
+    throw new Error('GitHub blocked this save because the GITHUB_TOKEN does not have write access. In GitHub, edit or replace the fine-grained token for juverasworld/Zanove and grant Repository permissions → Contents: Read and write. Then update GITHUB_TOKEN in the Vercel project for Production (and Preview if needed) and redeploy.');
+  }
+  if (response.status === 401) {
+    throw new Error('GitHub rejected the GITHUB_TOKEN. Replace it with a valid fine-grained token that can access juverasworld/Zanove, update it in Vercel, and redeploy.');
+  }
   throw new Error(`GitHub could not save this item${details.message ? `: ${details.message}` : '.'}`);
 }
 
