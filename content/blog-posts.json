@@ -1,14 +1,172 @@
 [
   {
+    "slug": "signs-your-website-looks-unprofessional",
+    "title": "5 Signs Your Website Is Making Your Business Look Less Professional",
+    "seoTitle": "5 Signs Your Website Is Making Your Business Look Less Professional",
+    "category": "Website Design & Development",
+    "description": "Discover 5 signs your website looks unprofessional, from outdated design to poor mobile experience, and learn how to improve your business website.",
+    "metaDescription": "Discover 5 signs your website looks unprofessional, from outdated design to poor mobile experience, and learn how to improve your business website.",
+    "focusKeyword": "signs your website looks unprofessional",
+    "secondaryKeywords": [
+      "Professional business website",
+      "Website design mistakes",
+      "Business website design",
+      "Website credibility",
+      "Mobile-friendly website",
+      "Website user experience",
+      "Website redesign"
+    ],
+    "tags": [
+      "Website Design",
+      "Web Development",
+      "Business Growth",
+      "Website Optimization",
+      "Digital Presence"
+    ],
+    "backlinkNotes": "Featured image brief: upload a commercially licensed 1200 × 675 px WebP named professional-business-website-design.webp. Suggested alt text: Professional business website displayed on laptop and smartphone devices. Browse suitable concepts at https://www.freepik.com/search?format=search&query=responsive+website+mockup&utm_source=chatgpt.com and verify the individual asset licence before use.",
+    "resourceLinks": [
+      {
+        "type": "external",
+        "label": "Google guidance on mobile-first indexing",
+        "url": "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing"
+      },
+      {
+        "type": "external",
+        "label": "Check a website with Google PageSpeed Insights",
+        "url": "https://pagespeed.web.dev/"
+      },
+      {
+        "type": "external",
+        "label": "W3C accessibility fundamentals",
+        "url": "https://www.w3.org/WAI/fundamentals/"
+      },
+      {
+        "type": "external",
+        "label": "Browse responsive website mockups on Freepik",
+        "url": "https://www.freepik.com/search?format=search&query=responsive+website+mockup&utm_source=chatgpt.com"
+      },
+      {
+        "type": "internal",
+        "label": "Explore Zanove website and conversion services",
+        "url": "/service.html"
+      },
+      {
+        "type": "internal",
+        "label": "Request a Zanove project consultation",
+        "url": "/project.html"
+      }
+    ],
+    "authorId": "zanove-technologies",
+    "coverImage": "",
+    "coverAlt": "",
+    "sections": [
+      {
+        "heading": "Why your website shapes a first impression",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Your business may offer excellent products, deliver outstanding services, and have a team that knows exactly what they are doing. But what happens when a potential customer visits your website and gets a completely different impression?</p><p>Before someone calls your business, books a consultation, or makes a purchase, there is a good chance they will visit your website to learn more about you.</p><p>And in those few moments, your website is already communicating something about your business.</p><p>An outdated design, confusing navigation, broken links, or a poor mobile experience can make an otherwise credible business appear unreliable. Even worse, potential customers may leave without giving your business a chance.</p><p>Your website is more than an online presence. It is an important part of your business identity, customer experience, and digital reputation.</p><p>So, how do you know if your website is hurting your brand's professional image?</p><p>Here are five signs worth paying attention to.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "1. Your Website Has an Outdated or Inconsistent Design",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>First impressions matter, especially online.</p><p>Imagine visiting a business website and finding outdated colours, inconsistent fonts, poorly arranged images, and a layout that looks like it has not been updated in years.</p><p>Would you immediately feel confident making a purchase or trusting that business with an important project?</p><p>Probably not.</p><p>An outdated website design can make your business appear less established, even when you have years of experience and excellent services to offer.</p><p>Some common signs of an outdated website include:</p><ul><li>Too many colours and font styles competing for attention.</li><li>Low-quality or stretched images.</li><li>Poor spacing and inconsistent alignment.</li><li>Cluttered layouts with too much information.</li><li>Design elements that do not reflect your current brand identity.</li></ul><p>A professional website does not necessarily need expensive animations or complicated visual effects. What matters is having a clean, consistent design that communicates your brand clearly.</p><p><strong>What you can do:</strong> Review your website's colours, typography, images, spacing, and overall layout. Make sure every page feels like part of the same business. Your design should support your message rather than distract visitors from it.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "2. Your Website Is Difficult to Navigate",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>A potential customer visits your website because they want information.</p><p>They might want to understand what you offer, check your pricing, view your previous projects, or find out how to contact you.</p><p>If they have to spend several minutes figuring out where everything is, you already have a problem.</p><p>Poor website navigation creates unnecessary frustration. Visitors should not have to guess where your services are listed or search endlessly for your contact information.</p><p>Some common navigation problems include:</p><ul><li>Missing or confusing menu options.</li><li>Important pages hidden several clicks away.</li><li>Buttons that do not lead anywhere useful.</li><li>Broken links and missing pages.</li><li>No clear way to return to the homepage.</li></ul><p>A well-organised website makes it easy for visitors to find what they need.</p><p>For example, a business website should typically have clearly accessible sections such as Home, About, Services, Portfolio or Projects, and Contact.</p><p>Your navigation should reflect how customers think, not just how your business is organised internally.</p><p><strong>What you can do:</strong> Ask someone unfamiliar with your website to find your services, understand what your business does, and contact you. Observe how easily they complete these tasks. If they struggle, your website probably needs a navigation improvement.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "3. Your Website Does Not Work Properly on Mobile Devices",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Here is something many business owners overlook: not everyone visits your website from a laptop.</p><p>Potential customers may discover your business through Instagram, Facebook, LinkedIn, Google Search, or a WhatsApp link. More often than not, they will open your website directly on their phones.</p><p>If your website only looks good on a desktop, you could be creating a poor experience for a significant part of your audience.</p><p>A website that is not properly optimised for mobile devices may have:</p><ul><li>Text that is too small to read.</li><li>Images that extend beyond the screen.</li><li>Buttons that are difficult to click.</li><li>Menus that do not open correctly.</li><li>Sections that overlap or break.</li><li>Forms that are difficult to complete.</li></ul><p>Mobile responsiveness is not simply about making your website smaller. It is about ensuring that the content, navigation, images, and functionality adapt properly to different screen sizes.</p><p>Google also uses the mobile version of a website's content for indexing and ranking. This makes mobile usability an important consideration for businesses that want to improve their visibility in search results.</p><p>You can learn more from Google's documentation on <a href=\"https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing\">mobile-first indexing</a>.</p><p><strong>What you can do:</strong> Open your website on different smartphones and tablets. Test your navigation, buttons, forms, images, and page layouts. You can also use <a href=\"https://pagespeed.web.dev/\">Google PageSpeed Insights</a> to evaluate your website's performance and identify areas that need improvement.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "4. Your Website Does Not Clearly Explain What Your Business Does",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Imagine someone landing on your homepage for the first time.</p><p>After looking through the page, can they immediately answer these three questions?</p><ul><li>What does this business do?</li><li>Who does it serve?</li><li>How can it help me?</li></ul><p>If the answer is no, your messaging needs attention.</p><p>One of the biggest mistakes businesses make is using their homepage to talk about themselves without explaining the value they provide to customers.</p><p>A headline such as &quot;Welcome to Our Official Website&quot; tells visitors very little. Similarly, using vague descriptions like &quot;We provide innovative solutions for a better future&quot; does not help potential customers understand what you actually offer.</p><p>Your website should communicate your value clearly.</p><p>For example, instead of simply writing:</p><p>&quot;We are a leading company committed to excellence and innovation.&quot;</p><p>You could say:</p><p>&quot;We help growing businesses build professional websites and digital solutions that make it easier to reach and serve their customers.&quot;</p><p>The second statement gives visitors a much clearer understanding of what the business does.</p><p>Your messaging should be supported by clear service descriptions, relevant images, customer testimonials, and examples of your work.</p><p><strong>What you can do:</strong> Review your homepage headline and introductory section. Replace generic statements with specific descriptions of your services, target audience, and the problems you solve.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "5. Your Website Has No Clear Call to Action",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Getting someone to visit your website is only one part of the process.</p><p>What happens after they arrive?</p><p>Do you want them to book a consultation, request a quotation, purchase a product, subscribe to your newsletter, or contact your team?</p><p>Your website should guide visitors towards the next step.</p><p>Without clear calls to action, visitors may browse your pages, find your services interesting, and leave without taking any action.</p><p>Some signs your website needs better calls to action include:</p><ul><li>No visible contact or enquiry button.</li><li>Important buttons buried at the bottom of the page.</li><li>Generic button text such as &quot;Click Here.&quot;</li><li>No clear next step after explaining your services.</li><li>Contact forms that are difficult to find or complete.</li></ul><p>Effective calls to action should be specific and relevant to what visitors are looking for.</p><p>Examples include:</p><ul><li>Book a Consultation.</li><li>Request a Quote.</li><li>Get Started.</li><li>Explore Our Services.</li><li>Contact Our Team.</li></ul><p>The goal is not to place buttons everywhere. It is to make the next step obvious when someone is ready to take it.</p><p><strong>What you can do:</strong> Identify the most important action you want visitors to take. Make that action visible on your homepage and relevant service pages. Keep the wording simple and make sure every button works.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "How to Make Your Business Website Look More Professional",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Recognising these problems is the first step. The next step is making the improvements that will help your website communicate credibility and deliver a better experience.</p><p>Here are a few things to prioritise:</p><p><strong>1. Invest in a consistent visual identity.</strong> Use colours, typography, images, and layouts that reflect your brand.</p><p><strong>2. Make navigation simple.</strong> Organise your pages around what visitors need to find.</p><p><strong>3. Prioritise mobile responsiveness.</strong> Ensure your website works properly across smartphones, tablets, and desktop devices.</p><p><strong>4. Improve your website content.</strong> Explain your services, benefits, and business value in clear language.</p><p><strong>5. Build trust with relevant information.</strong> Include genuine testimonials, case studies, business contact details, and examples of previous work where appropriate.</p><p><strong>6. Test your website regularly.</strong> Check for broken links, outdated information, slow pages, and forms that no longer work.</p><p>You should also pay attention to website speed and accessibility. Tools such as <a href=\"https://pagespeed.web.dev/\">Google PageSpeed Insights</a> and the <a href=\"https://www.w3.org/WAI/fundamentals/\">W3C Web Accessibility Initiative</a> can help you identify areas for improvement.</p><p>A professional website is not something you build once and forget. It should evolve alongside your business.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "Final Thoughts: Does Your Website Reflect the Quality of Your Business?",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Your website should give potential customers a reason to take your business seriously.</p><p>It should communicate what you do, make information easy to find, work across devices, and guide visitors towards meaningful actions.</p><p>You do not necessarily need a completely new website to achieve this. Sometimes, a few strategic improvements can make a significant difference to how people experience your business online.</p><p>However, if your current website is outdated, difficult to navigate, or no longer represents the quality of your services, it may be time to rethink your digital presence.</p><p>At <strong>ZanoveTech</strong>, we help businesses build professional websites, web applications, AI automations, and digital content that support their business goals.</p><p>Whether you need a new business website, a landing page, or improvements to an existing digital platform, we can help you create an online experience that better represents your brand.</p><p><strong>Ready to give your business a more professional online presence?</strong></p><p>Visit ZanoveTech to explore our services and let's discuss how we can help your business grow.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "Frequently Asked Questions (FAQs)",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<h3>1. What makes a business website look unprofessional?</h3><p>An outdated design, inconsistent branding, broken links, poor mobile responsiveness, unclear messaging, slow loading pages, and confusing navigation can make a business website appear unprofessional.</p><h3>2. How often should a business website be updated?</h3><p>There is no universal schedule, but businesses should review their website regularly to ensure that the information, services, pricing, branding, security, and functionality remain accurate and relevant.</p><h3>3. Does website design affect customer trust?</h3><p>Yes. Website design influences how visitors perceive a business. A clear, consistent, easy-to-use website can help establish credibility, while a confusing or poorly maintained website may create doubts.</p><h3>4. Why is mobile responsiveness important for business websites?</h3><p>Mobile responsiveness ensures that visitors can access and use your website comfortably on smartphones and tablets. It also supports a better user experience and aligns with Google's mobile-first indexing approach.</p><h3>5. Can a professional website help my business get more customers?</h3><p>A well-designed website can support customer acquisition by communicating your value, showcasing your services, building trust, and making it easier for visitors to enquire or purchase. However, results also depend on factors such as your offer, traffic quality, marketing, and conversion strategy.</p>"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "website-next-step",
     "title": "Before you redesign your website, make the next step obvious.",
     "category": "Websites · Conversion",
     "description": "A fresh look can help, but visitors still need to understand what you do and what to do next.",
     "sections": [
-      { "heading": "Start with the visitor’s question", "paragraphs": ["Ask someone unfamiliar with your business to open the homepage for a few seconds. Can they tell who the service is for, what problem it solves and how to get help? If those answers are hidden in long paragraphs or scattered across the page, the redesign brief should start with clarity."] },
-      { "heading": "Trace one useful journey", "paragraphs": ["Pick a high-value visitor, such as a potential client looking for a specific service. Follow their path from the first page to an enquiry. Note where they need more proof, where the language feels vague and where a button or contact detail is hard to find.", "That small journey map helps a team spend design and development effort on the parts that make a decision easier. A website should look like your business and guide people through it."] }
+      {
+        "heading": "Start with the visitor’s question",
+        "paragraphs": [
+          "Ask someone unfamiliar with your business to open the homepage for a few seconds. Can they tell who the service is for, what problem it solves and how to get help? If those answers are hidden in long paragraphs or scattered across the page, the redesign brief should start with clarity."
+        ]
+      },
+      {
+        "heading": "Trace one useful journey",
+        "paragraphs": [
+          "Pick a high-value visitor, such as a potential client looking for a specific service. Follow their path from the first page to an enquiry. Note where they need more proof, where the language feels vague and where a button or contact detail is hard to find.",
+          "That small journey map helps a team spend design and development effort on the parts that make a decision easier. A website should look like your business and guide people through it."
+        ]
+      }
     ],
-    "link": { "href": "../audit.html", "label": "Run a free website audit" }
+    "link": {
+      "href": "../audit.html",
+      "label": "Run a free website audit"
+    }
   },
   {
     "slug": "useful-automation",
@@ -16,10 +174,24 @@
     "category": "AI · Automation",
     "description": "The strongest first automation is usually one repeated handoff that is easy to describe and easy to check.",
     "sections": [
-      { "heading": "Look for a dependable repeat", "paragraphs": ["Start with a process that happens often: capturing a new enquiry, sorting a request, sending a confirmation or reminding a team member to follow up. Write down the trigger, the information needed, the action and the person who checks exceptions."] },
-      { "heading": "Keep a human checkpoint", "paragraphs": ["Automation can prepare a response, route an item or update a record. A person should still review cases where context, money or customer trust is at stake. That checkpoint helps teams catch bad inputs and refine the workflow before relying on it more widely.", "Measure the practical result: fewer missed handoffs, less duplicate entry or a clearer view of what needs attention. Start small, learn from real use, and expand only when the first step is dependable."] }
+      {
+        "heading": "Look for a dependable repeat",
+        "paragraphs": [
+          "Start with a process that happens often: capturing a new enquiry, sorting a request, sending a confirmation or reminding a team member to follow up. Write down the trigger, the information needed, the action and the person who checks exceptions."
+        ]
+      },
+      {
+        "heading": "Keep a human checkpoint",
+        "paragraphs": [
+          "Automation can prepare a response, route an item or update a record. A person should still review cases where context, money or customer trust is at stake. That checkpoint helps teams catch bad inputs and refine the workflow before relying on it more widely.",
+          "Measure the practical result: fewer missed handoffs, less duplicate entry or a clearer view of what needs attention. Start small, learn from real use, and expand only when the first step is dependable."
+        ]
+      }
     ],
-    "link": { "href": "../service.html", "label": "Explore AI and automation services" }
+    "link": {
+      "href": "../service.html",
+      "label": "Explore AI and automation services"
+    }
   },
   {
     "slug": "ai-video-brief",
@@ -27,9 +199,23 @@
     "category": "AI video · Creative",
     "description": "A video is more useful when it answers one audience question and points to one next step.",
     "sections": [
-      { "heading": "Write the message in one sentence", "paragraphs": ["Decide who the video is for, what they should understand and what action makes sense afterwards. That brief keeps the visuals, narration, captions and call to action working together."] },
-      { "heading": "Build the human review into the process", "paragraphs": ["Review names, claims, brand details, image rights and pronunciation before publishing. AI tools can speed up drafts and production, but a person should check that the final result is accurate, recognisable and appropriate for the audience.", "Then adapt the piece to where it will appear. A short vertical edit, a website explainer and a product walkthrough each need different pacing and context. Reuse the core idea while shaping each version for its job."] }
+      {
+        "heading": "Write the message in one sentence",
+        "paragraphs": [
+          "Decide who the video is for, what they should understand and what action makes sense afterwards. That brief keeps the visuals, narration, captions and call to action working together."
+        ]
+      },
+      {
+        "heading": "Build the human review into the process",
+        "paragraphs": [
+          "Review names, claims, brand details, image rights and pronunciation before publishing. AI tools can speed up drafts and production, but a person should check that the final result is accurate, recognisable and appropriate for the audience.",
+          "Then adapt the piece to where it will appear. A short vertical edit, a website explainer and a product walkthrough each need different pacing and context. Reuse the core idea while shaping each version for its job."
+        ]
+      }
     ],
-    "link": { "href": "../projects.html", "label": "Explore AI video work" }
+    "link": {
+      "href": "../projects.html",
+      "label": "Explore AI video work"
+    }
   }
 ]
