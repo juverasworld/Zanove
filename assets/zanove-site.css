@@ -162,6 +162,7 @@ body.project-inquiry-open { overflow: hidden; }
 .process-card .card-index { width: auto; height: auto; margin-bottom: 18px; background: none; color: #087f87; font-size: 12px; letter-spacing: .12em; }
 
 .project-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.service-project-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .project-card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: 0 7px 24px rgba(0,8,26,.045); transition: transform .22s ease, box-shadow .22s ease; }
 .project-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 .project-visual { position: relative; display: grid; overflow: hidden; aspect-ratio: 16 / 10; place-items: center; background: #e8eef0; }
@@ -200,6 +201,10 @@ body.project-inquiry-open { overflow: hidden; }
 .market-card { padding-top: 16px; border-top: 2px solid var(--cyan); }
 .market-card h3 { margin-bottom: 8px; font-size: 20px; }
 .market-card p { color: var(--muted); font-size: 14px; }
+.service-fit-list { display: grid; gap: 14px; align-content: start; margin: 0; padding: 0; list-style: none; }
+.service-fit-list li { position: relative; padding: 16px 18px 16px 45px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); font-size: 14px; line-height: 1.65; }
+.service-fit-list li::before { position: absolute; left: 17px; top: 16px; color: #087f87; content: '✓'; font-weight: 800; }
+.section-projects { background: #f8f7f3; }
 .cta-band { display: flex; align-items: center; justify-content: space-between; gap: 26px; padding: clamp(28px,5vw,52px); border-radius: 22px; background: var(--soft-cyan); }
 .cta-band h2 { max-width: 720px; font-size: clamp(30px,4.5vw,48px); }
 .cta-band p { margin-top: 10px; color: var(--muted); }
@@ -673,6 +678,7 @@ body.audit-open { overflow: hidden; }
   .home-hero .hero-copy > p:not(.eyebrow) { max-width: 640px; margin-top: 12px; }
   .hero-audit { max-width: 720px; }
   .faq-layout, .project-enquiry-layout { grid-template-columns: 1fr; }
+  .service-fit-list { gap: 10px; }
   .faq-layout .section-heading { margin-bottom: 20px; }
 }
 @media (max-width: 620px) {

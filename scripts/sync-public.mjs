@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { load } from 'cheerio';
 import posts from '../content/blog-posts.json' with { type: 'json' };
+import { services, servicePath } from '../lib/services.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -10,6 +11,7 @@ const pages = ['index.html', 'service.html', 'about.html', 'projects.html', 'aud
 const sitePageLinks = [
   ['Home', '/'],
   ['Services', '/service.html'],
+  ...services.map(({ name, slug }) => [name, servicePath(slug)]),
   ['About Zanove', '/about.html'],
   ['Projects', '/projects.html'],
   ['Website audit', '/audit.html'],
@@ -160,6 +162,7 @@ if (fs.existsSync(llmsPath)) {
     'Ask Zanove AI': "AI assistant for questions about Zanove's services and work.",
     'Privacy & analytics': 'Analytics choices and information submitted to Zanove.',
   };
+  for (const service of services) corePageDescriptions[service.name] = service.description;
   const corePages = [
     '## Core pages',
     ...sitePageLinks.map(([label, route]) => `- [${label}](${site}${route}): ${corePageDescriptions[label]}`),
