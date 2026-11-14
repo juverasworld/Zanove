@@ -11,7 +11,7 @@ const pages = ['index.html', 'service.html', 'about.html', 'projects.html', 'aud
 const sitePageLinks = [
   ['Home', '/'],
   ['Services', '/service.html'],
-  ...services.map(({ name, slug }) => [name, servicePath(slug)]),
+  ...services.map(({ anchorText, slug }) => [anchorText, servicePath(slug)]),
   ['About Zanove', '/about.html'],
   ['Projects', '/projects.html'],
   ['Website audit', '/audit.html'],
@@ -162,7 +162,7 @@ if (fs.existsSync(llmsPath)) {
     'Ask Zanove AI': "AI assistant for questions about Zanove's services and work.",
     'Privacy & analytics': 'Analytics choices and information submitted to Zanove.',
   };
-  for (const service of services) corePageDescriptions[service.name] = service.description;
+  for (const service of services) corePageDescriptions[service.anchorText] = service.description;
   const corePages = [
     '## Core pages',
     ...sitePageLinks.map(([label, route]) => `- [${label}](${site}${route}): ${corePageDescriptions[label]}`),

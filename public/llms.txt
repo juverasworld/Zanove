@@ -5,11 +5,11 @@
 ## Core pages
 - [Home](https://zanovetech.vercel.app/): Digital products, websites and business systems.
 - [Services](https://zanovetech.vercel.app/service.html): Website design, software, digital products, AI creative, automation and growth.
-- [Website design and development](https://zanovetech.vercel.app/services/website-agency-in-nigeria): Looking for a website agency in Nigeria? Zanove designs and builds mobile-ready business websites for Nigerian SMEs and growing companies.
-- [Software and digital product development](https://zanovetech.vercel.app/services/software-and-digital-products): Plan and build custom software, customer portals and digital products around your users and business operations with Zanove Technologies.
-- [AI video, image and digital creative](https://zanovetech.vercel.app/services/ai-video-and-creative): Create AI-assisted videos, images and digital campaign assets with a clear brief, consistent brand direction and human review from Zanove.
-- [Workflow and AI automation](https://zanovetech.vercel.app/services/workflow-automation): Map repetitive business processes and connect practical workflow or AI automation with clear human checkpoints using Zanove Technologies.
-- [SEO, content and audience growth](https://zanovetech.vercel.app/services/seo-and-content-growth): Build search foundations and useful content around your services, customers and business goals with Zanove Technologies.
+- [Website agency in Nigeria](https://zanovetech.vercel.app/services/website-agency-in-nigeria): Looking for a website agency in Nigeria? Zanove designs and builds mobile-ready business websites for Nigerian SMEs and growing companies.
+- [Software development company in Nigeria](https://zanovetech.vercel.app/services/software-and-digital-products): Plan and build custom software, customer portals and digital products around your users and business operations with Zanove Technologies.
+- [AI creative studio for Nigerian businesses](https://zanovetech.vercel.app/services/ai-video-and-creative): Create AI-assisted videos, images and digital campaign assets with a clear brief, consistent brand direction and human review from Zanove.
+- [AI automation agency in Nigeria](https://zanovetech.vercel.app/services/workflow-automation): Map repetitive business processes and connect practical workflow or AI automation with clear human checkpoints using Zanove Technologies.
+- [SEO services for Nigerian businesses](https://zanovetech.vercel.app/services/seo-and-content-growth): Build search foundations and useful content around your services, customers and business goals with Zanove Technologies.
 - [About Zanove](https://zanovetech.vercel.app/about.html): Zanove Technologies and its approach.
 - [Projects](https://zanovetech.vercel.app/projects.html): Founder-built product, web, AI and creative work.
 - [Website audit](https://zanovetech.vercel.app/audit.html): First-pass public website review and project contact path.

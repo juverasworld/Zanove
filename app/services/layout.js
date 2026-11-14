@@ -5,7 +5,7 @@ const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app
 const navLinks = [
   ['Home', '/'],
   ['Services', '/service.html'],
-  ['Website design', servicePath('website-agency-in-nigeria')],
+  ['Website agency in Nigeria', servicePath('website-agency-in-nigeria')],
   ['Projects', '/projects.html'],
   ['Blog', '/blog'],
   ['About', '/about.html'],
@@ -26,7 +26,7 @@ function OrganizationSchema() {
 }
 
 export default function ServicePagesLayout({ children }) {
-  const serviceLinks = services.map((service) => [service.name, servicePath(service.slug)]);
+  const serviceLinks = services.map((service) => [service.anchorText, servicePath(service.slug)]);
   return <>
     <link rel="stylesheet" href="/assets/zanove-site.css?v=20261114-service-pages" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
