@@ -6,6 +6,7 @@ import { load } from 'cheerio';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 const $ = load(fs.readFileSync(path.join(root, 'service.html'), 'utf8'));
+$('head script[type="application/ld+json"][data-zanove-service-schema]').remove();
 const title = 'Privacy & Analytics | Zanove Technologies';
 const description = 'Learn how Zanove Technologies handles website analytics choices, website audit requests, consultation enquiries and AI assistant questions.';
 $('head title').text(title);

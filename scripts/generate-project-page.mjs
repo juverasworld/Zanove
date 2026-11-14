@@ -7,6 +7,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://zanovetech.vercel.app').replace(/\/$/, '');
 const file = path.join(root, 'project.html');
 const $ = load(fs.readFileSync(path.join(root, 'service.html'), 'utf8'));
+$('head script[type="application/ld+json"][data-zanove-service-schema]').remove();
 $('head title').text('Request a Project Consultation | Zanove Technologies');
 $('head meta[name="description"]').attr('content', 'Tell Zanove what your business needs to improve. Request a project consultation about a website, software, digital product, AI or workflow automation.');
 $('head link[rel="canonical"]').attr('href', `${site}/project.html`);
