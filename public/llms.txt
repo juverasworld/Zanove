@@ -14,6 +14,7 @@
 - [Ask Zanove AI](https://zanovetech.vercel.app/ask-ai.html): AI assistant for questions about Zanove's services and work.
 - [Privacy & analytics](https://zanovetech.vercel.app/privacy.html): Analytics choices and information submitted to Zanove.
 ## Journal articles
+- [Your Website Gets Visitors but No Customers? Here's What Might Be Wrong](https://zanovetech.vercel.app/blog/website-gets-traffic-but-no-customers)
 - [5 Signs Your Website Is Making Your Business Look Less Professional](https://zanovetech.vercel.app/blog/signs-your-website-looks-unprofessional)
 - [Before you redesign your website, make the next step obvious.](https://zanovetech.vercel.app/blog/website-next-step)
 - [Good automation gives people time back without hiding the work.](https://zanovetech.vercel.app/blog/useful-automation)

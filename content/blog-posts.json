@@ -1,5 +1,216 @@
 [
   {
+    "slug": "website-gets-traffic-but-no-customers",
+    "title": "Your Website Gets Visitors but No Customers? Here's What Might Be Wrong",
+    "seoTitle": "Website Gets Traffic but No Customers? 7 Reasons Why",
+    "category": "Web Development / Business Growth",
+    "description": "Website getting traffic but no customers? Discover 7 reasons visitors are not converting and how to turn website traffic into leads and sales.",
+    "metaDescription": "Website getting traffic but no customers? Discover 7 reasons visitors aren’t converting and how to turn website traffic into leads and sales.",
+    "focusKeyword": "website gets traffic but no conversions",
+    "secondaryKeywords": [
+      "website visitors not converting",
+      "website traffic but no sales",
+      "why is my website not generating leads",
+      "how to increase website conversions",
+      "how to convert website visitors into customers",
+      "website conversion rate optimisation",
+      "website not generating sales",
+      "improve website user experience",
+      "website design for business growth",
+      "website performance optimisation",
+      "website lead generation strategies",
+      "mobile-friendly website design",
+      "business website optimisation",
+      "landing page optimisation"
+    ],
+    "tags": [
+      "Website Conversion",
+      "Conversion Rate Optimisation",
+      "Web Development",
+      "Business Growth",
+      "Website Analytics",
+      "Lead Generation",
+      "User Experience"
+    ],
+    "resourceLinks": [
+      {
+        "type": "external",
+        "label": "Google PageSpeed Insights",
+        "url": "https://pagespeed.web.dev/"
+      },
+      {
+        "type": "external",
+        "label": "Google Analytics 4",
+        "url": "https://analytics.google.com/"
+      },
+      {
+        "type": "external",
+        "label": "Google Search Console",
+        "url": "https://search.google.com/search-console/about"
+      },
+      {
+        "type": "external",
+        "label": "Microsoft Clarity",
+        "url": "https://clarity.microsoft.com/"
+      },
+      {
+        "type": "external",
+        "label": "Google guidance on mobile-first indexing",
+        "url": "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing"
+      },
+      {
+        "type": "external",
+        "label": "Browse website and analytics image ideas on Freepik",
+        "url": "https://www.freepik.com/search?format=search&query=website+traffic+analytics+business+website+mockup"
+      },
+      {
+        "type": "internal",
+        "label": "Professional web development services",
+        "url": "/service.html"
+      },
+      {
+        "type": "internal",
+        "label": "Run a free website growth audit",
+        "url": "/audit.html"
+      },
+      {
+        "type": "internal",
+        "label": "Speak with the Zanove team about your website",
+        "url": "/project.html"
+      },
+      {
+        "type": "internal",
+        "label": "Make the next step clear before redesigning your website",
+        "url": "/blog/website-next-step"
+      }
+    ],
+    "backlinkNotes": "Search intent: Informational with commercial investigation. Content type: evergreen guide. Review every 6 months.\n\nImage brief: 1200 × 630 px WebP; preferred filename website-traffic-no-customers-conversion-problems.webp; alt text should describe the actual image (current image: colleagues working together around a laptop; its alt text describes this actual image rather than claiming it shows analytics). Freepik browse link: https://www.freepik.com/search?format=search&query=website+traffic+analytics+business+website+mockup. Keep the source asset's licence/attribution record.\n\nDistribution/backlink outreach: publish an expanded companion on Medium or LinkedIn; pitch original Nigerian business technology commentary to Techpoint Africa and TechCabal; share a technical companion with DEV Community; participate where relevant on Indie Hackers and Product Hunt. These are outreach opportunities, not guaranteed backlinks. Avoid paid bulk links and link schemes.\n\nFuture supporting articles: why a business website is slow; website design mistakes that lose customers; business website costs; website vs social media; lead-generation website planning; when to redesign a business website. Link naturally back to this guide and relevant Zanove services when published.",
+    "authorId": "zanove-technologies",
+    "coverImage": "/assets/blog/website-traffic-no-customers-conversion-problems.webp",
+    "coverAlt": "Colleagues reviewing a digital project together around a laptop in a bright workspace.",
+    "sections": [
+      {
+        "heading": "The conversion gap",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p><strong>Your website is getting traffic, people are clicking through, and visitors are exploring your pages. But there's one problem: nobody is buying, booking, making enquiries or becoming a customer.</strong></p><p>So, what's going wrong?</p><p>If your website gets traffic but no conversions, the problem may be what happens after people arrive.</p><p>You invested in a website. You may even be spending money on social media marketing, Google Ads, content creation and search engine optimisation (SEO) to attract potential customers.</p><p>The traffic is coming in, but the results aren't.</p><p>If this sounds familiar, your website might not have a traffic problem. It might have a conversion problem.</p><p>A website is supposed to do more than exist online or look attractive. It should help potential customers understand what you offer, trust your business and take the next step.</p><p>When that process breaks down, you can have hundreds or even thousands of website visitors without generating meaningful business results.</p><p>In this guide, we'll explore why your website gets traffic but no conversions, the common website mistakes that drive potential customers away, and practical ways to turn website visitors into paying customers.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "Why Does Your Website Get Traffic but No Conversions?",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Getting website traffic means people are discovering your business. Getting customers means those visitors are finding enough value, clarity and confidence to take action.</p><p>These are two different things.</p><p>Your website conversion rate measures the percentage of visitors who complete a desired action. Depending on your business, this could mean:</p><ol><li>Purchasing a product.</li><li>Booking a service or consultation.</li><li>Filling out a contact form.</li><li>Requesting a quotation.</li><li>Registering for an event.</li><li>Signing up for a newsletter.</li></ol><p>For example, if 1,000 people visit your website and 20 make an enquiry, your enquiry conversion rate is 2%.</p><p>The problem isn't necessarily that people aren't interested in your business. It could be that your website isn't doing enough to move them from interest to action.</p><p>Here are seven reasons that might be happening.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "1. Your Website Doesn't Communicate What You Actually Offer",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Imagine a potential customer landing on your homepage for the first time.</p><p>They have a few questions:</p><ol><li>What does this business do?</li><li>Is this product or service relevant to me?</li><li>How can it solve my problem?</li><li>What should I do next?</li></ol><p>If visitors have to search through multiple pages to understand what your business offers, there's a good chance they'll leave.</p><p>One of the most common website design mistakes is prioritising appearance over clarity.</p><p>Your homepage might have beautiful animations, impressive graphics and a sophisticated layout, but none of that matters if visitors cannot immediately understand your value proposition.</p><p><strong>How to fix it:</strong></p><p>Your homepage should communicate three things clearly:</p><ol><li>What your business offers.</li><li>Who your products or services are for.</li><li>Why someone should choose you.</li></ol><p>Use a clear headline, a supporting description and a visible call-to-action button.</p><p>Instead of writing something vague like &quot;Welcome to the future of excellence&quot;, explain exactly what you do and how it helps your customers.</p><p>Clarity is a conversion tool.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "2. Your Website Is Too Slow",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>People expect websites to respond quickly, especially when browsing on mobile devices.</p><p>When a website takes too long to load, visitors may leave before they even see what your business offers.</p><p>Slow website loading can affect more than the user experience. It can undermine the effectiveness of your marketing campaigns, reduce engagement and create unnecessary friction in the customer journey.</p><p>Google also measures website experience through Core Web Vitals.</p><p>The three key metrics are:</p><ol><li><strong>Largest Contentful Paint (LCP):</strong> Measures how quickly the main content becomes visible. A good target is 2.5 seconds or less.</li><li><strong>Interaction to Next Paint (INP):</strong> Measures how responsive your website is to user interactions. A good target is 200 milliseconds or less.</li><li><strong>Cumulative Layout Shift (CLS):</strong> Measures unexpected movement of page elements. A good target is 0.1 or less.</li></ol><p>These are Google's recommended good-performance thresholds.</p><p><strong>How to fix it:</strong></p><ol><li>Compress and optimise large images.</li><li>Reduce unnecessary JavaScript and third-party scripts.</li><li>Use efficient hosting and caching.</li><li>Remove unnecessary plugins and integrations.</li><li>Optimise mobile performance.</li><li>Use a content delivery network where appropriate.</li></ol><p>You can test your website using <a href=\"https://pagespeed.web.dev/\">Google PageSpeed Insights</a>.</p><p>A faster website creates a smoother experience and gives visitors fewer reasons to abandon the journey.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "3. Your Website Doesn't Build Enough Trust",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>People don't automatically trust a business because it has a website.</p><p>Before spending money, submitting personal information or booking a service, potential customers want reassurance that they're making the right decision.</p><p>If your website doesn't provide that reassurance, visitors may hesitate even when they're interested in what you offer.</p><p>Some common website trust issues include:</p><ol><li>No customer testimonials or reviews.</li><li>No visible contact information.</li><li>No clear information about the business.</li><li>No real examples of previous work.</li><li>Poor-quality product images.</li><li>Broken links and outdated information.</li><li>Missing security indicators.</li><li>Unclear payment, delivery or refund policies.</li></ol><p>For businesses selling online, these issues can be particularly damaging.</p><p><strong>How to fix it:</strong></p><p>Make your website a place where customers can confidently evaluate your business.</p><p>Include:</p><ol><li>Genuine customer reviews and testimonials.</li><li>Case studies and examples of completed projects.</li><li>A clear About Us page.</li><li>Working contact information.</li><li>Secure HTTPS connections.</li><li>Transparent pricing, policies and business information where relevant.</li></ol><p>Don't just tell visitors that your business is trustworthy. Give them reasons to believe it.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "4. Your Website Is Not Designed for Mobile Users",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>A website can look fantastic on a desktop computer and still provide a frustrating experience on a smartphone.</p><p>Think about how most people discover businesses today. They see an Instagram post, click a link in someone's bio, search on Google or receive a link through WhatsApp.</p><p>Many of those visitors will arrive using their mobile devices.</p><p>If your website has tiny text, overlapping sections, difficult navigation or buttons that are hard to tap, you're creating unnecessary barriers.</p><p><strong>How to fix it:</strong></p><p>Your website should be designed to work across different screen sizes, not simply shrink a desktop layout to fit a smaller screen.</p><p>Check that:</p><ol><li>Text is readable without zooming.</li><li>Buttons are easy to tap.</li><li>Navigation is simple.</li><li>Images resize correctly.</li><li>Forms are easy to complete.</li><li>Important information appears without unnecessary scrolling.</li><li>Pages load efficiently on mobile networks.</li></ol><p>Test your website on an actual smartphone, not just your browser's desktop preview.</p><p>A mobile-friendly website should make it just as easy to become a customer on a phone as it is on a computer.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "5. Your Call to Action Is Missing or Confusing",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>You've attracted visitors. They've read about your business. They understand what you offer.</p><p>Now what?</p><p>If visitors cannot identify the next step, they may simply leave.</p><p>This is where your call to action (CTA) becomes important.</p><p>A CTA tells visitors what you want them to do next.</p><p>Examples include:</p><ol><li>Book a Consultation.</li><li>Get a Free Quote.</li><li>Shop Now.</li><li>Request a Demo.</li><li>Schedule a Call.</li><li>Get Started.</li></ol><p>One common mistake is using vague phrases that don't communicate what happens after someone clicks.</p><p>Another is placing the CTA where visitors cannot easily find it.</p><p><strong>How to fix it:</strong></p><p>Give every important page a clear conversion goal.</p><p>For example:</p><ol><li>Your homepage should guide visitors towards your primary product or service.</li><li>Your service page should encourage enquiries or consultation bookings.</li><li>Your product page should make purchasing straightforward.</li><li>Your contact page should make it easy to reach your business.</li></ol><p>Use action-oriented language and place CTAs where they naturally fit within the visitor's journey.</p><p>Don't make customers guess what to do next.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "6. Your Website Makes It Difficult to Buy or Make an Enquiry",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Imagine finding exactly what you want on a website, only to encounter a complicated checkout process, a lengthy contact form or confusing booking instructions.</p><p>Would you continue?</p><p>Every unnecessary step creates another opportunity for a potential customer to abandon the process.</p><p>Common conversion barriers include:</p><ol><li>Too many checkout steps.</li><li>Complicated registration requirements.</li><li>Forms requesting unnecessary information.</li><li>Hidden delivery charges.</li><li>Unclear booking processes.</li><li>Broken payment buttons.</li><li>Unresponsive contact forms.</li><li>No confirmation after submitting an enquiry.</li></ol><p>These problems are particularly important for e-commerce websites, booking platforms and businesses that depend on online enquiries.</p><p><strong>How to fix it:</strong></p><p>Review your entire customer journey from the visitor's perspective.</p><p>Try purchasing a product, booking an appointment or submitting an enquiry yourself.</p><p>Ask:</p><ol><li>Can I find what I need easily?</li><li>Do I understand the price?</li><li>Is the process straightforward?</li><li>Are there unnecessary steps?</li><li>Do I receive confirmation after completing an action?</li></ol><p>Simplify your forms, remove unnecessary steps and make sure every important button works.</p><p>Your goal should be to make taking action as effortless as possible.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "7. You're Attracting the Wrong Website Traffic",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Not every website visitor is a potential customer.</p><p>You could be getting thousands of visitors from search engines and social media without attracting people who actually need your products or services.</p><p>For example, a business selling premium corporate software might attract visitors searching for free software tutorials.</p><p>The traffic numbers may look impressive, but those visitors may have little intention of purchasing.</p><p>This is why website traffic alone is not a reliable measure of business success.</p><p><strong>How to fix it:</strong></p><p>Start by understanding the search intent behind your website traffic.</p><p>Ask:</p><ol><li>What keywords are bringing visitors to my website?</li><li>Are these people looking for information or ready to purchase?</li><li>Do my landing pages match what visitors expect?</li><li>Am I attracting the right audience for my products or services?</li></ol><p>Use Google Analytics 4 and Google Search Console to understand where your visitors come from, which pages they visit and how they interact with your website.</p><p>Your objective should not simply be to attract more visitors. It should be to attract the right visitors.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "How to Turn Website Visitors Into Paying Customers",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Now that you understand the common problems, what should you actually do?</p><p>Improving website conversions requires looking at your website as part of your overall business and marketing strategy.</p><p>Here are five practical steps to get started.</p><h3>1. Audit Your Website's User Experience</h3><p>Review your website from the perspective of someone who has never interacted with your business.</p><p>Check the homepage, navigation, service pages, product pages, contact forms and checkout process.</p><p>Identify anything that makes it difficult for visitors to understand your offer or take action.</p><h3>2. Improve Your Website Conversion Rate</h3><p>Don't make changes simply because you think they look better.</p><p>Identify specific problems and test improvements.</p><p>For example, you could:</p><ol><li>Rewrite your homepage headline.</li><li>Change an unclear CTA.</li><li>Simplify a contact form.</li><li>Improve product descriptions.</li><li>Add genuine customer testimonials.</li></ol><p>Measure the results before and after making changes.</p><h3>3. Use Website Analytics to Understand Visitor Behaviour</h3><p>You cannot improve what you don't measure.</p><p>Use tools such as:</p><ol><li><a href=\"https://analytics.google.com/\">Google Analytics 4</a> to understand traffic and user activity.</li><li><a href=\"https://search.google.com/search-console/about\">Google Search Console</a> to monitor search performance.</li><li><a href=\"https://clarity.microsoft.com/\">Microsoft Clarity</a> to understand user interactions through heatmaps and session recordings.</li><li><a href=\"https://pagespeed.web.dev/\">Google PageSpeed Insights</a> to assess website performance.</li></ol><p>Look beyond page views.</p><p>Pay attention to meaningful actions such as purchases, completed forms, bookings and qualified enquiries.</p><h3>4. Create Landing Pages That Match Customer Intent</h3><p>Sending every visitor to your homepage isn't always the best strategy.</p><p>If someone clicks an advertisement for a particular service, they should land on a page that explains that service.</p><p>A good landing page should have:</p><ol><li>A relevant headline.</li><li>A clear explanation of the offer.</li><li>Benefits that address the customer's needs.</li><li>Supporting evidence and testimonials.</li><li>A strong call to action.</li></ol><p>The closer your landing page matches the visitor's expectations, the easier it becomes for them to understand what to do next.</p><h3>5. Invest in a Website That Supports Your Business Goals</h3><p>Your website should not be treated as a one-time design project.</p><p>As your business grows, your digital platform should evolve alongside it.</p><p>You may need better integrations, automated processes, improved booking systems, e-commerce functionality, customer portals or more effective lead-generation tools.</p><p>The right website should support how your business operates and how customers interact with it.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "How Do You Know If Your Website Is Actually Working?",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>A good-looking website is not necessarily a high-performing website.</p><p>To understand whether yours is delivering results, monitor the metrics that connect your online presence to actual business outcomes.</p><p>| Metric | What it tells you | |---|---| | Website traffic | How many people visit your website | | Conversion rate | How many visitors complete a desired action | | Bounce and engagement metrics | How visitors interact with your pages | | Lead generation | How many enquiries your website generates | | Sales conversion | How many visitors become paying customers | | Page speed | How quickly your website loads and responds |</p><p>Remember that no single metric tells the whole story.</p><p>For example, a high bounce rate isn't automatically a problem on every type of page. A visitor might find the information they need and leave satisfied.</p><p>Always interpret your analytics in the context of your website's purpose.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "Final Thoughts: Your Website Should Do More Than Attract Visitors",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<p>Getting people to visit your website is only the beginning.</p><p>What happens after they arrive is what determines whether your digital presence contributes to your business goals.</p><p>If your website gets visitors but no customers, don't immediately assume you need to spend more money on advertising or SEO.</p><p>First, examine the experience you're giving people.</p><p>Is your message clear? Does your website load quickly? Can visitors trust your business? Is it easy to make a purchase or enquiry? Are you attracting the right audience?</p><p>Sometimes, the difference between a website that simply attracts attention and one that generates business opportunities comes down to how effectively it is built and optimised.</p><p><strong>Your website should be working for your business, even when you're not actively marketing it.</strong></p><p>At <strong>ZanoveTech</strong>, we help businesses build digital solutions that improve customer experiences, strengthen their online presence and support business growth.</p><p>Whether you need a professional business website, an e-commerce platform, a custom web application or improvements to an existing digital platform, the goal is the same: build technology that solves real business problems.</p><p><strong>Ready to make your website work harder for your business?</strong></p><p>Let's talk about what your business needs.</p><p>Visit ZanoveTech to explore how we can help you build a better digital experience.</p>"
+          }
+        ]
+      },
+      {
+        "heading": "Frequently Asked Questions",
+        "blocks": [
+          {
+            "type": "richtext",
+            "html": "<h3>Why does my website get traffic but no sales?</h3><p>Your website may attract visitors without converting because of unclear messaging, a poor user experience, slow loading speeds, weak calls to action, limited trust signals or traffic that does not match your offer.</p><h3>How can I turn website visitors into customers?</h3><p>Clarify your offer, simplify navigation, show genuine proof, improve the pages visitors land on and make it easy to purchase or enquire. Track the results so you can see which changes help.</p><h3>What is a good website conversion rate?</h3><p>There is no single conversion rate that is good for every industry. It depends on your business model, audience, traffic source and conversion goal. Compare like with like and use your own past performance as a baseline.</p><h3>How do I know if my website is losing potential customers?</h3><p>Track relevant events such as form submissions, purchases and bookings, then review where people drop out. Combine analytics with page-speed checks and direct usability testing to find likely friction points.</p>"
+          }
+        ]
+      }
+    ],
+    "datePublished": "2026-11-14T01:17:27.000Z",
+    "dateModified": "2026-11-14T01:17:27.000Z"
+  },
+  {
     "slug": "signs-your-website-looks-unprofessional",
     "title": "5 Signs Your Website Is Making Your Business Look Less Professional",
     "seoTitle": "5 Signs Your Website Is Making Your Business Look Less Professional",
@@ -57,8 +268,8 @@
       }
     ],
     "authorId": "zanove-technologies",
-    "coverImage": "",
-    "coverAlt": "",
+    "coverImage": "/assets/blog/business-team-collaboration.webp",
+    "coverAlt": "A business team reviewing work together around a laptop.",
     "sections": [
       {
         "heading": "Why your website shapes a first impression",
@@ -166,7 +377,9 @@
     "link": {
       "href": "../audit.html",
       "label": "Run a free website audit"
-    }
+    },
+    "coverImage": "/assets/blog/business-website-workspace.webp",
+    "coverAlt": "Colleagues reviewing work together around a laptop in a bright workspace."
   },
   {
     "slug": "useful-automation",
@@ -191,7 +404,9 @@
     "link": {
       "href": "../service.html",
       "label": "Explore AI and automation services"
-    }
+    },
+    "coverImage": "/assets/blog/business-team-collaboration.webp",
+    "coverAlt": "Colleagues collaborating around a laptop in an office."
   },
   {
     "slug": "ai-video-brief",
@@ -216,6 +431,8 @@
     "link": {
       "href": "../projects.html",
       "label": "Explore AI video work"
-    }
+    },
+    "coverImage": "/assets/blog/business-team-collaboration.webp",
+    "coverAlt": "A creative team discussing a digital project around a laptop."
   }
 ]
